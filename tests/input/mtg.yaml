@@ -1,0 +1,1403 @@
+facts:
+- fact_type: ProperSubClassOf
+  sub: HBA:265504852
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:265505178
+  sup: HBA:9230
+- fact_type: ProperSubClassOf
+  sub: HBA:265505182
+  sup: HBA:265505178
+- fact_type: ProperSubClassOf
+  sub: HBA:265505186
+  sup: HBA:265505178
+- fact_type: ProperSubClassOf
+  sub: HBA:4140
+  sup: HBA:4132
+- fact_type: ProperSubClassOf
+  sub: HBA:4141
+  sup: HBA:4140
+- fact_type: ProperSubClassOf
+  sub: HBA:4142
+  sup: HBA:4141
+- fact_type: ProperSubClassOf
+  sub: HBA:4143
+  sup: HBA:4141
+- fact_type: ProperSubClassOf
+  sub: HBA:4144
+  sup: HBA:4140
+- fact_type: ProperSubClassOf
+  sub: HBA:4145
+  sup: HBA:4144
+- fact_type: ProperSubClassOf
+  sub: HBA:4146
+  sup: HBA:4144
+- fact_type: ProperSubClassOf
+  sub: HBA:9002
+  sup: HBA:9001
+- fact_type: ProperSubClassOf
+  sub: HBA:9003
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9012
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9015
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9018
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9027
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9030
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9047
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9050
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9053
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9060
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9063
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9066
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9069
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9072
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9449
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: HBA:9455
+  sup: HBA:9002
+- fact_type: ProperSubClassOf
+  sub: DHBA:12065
+  sup: DHBA:10568
+- fact_type: ProperSubClassOf
+  sub: DHBA:12141
+  sup: DHBA:12139
+- fact_type: ProperSubClassOf
+  sub: DHBA:12195
+  sup: DHBA:10649
+- fact_type: ProperSubClassOf
+  sub: DHBA:12196
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12207
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12209
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12222
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12239
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12247
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12251
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12270
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:12277
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:146034938
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: DHBA:15547
+  sup: DHBA:12195
+- fact_type: ProperSubClassOf
+  sub: MBA:681
+  sup: MBA:46
+- fact_type: ProperSubClassOf
+  sub: DMBA:16725
+  sup: DMBA:16650
+- fact_type: ProperSubClassOf
+  sub: DMBA:16726
+  sup: DMBA:16725
+- fact_type: ProperSubClassOf
+  sub: DMBA:16742
+  sup: DMBA:16725
+- fact_type: ProperSubClassOf
+  sub: DMBA:17781
+  sup: DMBA:17735
+- fact_type: MemberOfDisjointGroup
+  sub: DHBA:12141
+  group: DHBA
+- fact_type: MemberOfDisjointGroup
+  sub: DHBA:12195
+  group: DHBA
+- fact_type: MemberOfDisjointGroup
+  sub: MBA:681
+  group: MBA
+- fact_type: MemberOfDisjointGroup
+  sub: DHBA:12065
+  group: DHBA
+- fact_type: MemberOfDisjointGroup
+  sub: DMBA:16725
+  group: DMBA
+- fact_type: MemberOfDisjointGroup
+  sub: HBA:265505182
+  group: HBA
+- fact_type: MemberOfDisjointGroup
+  sub: HBA:9002
+  group: HBA
+- fact_type: MemberOfDisjointGroup
+  sub: HBA:265505178
+  group: HBA
+- fact_type: MemberOfDisjointGroup
+  sub: HBA:4144
+  group: HBA
+- fact_type: MemberOfDisjointGroup
+  sub: HBA:4141
+  group: HBA
+- fact_type: MemberOfDisjointGroup
+  sub: HBA:4140
+  group: HBA
+- fact_type: MemberOfDisjointGroup
+  sub: DMBA:17781
+  group: DMBA
+- fact_type: MemberOfDisjointGroup
+  sub: HBA:265505186
+  group: HBA
+pfacts:
+- fact:
+    fact_type: EquivalentTo
+    sub: DMBA:17781
+    equivalent: DHBA:12065
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505178
+    equivalent: DHBA:12065
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: DHBA:12065
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: DHBA:12141
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: EMAPA:18215
+    equivalent: DHBA:12195
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: DHBA:12195
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505178
+    equivalent: DMBA:17781
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: DMBA:17781
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: EMAPA:18215
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: HBA:265505178
+  prob: 0.8497788951776651
+- fact:
+    fact_type: EquivalentTo
+    sub: DHBA:12141
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DHBA:12195
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DMBA:16725
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505182
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505186
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: DHBA:12065
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DHBA:12195
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DMBA:16725
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DMBA:17781
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505178
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505182
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505186
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: DHBA:12141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DMBA:16725
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DMBA:17781
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505178
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505182
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505186
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: DHBA:12195
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: DMBA:17781
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505178
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505182
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505186
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: DMBA:16725
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505182
+    equivalent: DMBA:17781
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505186
+    equivalent: DMBA:17781
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: DMBA:17781
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: DMBA:17781
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: DMBA:17781
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: DMBA:17781
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505182
+    equivalent: HBA:265505178
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505186
+    equivalent: HBA:265505178
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: HBA:265505178
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: HBA:265505178
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: HBA:265505178
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: HBA:265505178
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:265505186
+    equivalent: HBA:265505182
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: HBA:265505182
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: HBA:265505182
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: HBA:265505182
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: HBA:265505182
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: HBA:265505182
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4140
+    equivalent: HBA:265505186
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: HBA:265505186
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: HBA:265505186
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: HBA:265505186
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: HBA:265505186
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4141
+    equivalent: HBA:4140
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: HBA:4140
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: HBA:4140
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: HBA:4140
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:4144
+    equivalent: HBA:4141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: HBA:4141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: HBA:4141
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: HBA:9002
+    equivalent: HBA:4144
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: HBA:4144
+  prob: 0.5
+- fact:
+    fact_type: EquivalentTo
+    sub: MBA:681
+    equivalent: HBA:9002
+  prob: 0.5
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: DHBA:12065
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: DHBA:12141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: DHBA:12195
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: DMBA:16725
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:16725
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: DMBA:17781
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: HBA:265505178
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: HBA:265505182
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505182
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: HBA:265505186
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505186
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: HBA:4140
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: HBA:4141
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4141
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: HBA:4144
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4144
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: HBA:9002
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: MBA:681
+  prob: 0.16666666666666666
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: DHBA:12065
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: DMBA:17781
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: DHBA:12065
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: HBA:265505178
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: DHBA:12065
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12065
+    sup: MBA:681
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:4140
+    sup: DHBA:12141
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12141
+    sup: HBA:4140
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: EMAPA:18215
+    sup: DHBA:12195
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: EMAPA:18215
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: DHBA:12195
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DHBA:12195
+    sup: HBA:9002
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: DMBA:17781
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: HBA:265505178
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: DMBA:17781
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: DMBA:17781
+    sup: MBA:681
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:9002
+    sup: EMAPA:18215
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: EMAPA:18215
+    sup: HBA:9002
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: MBA:681
+    sup: HBA:265505178
+  prob: 0.050073701607444954
+- fact:
+    fact_type: ProperSubClassOf
+    sub: HBA:265505178
+    sup: MBA:681
+  prob: 0.050073701607444954
+hypotheses: []
+labels:
+  DHBA:12065: mammillotegmental tract
+  DHBA:12141: middle temporal gyrus
+  DHBA:12195: midbrain tegmentum
+  DMBA:16725: m1 (rostral) midbrain tegmentum
+  DMBA:17781: mammillotegmental tract
+  HBA:265505178: mammillotegmental tract
+  HBA:265505182: mammillotegmental tract, left
+  HBA:265505186: mammillotegmental tract, right
+  HBA:4140: middle temporal gyrus
+  HBA:4141: middle temporal gyrus, left
+  HBA:4144: middle temporal gyrus, right
+  HBA:9002: midbrain tegmentum
+  MBA:681: mammillotegmental tract
+hyperparams: []
+pfacts_entailed: []
+default_configurations: null
+name: Merged KB from 2 files
+description: Sub-KB extracted from results/kb-full.yaml using 23 entities
+comments: null

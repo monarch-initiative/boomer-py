@@ -1,0 +1,38 @@
+# BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2025-09-24T23:18:03.467585
+#   combinations: 10
+#   satisfiable_combinations: 0
+#   confidence: 1.0
+#   prior_probability: 0.0
+#   posterior_probability: 0.0
+#   time_elapsed_seconds: 0.11257791519165039
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and probabilities
+#
+fact_type	arg1	arg2	truth_value	prior_probability	posterior_probability
+EquivalentTo	privacy	privacidad		0.9	0.0
+EquivalentTo	privacy	Privatsphäre		0.7	0.0
+EquivalentTo	privacy	Datenschutz		0.6	0.0
+EquivalentTo	home	casa		0.8	0.0
+EquivalentTo	home	hogar		0.9	0.0
+EquivalentTo	home	Zuhause		0.9	0.0
+EquivalentTo	home	Heim		0.7	0.0
+EquivalentTo	mind	mente		0.8	0.0
+EquivalentTo	mind	Geist		0.6	0.0
+EquivalentTo	mind	Verstand		0.7	0.0
+EquivalentTo	privacy	casa		0.1	0.0
+EquivalentTo	privacy	mente		0.1	0.0
+EquivalentTo	privacy	Zuhause		0.1	0.0
+EquivalentTo	home	privacidad		0.1	0.0
+EquivalentTo	home	mente		0.1	0.0
+EquivalentTo	home	Datenschutz		0.1	0.0
+EquivalentTo	mind	privacidad		0.1	0.0
+EquivalentTo	mind	hogar		0.1	0.0
+EquivalentTo	mind	Privatsphäre		0.1	0.0
+EquivalentTo	Datenschutz	Privatsphäre	True	0.4	0.0
+EquivalentTo	Zuhause	Heim		0.5	0.0
+EquivalentTo	Geist	Verstand		0.5	0.0
+EquivalentTo	casa	hogar		0.6	0.0

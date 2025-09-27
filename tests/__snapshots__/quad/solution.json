@@ -1,0 +1,71 @@
+{
+  "name": null,
+  "number_of_combinations": 10,
+  "number_of_satisfiable_combinations": 5,
+  "number_of_combinations_explored_including_implicit": 25,
+  "number_of_components": null,
+  "confidence": 0.8999999999999999,
+  "prior_prob": 0.12960000000000002,
+  "posterior_prob": 0.7941176470588237,
+  "proportion_of_combinations_explored": 1.0,
+  "ground_pfacts": [],
+  "solved_pfacts": [
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "A1",
+          "equivalent": "B1"
+        },
+        "prob": 0.9
+      },
+      "truth_value": true,
+      "posterior_prob": 0.8823529411764708,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "A2",
+          "equivalent": "B2"
+        },
+        "prob": 0.9
+      },
+      "truth_value": true,
+      "posterior_prob": 0.8823529411764708,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "A1",
+          "equivalent": "B2"
+        },
+        "prob": 0.6
+      },
+      "truth_value": false,
+      "posterior_prob": 0.014705882352941171,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "A2",
+          "equivalent": "B1"
+        },
+        "prob": 0.6
+      },
+      "truth_value": false,
+      "posterior_prob": 0.014705882352941171,
+      "metadata": null
+    }
+  ],
+  "sub_solutions": [],
+  "time_started": 1758781083.4755998,
+  "time_finished": 1758781083.4803462,
+  "timed_out": false,
+  "time_elapsed": 0.004746437072753906
+}

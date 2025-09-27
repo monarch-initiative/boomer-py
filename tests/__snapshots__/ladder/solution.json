@@ -1,0 +1,123 @@
+{
+  "name": null,
+  "number_of_combinations": 10,
+  "number_of_satisfiable_combinations": 5,
+  "number_of_combinations_explored_including_implicit": 645,
+  "number_of_components": null,
+  "confidence": 0.5,
+  "prior_prob": 1.0000000000000005e-08,
+  "posterior_prob": 0.2,
+  "proportion_of_combinations_explored": 1.0,
+  "ground_pfacts": [],
+  "solved_pfacts": [
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "ProperSubClassOf",
+          "sub": "R4",
+          "sup": "R3"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "ProperSubClassOf",
+          "sub": "R3",
+          "sup": "R2"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "ProperSubClassOf",
+          "sub": "R2",
+          "sup": "R1"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "ProperSubClassOf",
+          "sub": "R1",
+          "sup": "R0"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "R3",
+          "equivalent": "R3"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "R2",
+          "equivalent": "R2"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "R1",
+          "equivalent": "R1"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "R0",
+          "equivalent": "R0"
+        },
+        "prob": 0.1
+      },
+      "truth_value": true,
+      "posterior_prob": 1.0,
+      "metadata": null
+    }
+  ],
+  "sub_solutions": [],
+  "time_started": 1758781083.3459399,
+  "time_finished": 1758781083.349941,
+  "timed_out": false,
+  "time_elapsed": 0.004001140594482422
+}

@@ -1,0 +1,38 @@
+# BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2025-09-24T23:18:02.830501
+#   combinations: 10
+#   satisfiable_combinations: 1
+#   confidence: 1.0
+#   prior_probability: 7.565974136736803e-06
+#   posterior_probability: 1.0
+#   time_elapsed_seconds: 0.39162111282348633
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and probabilities
+#
+fact_type	arg1	arg2	truth_value	prior_probability	posterior_probability
+EquivalentTo	A	B	True	0.9	1.0
+EquivalentTo	A	C	True	0.9	1.0
+EquivalentTo	A	D	True	0.9	1.0
+EquivalentTo	B	C	True	0.9	1.0
+EquivalentTo	B	D	True	0.9	1.0
+EquivalentTo	C	D	True	0.9	1.0
+EquivalentTo	E	F	True	0.9	1.0
+EquivalentTo	E	G	True	0.9	1.0
+EquivalentTo	E	H	True	0.9	1.0
+EquivalentTo	F	G	True	0.9	1.0
+EquivalentTo	F	H	True	0.9	1.0
+EquivalentTo	G	H	True	0.9	1.0
+EquivalentTo	X1	X2	False	0.91	0.0
+EquivalentTo	X2	X3	True	0.91	1.0
+EquivalentTo	X3	X4	True	0.91	1.0
+EquivalentTo	X4	X5	True	0.91	1.0
+EquivalentTo	X5	X6	True	0.91	1.0
+EquivalentTo	X6	X7	True	0.91	1.0
+EquivalentTo	X7	X8	True	0.91	1.0
+EquivalentTo	X8	X1	False	0.91	0.0
+DisjointWith	X1	X8	True	0.91	1.0
+SubClassOf	D	E	False	0.92	0.0
+SubClassOf	E	D	False	0.92	0.0

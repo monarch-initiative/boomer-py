@@ -1,0 +1,24 @@
+# BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2025-09-24T23:18:00.608215
+#   combinations: 10
+#   satisfiable_combinations: 2
+#   confidence: 0.8999999999999999
+#   prior_probability: 0.38742048900000015
+#   posterior_probability: 0.9
+#   time_elapsed_seconds: 0.046037912368774414
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and probabilities
+#
+fact_type	arg1	arg2	truth_value	prior_probability	posterior_probability
+EquivalentTo	cat	Felix	True	0.9	0.9
+EquivalentTo	dog	Canus	True	0.9	1.0
+EquivalentTo	furry_animal	Mammalia	True	0.9	1.0
+EquivalentTo	cat	Canus	False	0.1	0.0
+EquivalentTo	cat	Mammalia	False	0.1	0.0
+EquivalentTo	dog	Felix	False	0.1	0.0
+EquivalentTo	dog	Mammalia	False	0.1	0.0
+EquivalentTo	furry_animal	Canus	False	0.1	0.0
+EquivalentTo	furry_animal	Felix	False	0.1	0.0

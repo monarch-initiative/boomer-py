@@ -1,0 +1,178 @@
+name: null
+number_of_combinations: 10
+number_of_satisfiable_combinations: 3
+number_of_combinations_explored_including_implicit: 102211
+number_of_components: null
+confidence: 0.9499999999999998
+prior_prob: 0.20761166194016065
+posterior_prob: 0.9047619047619047
+proportion_of_combinations_explored: 0.3899040222167969
+ground_pfacts: []
+solved_pfacts:
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Mother
+      equivalent: FemaleParent
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Father
+      equivalent: MaleParent
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Son
+      equivalent: MaleChild
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Daughter
+      equivalent: FemaleChild
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Brother
+      equivalent: MaleSibling
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Sister
+      equivalent: FemaleSibling
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Mother
+      equivalent: MaleParent
+    prob: 0.1
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Father
+      equivalent: FemaleParent
+    prob: 0.1
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Son
+      equivalent: FemaleChild
+    prob: 0.1
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Daughter
+      equivalent: MaleChild
+    prob: 0.1
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Brother
+      equivalent: FemaleSibling
+    prob: 0.1
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: Sister
+      equivalent: MaleSibling
+    prob: 0.1
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: ProperSubClassOf
+      sub: FemaleParent
+      sup: Parent
+    prob: 0.95
+  truth_value: true
+  posterior_prob: 0.9523809523809523
+  metadata: null
+- pfact:
+    fact:
+      fact_type: ProperSubClassOf
+      sub: MaleParent
+      sup: Parent
+    prob: 0.95
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: ProperSubClassOf
+      sub: FemaleChild
+      sup: Child
+    prob: 0.95
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: ProperSubClassOf
+      sub: MaleChild
+      sup: Child
+    prob: 0.95
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: ProperSubClassOf
+      sub: FemaleSibling
+      sup: Sibling
+    prob: 0.95
+  truth_value: true
+  posterior_prob: 0.9523809523809523
+  metadata: null
+- pfact:
+    fact:
+      fact_type: ProperSubClassOf
+      sub: MaleSibling
+      sup: Sibling
+    prob: 0.95
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+sub_solutions: []
+time_started: 1758781082.8743749
+time_finished: 1758781083.3383749
+timed_out: false
+time_elapsed: 0.46399998664855957

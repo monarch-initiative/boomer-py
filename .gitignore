@@ -1,0 +1,20 @@
+.idea
+analysis/brain/results
+icd10cm
+site/
+
+.ipynb_checkpoints/
+LOG
+tmp/
+tests/__snapshots__/*/components/
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv

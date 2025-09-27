@@ -1,0 +1,6 @@
+configurations:
+  - {}
+configuration_matrix:
+  max_pfacts_per_clique: [5, 10, 25]
+  max_candidate_solutions: [10, 50, 100, 200]
+  pr_filter: [0.0, 0.2, 0.4, 0.6, 0.8, 0.95]

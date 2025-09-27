@@ -1,0 +1,38 @@
+from boomer.model import KB, MemberOfDisjointGroup, PFact, EquivalentTo, ProperSubClassOf, SubClassOf
+
+kb = KB(
+    facts=[
+        ProperSubClassOf(sub="L4", sup="L3"),
+        ProperSubClassOf(sub="L3", sup="L2"),
+        ProperSubClassOf(sub="L2", sup="L1"),
+        ProperSubClassOf(sub="L1", sup="L0"),
+        EquivalentTo(sub="L0", equivalent="R0"),
+        EquivalentTo(sub="L1", equivalent="R1"),
+        EquivalentTo(sub="L2", equivalent="R2"),
+        EquivalentTo(sub="L3", equivalent="R3"),
+        EquivalentTo(sub="L4", equivalent="R4"),
+        MemberOfDisjointGroup(sub="L0", group="L"),
+        MemberOfDisjointGroup(sub="L1", group="L"),
+        MemberOfDisjointGroup(sub="L2", group="L"),
+        MemberOfDisjointGroup(sub="L3", group="L"),
+        MemberOfDisjointGroup(sub="L4", group="L"),
+        MemberOfDisjointGroup(sub="R0", group="R"),
+        MemberOfDisjointGroup(sub="R1", group="R"),
+        MemberOfDisjointGroup(sub="R2", group="R"),
+        MemberOfDisjointGroup(sub="R3", group="R"),
+        MemberOfDisjointGroup(sub="R4", group="R"),
+    ],
+    pfacts=[
+        PFact(fact=ProperSubClassOf(sub="R4", sup="R3"), prob=0.1),
+        PFact(fact=ProperSubClassOf(sub="R3", sup="R2"), prob=0.1),
+        PFact(fact=ProperSubClassOf(sub="R2", sup="R1"), prob=0.1),
+        PFact(fact=ProperSubClassOf(sub="R1", sup="R0"), prob=0.1),
+        PFact(fact=EquivalentTo(sub="R3", equivalent="R3"), prob=0.1),
+        PFact(fact=EquivalentTo(sub="R2", equivalent="R2"), prob=0.1),
+        PFact(fact=EquivalentTo(sub="R1", equivalent="R1"), prob=0.1),
+        PFact(fact=EquivalentTo(sub="R0", equivalent="R0"), prob=0.1),
+    ],
+    name="Ladder",
+    description="A ladder pattern with parallel hierarchies connected by equivalence relationships",
+    comments="Tests reasoning with transitive chains and interaction between deterministic and probabilistic facts",
+)

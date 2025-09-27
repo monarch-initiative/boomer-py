@@ -1,0 +1,318 @@
+{
+  "name": null,
+  "number_of_combinations": 10,
+  "number_of_satisfiable_combinations": 0,
+  "number_of_combinations_explored_including_implicit": 18677760,
+  "number_of_components": null,
+  "confidence": 1.0,
+  "prior_prob": 0.0,
+  "posterior_prob": 0.0,
+  "proportion_of_combinations_explored": 1.0,
+  "ground_pfacts": [],
+  "solved_pfacts": [
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "privacy",
+          "equivalent": "privacidad"
+        },
+        "prob": 0.9
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "privacy",
+          "equivalent": "Privatsph\u00e4re"
+        },
+        "prob": 0.7
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "privacy",
+          "equivalent": "Datenschutz"
+        },
+        "prob": 0.6
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "home",
+          "equivalent": "casa"
+        },
+        "prob": 0.8
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "home",
+          "equivalent": "hogar"
+        },
+        "prob": 0.9
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "home",
+          "equivalent": "Zuhause"
+        },
+        "prob": 0.9
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "home",
+          "equivalent": "Heim"
+        },
+        "prob": 0.7
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "mind",
+          "equivalent": "mente"
+        },
+        "prob": 0.8
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "mind",
+          "equivalent": "Geist"
+        },
+        "prob": 0.6
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "mind",
+          "equivalent": "Verstand"
+        },
+        "prob": 0.7
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "privacy",
+          "equivalent": "casa"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "privacy",
+          "equivalent": "mente"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "privacy",
+          "equivalent": "Zuhause"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "home",
+          "equivalent": "privacidad"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "home",
+          "equivalent": "mente"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "home",
+          "equivalent": "Datenschutz"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "mind",
+          "equivalent": "privacidad"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "mind",
+          "equivalent": "hogar"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "mind",
+          "equivalent": "Privatsph\u00e4re"
+        },
+        "prob": 0.1
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "Datenschutz",
+          "equivalent": "Privatsph\u00e4re"
+        },
+        "prob": 0.4
+      },
+      "truth_value": true,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "Zuhause",
+          "equivalent": "Heim"
+        },
+        "prob": 0.5
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "Geist",
+          "equivalent": "Verstand"
+        },
+        "prob": 0.5
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    },
+    {
+      "pfact": {
+        "fact": {
+          "fact_type": "EquivalentTo",
+          "sub": "casa",
+          "equivalent": "hogar"
+        },
+        "prob": 0.6
+      },
+      "truth_value": null,
+      "posterior_prob": 0.0,
+      "metadata": null
+    }
+  ],
+  "sub_solutions": [],
+  "time_started": 1758781083.354512,
+  "time_finished": 1758781083.46709,
+  "timed_out": false,
+  "time_elapsed": 0.11257791519165039
+}

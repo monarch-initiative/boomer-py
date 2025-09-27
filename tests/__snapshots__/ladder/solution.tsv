@@ -1,0 +1,23 @@
+# BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2025-09-24T23:18:03.350272
+#   combinations: 10
+#   satisfiable_combinations: 5
+#   confidence: 0.5
+#   prior_probability: 1.0000000000000005e-08
+#   posterior_probability: 0.2
+#   time_elapsed_seconds: 0.004001140594482422
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and probabilities
+#
+fact_type	arg1	arg2	truth_value	prior_probability	posterior_probability
+ProperSubClassOf	R4	R3	True	0.1	1.0
+ProperSubClassOf	R3	R2	True	0.1	1.0
+ProperSubClassOf	R2	R1	True	0.1	1.0
+ProperSubClassOf	R1	R0	True	0.1	1.0
+EquivalentTo	R3	R3	True	0.1	1.0
+EquivalentTo	R2	R2	True	0.1	1.0
+EquivalentTo	R1	R1	True	0.1	1.0
+EquivalentTo	R0	R0	True	0.1	1.0

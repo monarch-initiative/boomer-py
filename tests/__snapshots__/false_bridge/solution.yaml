@@ -1,0 +1,223 @@
+name: null
+number_of_combinations: 10
+number_of_satisfiable_combinations: 1
+number_of_combinations_explored_including_implicit: 5376041
+number_of_components: null
+confidence: 1.0
+prior_prob: 7.565974136736803e-06
+posterior_prob: 1.0
+proportion_of_combinations_explored: 0.6408740282058716
+ground_pfacts: []
+solved_pfacts:
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A
+      equivalent: B
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A
+      equivalent: C
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A
+      equivalent: D
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: B
+      equivalent: C
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: B
+      equivalent: D
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: C
+      equivalent: D
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: E
+      equivalent: F
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: E
+      equivalent: G
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: E
+      equivalent: H
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: F
+      equivalent: G
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: F
+      equivalent: H
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: G
+      equivalent: H
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X1
+      equivalent: X2
+    prob: 0.91
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X2
+      equivalent: X3
+    prob: 0.91
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X3
+      equivalent: X4
+    prob: 0.91
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X4
+      equivalent: X5
+    prob: 0.91
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X5
+      equivalent: X6
+    prob: 0.91
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X6
+      equivalent: X7
+    prob: 0.91
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X7
+      equivalent: X8
+    prob: 0.91
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: X8
+      equivalent: X1
+    prob: 0.91
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: DisjointWith
+      sub: X1
+      sibling: X8
+    prob: 0.91
+  truth_value: true
+  posterior_prob: 1.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: SubClassOf
+      sub: D
+      sup: E
+    prob: 0.92
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: SubClassOf
+      sub: E
+      sup: D
+    prob: 0.92
+  truth_value: false
+  posterior_prob: 0.0
+  metadata: null
+sub_solutions: []
+time_started: 1758781082.438432
+time_finished: 1758781082.830053
+timed_out: false
+time_elapsed: 0.39162111282348633

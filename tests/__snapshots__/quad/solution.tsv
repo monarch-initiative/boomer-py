@@ -1,0 +1,19 @@
+# BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2025-09-24T23:18:03.480634
+#   combinations: 10
+#   satisfiable_combinations: 5
+#   confidence: 0.8999999999999999
+#   prior_probability: 0.12960000000000002
+#   posterior_probability: 0.7941176470588237
+#   time_elapsed_seconds: 0.004746437072753906
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and probabilities
+#
+fact_type	arg1	arg2	truth_value	prior_probability	posterior_probability
+EquivalentTo	A1	B1	True	0.9	0.8823529411764708
+EquivalentTo	A2	B2	True	0.9	0.8823529411764708
+EquivalentTo	A1	B2	False	0.6	0.014705882352941171
+EquivalentTo	A2	B1	False	0.6	0.014705882352941171

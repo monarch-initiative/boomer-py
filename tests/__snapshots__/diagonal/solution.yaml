@@ -1,0 +1,4576 @@
+name: null
+number_of_combinations: 30
+number_of_satisfiable_combinations: 0
+number_of_combinations_explored_including_implicit: 1547425049106855948013099024384
+number_of_components: 3
+confidence: 1.0
+prior_prob: 0.0
+posterior_prob: 0.0
+proportion_of_combinations_explored: 1.0
+ground_pfacts: []
+solved_pfacts:
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A0
+      equivalent: B0
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A1
+      equivalent: B1
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A2
+      equivalent: B2
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B3
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B4
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B5
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B6
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B7
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B8
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B9
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B10
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B11
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B12
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B13
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B14
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B15
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B16
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B17
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B18
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B19
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B20
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B21
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B22
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B23
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B24
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B25
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B26
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A27
+      equivalent: B27
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A28
+      equivalent: B28
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A29
+      equivalent: B29
+    prob: 0.9
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A0
+      equivalent: B1
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A1
+      equivalent: B0
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A1
+      equivalent: B2
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A2
+      equivalent: B1
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A2
+      equivalent: B3
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B2
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B4
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B3
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B5
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B4
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B6
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B5
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B7
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B6
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B8
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B7
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B9
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B8
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B10
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B9
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B11
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B10
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B12
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B11
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B13
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B12
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B14
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B13
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B15
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B14
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B16
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B15
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B17
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B16
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B18
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B17
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B19
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B18
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B20
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B19
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B21
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B20
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B22
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B21
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B23
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B22
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B24
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B23
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B25
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B24
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B26
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B25
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B27
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A27
+      equivalent: B26
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A27
+      equivalent: B28
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A28
+      equivalent: B27
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A28
+      equivalent: B29
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A29
+      equivalent: B28
+    prob: 0.81
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A0
+      equivalent: B2
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A1
+      equivalent: B3
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A2
+      equivalent: B0
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A2
+      equivalent: B4
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B1
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B5
+    prob: 0.7290000000000001
+  truth_value: true
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B25
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B18
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B26
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B19
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B27
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B20
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B28
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B21
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B29
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B22
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A27
+      equivalent: B23
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A28
+      equivalent: B24
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A29
+      equivalent: B25
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B11
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B19
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B12
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B20
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B13
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B21
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B14
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B22
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B15
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B23
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B16
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B24
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B17
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B12
+    prob: 0.5904900000000001
+  truth_value: true
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B5
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B13
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B6
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B14
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B7
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B15
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B8
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B16
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B9
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B17
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B10
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B18
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A0
+      equivalent: B4
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A1
+      equivalent: B5
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A2
+      equivalent: B6
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B7
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B0
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B8
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B1
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B9
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B2
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B10
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B3
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B11
+    prob: 0.5904900000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B4
+    prob: 0.5904900000000001
+  truth_value: true
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B19
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B25
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B20
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B26
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B21
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B27
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B22
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B28
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B23
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B29
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A27
+      equivalent: B24
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A28
+      equivalent: B25
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A29
+      equivalent: B26
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B18
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B13
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B19
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B14
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B20
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B15
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B21
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B16
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B22
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B17
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B23
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B18
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B24
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B6
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B12
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B7
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B13
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B8
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B14
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B9
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B15
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B10
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B16
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B11
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B17
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B12
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A2
+      equivalent: B5
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B0
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A3
+      equivalent: B6
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B1
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B7
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B2
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B8
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B3
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B9
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B8
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B5
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B9
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B6
+    prob: 0.7290000000000001
+  truth_value: true
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B10
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B7
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A9
+      equivalent: B11
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B8
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B17
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B14
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A16
+      equivalent: B18
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B2
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A4
+      equivalent: B6
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B3
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A5
+      equivalent: B7
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A6
+      equivalent: B4
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B13
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B10
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A12
+      equivalent: B14
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B11
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A13
+      equivalent: B15
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B12
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A14
+      equivalent: B16
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A15
+      equivalent: B13
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B22
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B19
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A21
+      equivalent: B23
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B20
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A22
+      equivalent: B24
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B21
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A10
+      equivalent: B12
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A11
+      equivalent: B9
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A1
+      equivalent: B4
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B15
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A17
+      equivalent: B19
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B16
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A18
+      equivalent: B20
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B17
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A19
+      equivalent: B21
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A20
+      equivalent: B18
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B27
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B24
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A26
+      equivalent: B28
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A27
+      equivalent: B25
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A27
+      equivalent: B29
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A28
+      equivalent: B26
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A29
+      equivalent: B27
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A0
+      equivalent: B3
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B4
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A7
+      equivalent: B10
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B5
+    prob: 0.6561
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A8
+      equivalent: B11
+    prob: 0.6561
+  truth_value: true
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A23
+      equivalent: B25
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B22
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A24
+      equivalent: B26
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: A25
+      equivalent: B23
+    prob: 0.7290000000000001
+  truth_value: null
+  posterior_prob: 0.0
+  metadata: null
+sub_solutions:
+- name: A 28; B 7; A 3; B 25; B 21; B 23; B 1; B 18; B 14; A 24; A 4; B 29; B 12;
+    B 11; B 13; A 11; A 17; A 7; A 12; A 14; B 22; B 5; A 20; A 8; B 6; B 3; B 17;
+    B 27; A 1; B 2; A 0; A 2; B 24; A 27; B 9; B 16; B 26; A 21; A 26; A 13; A 16;
+    A 18; A 15; A 10; A 23; A 22; A 29; B 0; A 6; B 10; B 15; B 28; B 19; A 5; B 8;
+    A 19; A 25; B 20; B 4; A 9
+  number_of_combinations: 10
+  number_of_satisfiable_combinations: 0
+  number_of_combinations_explored_including_implicit: 42089961335702929346570223616
+  number_of_components: null
+  confidence: 1.0
+  prior_prob: 0.0
+  posterior_prob: 0.0
+  proportion_of_combinations_explored: 1.0
+  ground_pfacts: []
+  solved_pfacts:
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A0
+        equivalent: B0
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A1
+        equivalent: B1
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A2
+        equivalent: B2
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B3
+      prob: 0.9
+    truth_value: true
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B4
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B5
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B6
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B7
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B8
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B9
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B10
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B11
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B12
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B13
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B14
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B15
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B16
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B17
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B18
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B19
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B20
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B21
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B22
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B23
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B24
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B25
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B26
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A27
+        equivalent: B27
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A28
+        equivalent: B28
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A29
+        equivalent: B29
+      prob: 0.9
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A0
+        equivalent: B1
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A1
+        equivalent: B0
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A1
+        equivalent: B2
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A2
+        equivalent: B1
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A2
+        equivalent: B3
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B2
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B4
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B3
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B5
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B4
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B6
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B5
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B7
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B6
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B8
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B7
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B9
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B8
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B10
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B9
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B11
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B10
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B12
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B11
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B13
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B12
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B14
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B13
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B15
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B14
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B16
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B15
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B17
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B16
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B18
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B17
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B19
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B18
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B20
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B19
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B21
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B20
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B22
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B21
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B23
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B22
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B24
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B23
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B25
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B24
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B26
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B25
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B27
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A27
+        equivalent: B26
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A27
+        equivalent: B28
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A28
+        equivalent: B27
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A28
+        equivalent: B29
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A29
+        equivalent: B28
+      prob: 0.81
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A0
+        equivalent: B2
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A1
+        equivalent: B3
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A2
+        equivalent: B0
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A2
+        equivalent: B4
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B1
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B5
+      prob: 0.7290000000000001
+    truth_value: true
+    posterior_prob: 0.0
+    metadata: null
+  sub_solutions: []
+  time_started: 1758781080.6893492
+  time_finished: 1758781081.179049
+  timed_out: false
+  time_elapsed: 0.4896998405456543
+- name: A 28; B 7; A 3; B 25; B 21; B 23; B 1; B 18; B 14; A 24; B 29; A 4; B 12;
+    B 11; B 13; A 17; A 11; A 7; B 22; A 12; A 14; B 5; A 20; A 8; B 17; B 6; B 3;
+    B 27; A 1; B 2; A 0; A 9; A 27; B 24; B 26; B 16; B 9; A 2; A 21; A 26; A 13;
+    A 16; A 18; A 15; A 10; A 23; A 22; B 0; B 28; B 10; B 15; A 6; B 19; A 5; A 25;
+    A 19; B 8; B 20; B 4; A 29
+  number_of_combinations: 10
+  number_of_satisfiable_combinations: 0
+  number_of_combinations_explored_including_implicit: 1505335087771022414277335056384
+  number_of_components: null
+  confidence: 1.0
+  prior_prob: 0.0
+  posterior_prob: 0.0
+  proportion_of_combinations_explored: 1.0
+  ground_pfacts: []
+  solved_pfacts:
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B25
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B18
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B26
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B19
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B27
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B20
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B28
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B21
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B29
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B22
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A27
+        equivalent: B23
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A28
+        equivalent: B24
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A29
+        equivalent: B25
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B11
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B19
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B12
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B20
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B13
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B21
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B14
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B22
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B15
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B23
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B16
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B24
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B17
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B12
+      prob: 0.5904900000000001
+    truth_value: true
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B5
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B13
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B6
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B14
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B7
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B15
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B8
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B16
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B9
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B17
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B10
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B18
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A0
+        equivalent: B4
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A1
+        equivalent: B5
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A2
+        equivalent: B6
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B7
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B0
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B8
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B1
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B9
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B2
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B10
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B3
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B11
+      prob: 0.5904900000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B4
+      prob: 0.5904900000000001
+    truth_value: true
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B19
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B25
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B20
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B26
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B21
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B27
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B22
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B28
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B23
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B29
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A27
+        equivalent: B24
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A28
+        equivalent: B25
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A29
+        equivalent: B26
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B18
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B13
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B19
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B14
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B20
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B15
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B21
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B16
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B22
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B17
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B23
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B18
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B24
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B6
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B12
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B7
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B13
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B8
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B14
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B9
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B15
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B10
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B16
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B11
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B17
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B12
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A2
+        equivalent: B5
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B0
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A3
+        equivalent: B6
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B1
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B7
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B2
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B8
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B3
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B9
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  sub_solutions: []
+  time_started: 1758781081.179117
+  time_finished: 1758781081.963768
+  timed_out: false
+  time_elapsed: 0.7846510410308838
+- name: A 28; B 7; B 25; B 21; B 23; B 18; B 14; A 24; A 4; B 29; B 12; B 11; B 13;
+    A 11; A 17; A 7; A 12; A 14; B 22; B 5; A 20; A 8; B 6; B 17; B 3; B 27; A 1;
+    B 2; A 0; B 24; A 27; B 9; B 16; B 26; A 21; A 26; A 13; A 16; A 18; A 15; A 10;
+    A 23; A 22; A 29; A 6; B 10; B 15; B 28; B 19; A 5; B 8; A 19; A 25; B 20; B 4;
+    A 9
+  number_of_combinations: 10
+  number_of_satisfiable_combinations: 0
+  number_of_combinations_explored_including_implicit: 130604389193744384
+  number_of_components: null
+  confidence: 1.0
+  prior_prob: 0.0
+  posterior_prob: 0.0
+  proportion_of_combinations_explored: 1.0
+  ground_pfacts: []
+  solved_pfacts:
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B8
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B5
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B9
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B6
+      prob: 0.7290000000000001
+    truth_value: true
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B10
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B7
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A9
+        equivalent: B11
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B8
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B17
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B14
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A16
+        equivalent: B18
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B2
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A4
+        equivalent: B6
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B3
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A5
+        equivalent: B7
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A6
+        equivalent: B4
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B13
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B10
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A12
+        equivalent: B14
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B11
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A13
+        equivalent: B15
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B12
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A14
+        equivalent: B16
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A15
+        equivalent: B13
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B22
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B19
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A21
+        equivalent: B23
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B20
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A22
+        equivalent: B24
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B21
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A10
+        equivalent: B12
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A11
+        equivalent: B9
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A1
+        equivalent: B4
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B15
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A17
+        equivalent: B19
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B16
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A18
+        equivalent: B20
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B17
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A19
+        equivalent: B21
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A20
+        equivalent: B18
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B27
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B24
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A26
+        equivalent: B28
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A27
+        equivalent: B25
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A27
+        equivalent: B29
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A28
+        equivalent: B26
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A29
+        equivalent: B27
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A0
+        equivalent: B3
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B4
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A7
+        equivalent: B10
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B5
+      prob: 0.6561
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A8
+        equivalent: B11
+      prob: 0.6561
+    truth_value: true
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A23
+        equivalent: B25
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B22
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A24
+        equivalent: B26
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  - pfact:
+      fact:
+        fact_type: EquivalentTo
+        sub: A25
+        equivalent: B23
+      prob: 0.7290000000000001
+    truth_value: null
+    posterior_prob: 0.0
+    metadata: null
+  sub_solutions: []
+  time_started: 1758781081.963855
+  time_finished: 1758781082.273674
+  timed_out: false
+  time_elapsed: 0.30981898307800293
+time_started: 1758781080.6893492
+time_finished: 1758781082.273674
+timed_out: false
+time_elapsed: 1.584324836730957
