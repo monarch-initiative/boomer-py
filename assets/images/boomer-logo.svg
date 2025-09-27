@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="#3F51B5" />
+  
+  <!-- Network diagram representing probabilistic reasoning -->
+  <circle cx="70" cy="60" r="15" fill="#FFF" opacity="0.9" />
+  <circle cx="130" cy="60" r="15" fill="#FFF" opacity="0.9" />
+  <circle cx="50" cy="120" r="15" fill="#FFF" opacity="0.9" />
+  <circle cx="100" cy="130" r="15" fill="#FFF" opacity="0.9" />
+  <circle cx="150" cy="120" r="15" fill="#FFF" opacity="0.9" />
+  
+  <!-- Connections with varying opacity to represent probabilities -->
+  <line x1="70" y1="60" x2="130" y2="60" stroke="#FFF" stroke-width="3" opacity="0.9" />
+  <line x1="70" y1="60" x2="50" y2="120" stroke="#FFF" stroke-width="3" opacity="0.7" />
+  <line x1="70" y1="60" x2="100" y2="130" stroke="#FFF" stroke-width="3" opacity="0.5" />
+  <line x1="130" y1="60" x2="100" y2="130" stroke="#FFF" stroke-width="3" opacity="0.8" />
+  <line x1="130" y1="60" x2="150" y2="120" stroke="#FFF" stroke-width="3" opacity="0.9" />
+  <line x1="50" y1="120" x2="100" y2="130" stroke="#FFF" stroke-width="3" opacity="0.6" />
+  <line x1="100" y1="130" x2="150" y2="120" stroke="#FFF" stroke-width="3" opacity="0.4" />
+  
+  <!-- BOOMER text -->
+  <text x="100" y="175" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFF" text-anchor="middle">BOOMER</text>
+</svg>

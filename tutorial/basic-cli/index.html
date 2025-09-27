@@ -1,0 +1,3365 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Bayesian OWL Ontology MErgER - Probabilistic reasoning for ontology alignment">
+      
+      
+        <meta name="author" content="Chris Mungall">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Basic cli - BOOMER</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#boomer-py-cli-tutorial-command-line-probabilistic-reasoning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="BOOMER" class="md-header__button md-logo" aria-label="BOOMER" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            BOOMER
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Basic cli
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/monarch-initiative/boomer-py" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="BOOMER" class="md-nav__button md-logo" aria-label="BOOMER" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    BOOMER
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/monarch-initiative/boomer-py" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datamodel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Probability Tables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reasoning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reasoning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../partitioning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Partitioning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../grid-search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grid Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Evaluation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datasets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Command Line Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/reasoners/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reasoners
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/renderers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Renderers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basic-tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation-tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Evaluation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Setup and Basic CLI Usage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Creating YAML Knowledge Bases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Solving Knowledge Bases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#convert" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Converting Between Formats
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+(function() {
+  function addWidgetsRenderer() {
+    var requireJsScript = document.createElement('script');
+    requireJsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js';
+
+    var mimeElement = document.querySelector('script[type="application/vnd.jupyter.widget-view+json"]');
+    var jupyterWidgetsScript = document.createElement('script');
+    var widgetRendererSrc = 'https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js';
+    var widgetState;
+
+    // Fallback for older version:
+    try {
+      widgetState = mimeElement && JSON.parse(mimeElement.innerHTML);
+
+      if (widgetState && (widgetState.version_major < 2 || !widgetState.version_major)) {
+        widgetRendererSrc = 'jupyter-js-widgets@*/dist/embed.js';
+      }
+    } catch(e) {}
+
+    jupyterWidgetsScript.src = widgetRendererSrc;
+
+    document.body.appendChild(requireJsScript);
+    document.body.appendChild(jupyterWidgetsScript);
+  }
+
+  document.addEventListener('DOMContentLoaded', addWidgetsRenderer);
+}());
+</script>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="boomer-py-cli-tutorial-command-line-probabilistic-reasoning">BOOMER-PY CLI Tutorial: Command-Line Probabilistic Reasoning</h1>
+<p>This tutorial demonstrates how to use BOOMER-PY from the command line, working with YAML knowledge bases and various output formats.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#setup">Setup and Basic CLI Usage</a></li>
+<li><a href="#yaml-kb">Creating YAML Knowledge Bases</a></li>
+<li><a href="#solve">Solving Knowledge Bases</a></li>
+<li><a href="#convert">Converting Between Formats</a></li>
+<li><a href="#merge">Merging Knowledge Bases</a></li>
+<li><a href="#output">Output Formats</a></li>
+<li><a href="#advanced">Advanced Options</a></li>
+<li><a href="#realworld">Real-World Example</a></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="setup">1. Setup and Basic CLI Usage</h2>
+<p>BOOMER-PY provides a rich CLI for probabilistic reasoning without writing Python code.</p>
+<p>First, let's check the CLI is working and see available commands:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>%%bash
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Check BOOMER-PY CLI is available</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>--help<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Usage: python -m boomer.cli [OPTIONS] COMMAND [ARGS]...
+
+  BOOMER - Bayesian OWL Ontology MErgER
+
+Op</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>tions:
+  -h, --help  Show this message and exit.
+
+Commands:
+  convert        Convert between differe</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>nt KB formats.
+  eval           Evaluate predicted facts (from a BOOMER Solution)...
+  extract      </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>  Extract a sub-KB from a KB using a file containing...
+  grid-search    Perform a grid search over </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>search configurations...
+  list-datasets  List all available built-in datasets.
+  merge          Mer</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ge multiple KB files into a single KB.
+  solve          BOOMER - Bayesian OWL Ontology MErgER
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="yaml-kb">2. Creating YAML Knowledge Bases</h2>
+<p>YAML is a human-readable format perfect for defining knowledge bases. Let's create a simple animal classification KB:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>%%bash
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Create a simple YAML knowledge base</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>cat<span class="w"> </span><span class="p">&amp;</span>gt<span class="p">;</span><span class="w"> </span>/tmp/animals.yaml<span class="w"> </span><span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span><span class="w"> </span><span class="s1">&#39;EOF&#39;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>name:<span class="w"> </span>Animal<span class="w"> </span>Classification
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>description:<span class="w"> </span>Mapping<span class="w"> </span>common<span class="w"> </span>names<span class="w"> </span>to<span class="w"> </span>scientific<span class="w"> </span>classifications
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Probabilistic facts (pfacts)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>pfacts:
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="c1"># High confidence mappings</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span>sub:<span class="w"> </span>cat
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span>equivalent:<span class="w"> </span>Felis_catus
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.95
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span>sub:<span class="w"> </span>dog
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">      </span>equivalent:<span class="w"> </span>Canis_familiaris
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.95
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">  </span><span class="c1"># Potential confusion - low probability</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">      </span>sub:<span class="w"> </span>cat
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">      </span>equivalent:<span class="w"> </span>Canis_familiaris
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.05
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">  </span><span class="c1"># Hierarchical relationships</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">      </span>fact_type:<span class="w"> </span>SubClassOf
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">      </span>sub:<span class="w"> </span>cat
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">      </span>sup:<span class="w"> </span>mammal
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">      </span>fact_type:<span class="w"> </span>SubClassOf
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">      </span>sub:<span class="w"> </span>dog
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">      </span>sup:<span class="w"> </span>mammal
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>EOF
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Created /tmp/animals.yaml&quot;</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;First 10 lines:&quot;</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>head<span class="w"> </span>-10<span class="w"> </span>/tmp/animals.yaml
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Created /tmp/animals.yaml
+---
+First 10 lines:
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>name: Animal Classification
+description: Mapping common names to scientific classifications
+
+# Proba</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>bilistic facts (pfacts)
+pfacts:
+  # High confidence mappings
+  - fact:
+      fact_type: EquivalentTo</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>
+      sub: cat
+      equivalent: Felis_catus
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="solve">3. Solving Knowledge Bases</h2>
+<p>The <code>solve</code> command (default) performs probabilistic reasoning to find the most consistent interpretation:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>%%bash
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Solve the knowledge base with default settings</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>--timeout<span class="w"> </span><span class="m">30</span><span class="w"> </span>/tmp/animals.yaml
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Loaded KB with 0 facts and 5 probabilistic facts
+Starting search...
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Solving KB: Animal Classification with 5 pfacts; threshold=200
+Search completed in 0.0170 seconds
+Kn</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>owledge Base: Animal Classification
+KB num pfacts: 5
+Description: Mapping common names to scientific</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> classifications
+
+Search Statistics:
+  Confidence: 0.9500
+  Prior Probability: 8.4031e-01
+  Posterio</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>r Probability: 0.7694
+  Combinations Explored: 37
+  Satisfiable Combinations: 32
+  Time Elapsed: 0.0</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>170 seconds
+  Sub-solutions: 0
+
+High Confidence Results (threshold &gt;= 0.8):
+  fact_type='EquivalentT</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>o' sub='cat' equivalent='Felis_catus' (posterior: 0.9500)
+  fact_type='EquivalentTo' sub='dog' equiv</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>alent='Canis_familiaris' (posterior: 0.9542)
+  fact_type='SubClassOf' sub='cat' sup='mammal' (poster</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ior: 0.9913)
+  fact_type='SubClassOf' sub='dog' sup='mammal' (posterior: 0.9913)
+
+Full Solution:
+
+ #</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code># None
+ * 37 combinations
+ * 32 satisfiable combinations
+ * 1.0 proportion of combinations explored
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> * 0.9499999999999998 confidence
+ * 0.8403132374999999 prior probability
+ * 0.7693985431741789 poste</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>rior probability
+ * 0.0170 seconds elapsed
+Grounding:
+ * True fact_type='EquivalentTo' sub='cat' equ</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ivalent='Felis_catus' :: prior: 0.95 posterior: 0.9499999999999998
+ * True fact_type='EquivalentTo' </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>sub='dog' equivalent='Canis_familiaris' :: prior: 0.95 posterior: 0.9542195392837551
+ * False fact_t</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ype='EquivalentTo' sub='cat' equivalent='Canis_familiaris' :: prior: 0.05 posterior: 0.1301712463913</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>552
+ * True fact_type='SubClassOf' sub='cat' sup='mammal' :: prior: 0.99 posterior: 0.99127447308978</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>68
+ * True fact_type='SubClassOf' sub='dog' sup='mammal' :: prior: 0.99 posterior: 0.991274473089786</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>8
+
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>%%bash
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Solve with markdown output for better readability</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>--timeout<span class="w"> </span><span class="m">30</span><span class="w"> </span>/tmp/animals.yaml<span class="w"> </span>-O<span class="w"> </span>markdown
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Loaded KB with 0 facts and 5 probabilistic facts
+Starting search...
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Solving KB: Animal Classification with 5 pfacts; threshold=200
+Search completed in 0.0178 seconds
+Kn</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>owledge Base: Animal Classification
+KB num pfacts: 5
+Description: Mapping common names to scientific</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> classifications
+
+Search Statistics:
+  Confidence: 0.9500
+  Prior Probability: 8.4031e-01
+  Posterio</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>r Probability: 0.7694
+  Combinations Explored: 38
+  Satisfiable Combinations: 32
+  Time Elapsed: 0.0</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>177 seconds
+  Sub-solutions: 0
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>
+High Confidence Results (threshold &gt;= 0.8):
+  fact_type='EquivalentTo' sub='cat' equivalent='Felis_</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>catus' (posterior: 0.9500)
+  fact_type='EquivalentTo' sub='dog' equivalent='Canis_familiaris' (poste</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>rior: 0.9542)
+  fact_type='SubClassOf' sub='cat' sup='mammal' (posterior: 0.9913)
+  fact_type='SubCl</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>assOf' sub='dog' sup='mammal' (posterior: 0.9913)
+
+Full Solution:
+
+ ## None
+ * 38 combinations
+ * 32</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> satisfiable combinations
+ * 1.0 proportion of combinations explored
+ * 0.9499999999999998 confidenc</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>e
+ * 0.8403132374999999 prior probability
+ * 0.7693985431741789 posterior probability
+ * 0.0177 seco</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>nds elapsed
+Grounding:
+ * True fact_type='EquivalentTo' sub='cat' equivalent='Felis_catus' :: prior:</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> 0.95 posterior: 0.9499999999999998
+ * True fact_type='EquivalentTo' sub='dog' equivalent='Canis_fam</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>iliaris' :: prior: 0.95 posterior: 0.9542195392837551
+ * False fact_type='EquivalentTo' sub='cat' eq</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>uivalent='Canis_familiaris' :: prior: 0.05 posterior: 0.1301712463913552
+ * True fact_type='SubClass</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Of' sub='cat' sup='mammal' :: prior: 0.99 posterior: 0.9912744730897868
+ * True fact_type='SubClassO</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>f' sub='dog' sup='mammal' :: prior: 0.99 posterior: 0.9912744730897868
+
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="convert">4. Converting Between Formats</h2>
+<p>BOOMER-PY can convert between different KB formats. Let's create a more complex KB and convert it:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>%%bash
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># Create a taxonomy alignment KB</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>cat<span class="w"> </span><span class="p">&amp;</span>gt<span class="p">;</span><span class="w"> </span>/tmp/taxonomy.yaml<span class="w"> </span><span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span><span class="w"> </span><span class="s1">&#39;EOF&#39;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>name:<span class="w"> </span>Taxonomy<span class="w"> </span>Alignment
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>description:<span class="w"> </span>Aligning<span class="w"> </span>two<span class="w"> </span>classification<span class="w"> </span>systems
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>comments:<span class="w"> </span>Example<span class="w"> </span>of<span class="w"> </span>ontology<span class="w"> </span>matching<span class="w"> </span>between<span class="w"> </span>System<span class="w"> </span>A<span class="w"> </span>and<span class="w"> </span>System<span class="w"> </span>B
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>pfacts:
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="c1"># System A to System B mappings</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>EquivalentTo,<span class="w"> </span>sub:<span class="w"> </span>A1,<span class="w"> </span>equivalent:<span class="w"> </span>B1<span class="o">}</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.8
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>EquivalentTo,<span class="w"> </span>sub:<span class="w"> </span>A1,<span class="w"> </span>equivalent:<span class="w"> </span>B2<span class="o">}</span><span class="w">  </span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.3
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>EquivalentTo,<span class="w"> </span>sub:<span class="w"> </span>A2,<span class="w"> </span>equivalent:<span class="w"> </span>B2<span class="o">}</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.9
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>EquivalentTo,<span class="w"> </span>sub:<span class="w"> </span>A2,<span class="w"> </span>equivalent:<span class="w"> </span>B3<span class="o">}</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.2
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">  </span><span class="c1"># Hierarchies within systems</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>A1,<span class="w"> </span>sup:<span class="w"> </span>A_root<span class="o">}</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>A2,<span class="w"> </span>sup:<span class="w"> </span>A_root<span class="o">}</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>B1,<span class="w"> </span>sup:<span class="w"> </span>B_root<span class="o">}</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>B2,<span class="w"> </span>sup:<span class="w"> </span>B_root<span class="o">}</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="c1"># Labels for better readability</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>labels:
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">  </span>A1:<span class="w"> </span><span class="s2">&quot;Category Alpha-1&quot;</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="w">  </span>A2:<span class="w"> </span><span class="s2">&quot;Category Alpha-2&quot;</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="w">  </span>B1:<span class="w"> </span><span class="s2">&quot;Type Beta-1&quot;</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="w">  </span>B2:<span class="w"> </span><span class="s2">&quot;Type Beta-2&quot;</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>EOF
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Created taxonomy.yaml&quot;</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Created taxonomy.yaml
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>%%bash
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Convert YAML to JSON</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>convert<span class="w"> </span>/tmp/taxonomy.yaml<span class="w"> </span>-o<span class="w"> </span>/tmp/taxonomy.json
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON output (first 20 lines):&quot;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>head<span class="w"> </span>-20<span class="w"> </span>/tmp/taxonomy.json
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Converted /tmp/taxonomy.yaml (yaml) to /tmp/taxonomy.json (json)
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>---
+JSON output (first 20 lines):
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>{
+  "facts": [],
+  "pfacts": [
+    {
+      "fact": {
+        "fact_type": "EquivalentTo",
+        "s</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ub": "A1",
+        "equivalent": "B1"
+      },
+      "prob": 0.8
+    },
+    {
+      "fact": {
+      </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>  "fact_type": "EquivalentTo",
+        "sub": "A1",
+        "equivalent": "B2"
+      },
+      "prob"</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>: 0.3
+    },
+    {
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>%%bash
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># Convert one of the built-in datasets to YAML</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>convert<span class="w"> </span>boomer.datasets.animals<span class="w"> </span>-o<span class="w"> </span>/tmp/animals_dataset.yaml
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Converted built-in animals dataset to YAML&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;First 15 lines:&quot;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>head<span class="w"> </span>-15<span class="w"> </span>/tmp/animals_dataset.yaml
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Converted boomer.datasets.animals (py) to /tmp/animals_dataset.yaml (yaml)
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Converted built-in animals dataset to YAML
+---
+First 15 lines:
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>name: Animals
+description: An ontology alignment example between common animal names and scientific
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>  taxonomy
+comments: Maps between common terms (cat, dog, furry_animal) and scientific terms
+  (Feli</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>x, Canus, Mammalia)
+facts:
+- fact_type: ProperSubClassOf
+  sub: Felix
+  sup: Mammalia
+- fact_type: P</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>roperSubClassOf
+  sub: Canus
+  sup: Mammalia
+- fact_type: MemberOfDisjointGroup
+  sub: cat
+  group: </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Common
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>%%bash</p>
+<h1 id="solve-with-custom-search-configuration">Solve with custom search configuration</h1>
+<p>echo "=== With limited iterations (fast but potentially suboptimal) ==="
+uv run python -m boomer.cli solve /tmp/complex.yaml \
+  --max-iterations 100 \
+  --timeout 5 \
+  -O markdown | grep -A5 "Solution Statistics"</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>%%bash
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Create another KB to merge</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>cat<span class="w"> </span><span class="p">&amp;</span>gt<span class="p">;</span><span class="w"> </span>/tmp/plants.yaml<span class="w"> </span><span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span><span class="w"> </span><span class="s1">&#39;EOF&#39;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>name:<span class="w"> </span>Plant<span class="w"> </span>Classification
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>description:<span class="w"> </span>Basic<span class="w"> </span>plant<span class="w"> </span>taxonomy
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>pfacts:
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>EquivalentTo,<span class="w"> </span>sub:<span class="w"> </span>oak,<span class="w"> </span>equivalent:<span class="w"> </span>Quercus<span class="o">}</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.95
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>EquivalentTo,<span class="w"> </span>sub:<span class="w"> </span>rose,<span class="w"> </span>equivalent:<span class="w"> </span>Rosa<span class="o">}</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.95
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>oak,<span class="w"> </span>sup:<span class="w"> </span>tree<span class="o">}</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>rose,<span class="w"> </span>sup:<span class="w"> </span>flower<span class="o">}</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>tree,<span class="w"> </span>sup:<span class="w"> </span>plant<span class="o">}</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">  </span>-<span class="w"> </span>fact:<span class="w"> </span><span class="o">{</span>fact_type:<span class="w"> </span>SubClassOf,<span class="w"> </span>sub:<span class="w"> </span>flower,<span class="w"> </span>sup:<span class="w"> </span>plant<span class="o">}</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>EOF
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="c1"># Merge animals and plants KBs</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>merge<span class="w"> </span>/tmp/animals.yaml<span class="w"> </span>/tmp/plants.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">  </span>-o<span class="w"> </span>/tmp/merged.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">  </span>-n<span class="w"> </span><span class="s2">&quot;Living Things&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">  </span>-D<span class="w"> </span><span class="s2">&quot;Combined animal and plant classifications&quot;</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Merged KB created&quot;</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Number of facts in merged KB:&quot;</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>grep<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;prob:&quot;</span><span class="w"> </span>/tmp/merged.yaml
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Merged 2 files into /tmp/merged.yaml (yaml)
+Final KB contains 0 facts and 11 probabilistic facts
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Merged KB created
+---
+Number of facts in merged KB:
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>11
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>%%bash
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># Solve the merged KB</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>--timeout<span class="w"> </span><span class="m">30</span><span class="w"> </span>/tmp/merged.yaml<span class="w"> </span>-O<span class="w"> </span>markdown<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-30
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Loaded KB with 0 facts and 11 probabilistic facts
+Starting search...
+Solving KB: Living Things with </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>11 pfacts; threshold=200
+Search timeout after 30.00 seconds
+Search completed in 30.0461 seconds
+Know</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ledge Base: Living Things
+KB num pfacts: 11
+Description: Combined animal and plant classifications
+
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Search Statistics:
+  Confidence: 0.9500
+  Prior Probability: 7.2850e-01
+  Posterior Probability: 0.6</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>672
+  Combinations Explored: 1224
+  Satisfiable Combinations: 1177
+  Time Elapsed: 30.0387 seconds
+ </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> Warning: Search timed out
+  Sub-solutions: 0
+
+High Confidence Results (threshold &gt;= 0.8):
+  fact_ty</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>pe='SubClassOf' sub='cat' sup='mammal' (posterior: 0.9913)
+  fact_type='SubClassOf' sub='dog' sup='m</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ammal' (posterior: 0.9913)
+  fact_type='SubClassOf' sub='oak' sup='tree' (posterior: 0.9900)
+  fact_</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>type='SubClassOf' sub='rose' sup='flower' (posterior: 0.9900)
+  fact_type='SubClassOf' sub='tree' su</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>p='plant' (posterior: 0.9900)
+  fact_type='SubClassOf' sub='flower' sup='plant' (posterior: 0.9901)
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>  fact_type='EquivalentTo' sub='cat' equivalent='Felis_catus' (posterior: 0.9502)
+  fact_type='Equiv</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>alentTo' sub='dog' equivalent='Canis_familiaris' (posterior: 0.9542)
+  fact_type='EquivalentTo' sub=</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>'oak' equivalent='Quercus' (posterior: 0.9500)
+  fact_type='EquivalentTo' sub='rose' equivalent='Ros</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>a' (posterior: 0.9502)
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="output">6. Output Formats</h2>
+<p>BOOMER-PY supports multiple output formats for different use cases:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>%%bash
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># TSV output - useful for spreadsheets and further processing</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>--timeout<span class="w"> </span><span class="m">30</span><span class="w"> </span>/tmp/animals.yaml<span class="w"> </span>-O<span class="w"> </span>tsv<span class="w"> </span>-o<span class="w"> </span>/tmp/solution.tsv<span class="w"> </span>--quiet
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;TSV output saved to /tmp/solution.tsv&quot;</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;TSV contents:&quot;</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>cat<span class="w"> </span>/tmp/solution.tsv
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Solving KB: Animal Classification with 5 pfacts; threshold=200
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>TSV output saved to /tmp/solution.tsv
+---
+TSV contents:
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code># BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2025-09-24T20:45:51.699478
+#   combin</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ations: 38
+#   satisfiable_combinations: 32
+#   confidence: 0.9499999999999998
+#   prior_probability</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>: 0.8403132374999999
+#   posterior_probability: 0.7693985431741789
+#   time_elapsed_seconds: 0.01769</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>6142196655273
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> probabilities
+#
+fact_type   arg1    arg2    truth_value prior_probability   posterior_probability
+Equivalent</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>To    cat Felis_catus True    0.95    0.9499999999999998
+EquivalentTo    dog Canis_familiaris    True    0.95    0.95421</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>95392837551
+EquivalentTo    cat Canis_familiaris    False   0.05    0.1301712463913552
+SubClassOf  cat mammal  </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>True  0.99    0.9912744730897868
+SubClassOf  dog mammal  True    0.99    0.9912744730897868
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>%%bash
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># JSON output - for programmatic processing</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>--timeout<span class="w"> </span><span class="m">30</span><span class="w"> </span>/tmp/taxonomy.yaml<span class="w"> </span>-O<span class="w"> </span>json<span class="w"> </span>-o<span class="w"> </span>/tmp/solution.json<span class="w"> </span>--quiet
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JSON solution saved&quot;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Solution statistics from JSON:&quot;</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="s2">import json</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="s2">with open(&#39;/tmp/solution.json&#39;) as f:</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="s2">    sol = json.load(f)</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="s2">    print(f&#39;Confidence: {sol[\&quot;confidence\&quot;]:.3f}&#39;)</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="s2">    print(f&#39;Combinations explored: {sol[\&quot;number_of_combinations\&quot;]}&#39;)</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="s2">    print(f&#39;Satisfiable combinations: {sol[\&quot;number_of_satisfiable_combinations\&quot;]}&#39;)</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="s2">    print(f&#39;Time elapsed: {sol.get(\&quot;time_elapsed\&quot;, 0):.3f}s&#39;)</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="s2">&quot;</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Solving KB: Taxonomy Alignment with 8 pfacts; threshold=200
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>JSON solution saved
+---
+Solution statistics from JSON:
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Confidence: 0.700
+Combinations explored: 372
+Satisfiable combinations: 256
+Time elapsed: 1.332s
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>%%bash
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1"># YAML output - human-readable solution format</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>--timeout<span class="w"> </span><span class="m">30</span><span class="w"> </span>/tmp/animals.yaml<span class="w"> </span>-O<span class="w"> </span>yaml<span class="w"> </span>-o<span class="w"> </span>/tmp/solution.yaml<span class="w"> </span>--quiet
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;YAML solution:&quot;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>head<span class="w"> </span>-25<span class="w"> </span>/tmp/solution.yaml
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Solving KB: Animal Classification with 5 pfacts; threshold=200
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>YAML solution:
+---
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>name: null
+number_of_combinations: 36
+number_of_satisfiable_combinations: 32
+number_of_combinations_</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>explored_including_implicit: 38
+number_of_components: null
+confidence: 0.9499999999999998
+prior_prob</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>: 0.8403132374999999
+posterior_prob: 0.7693985431741789
+proportion_of_combinations_explored: 1.0
+gro</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>und_pfacts: []
+solved_pfacts:
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: cat
+      </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>equivalent: Felis_catus
+    prob: 0.95
+  truth_value: true
+  posterior_prob: 0.9499999999999998
+  me</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>tadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: dog
+      equivalent: Canis</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>_familiaris
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="advanced">7. Advanced Options</h2>
+<p>The CLI provides various options for controlling the search process:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>%%bash
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># Solve with custom search configuration</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=== With limited iterations (fast but potentially suboptimal) ===&quot;</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>/tmp/complex.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span>--max-iterations<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span>--timeout<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span>-O<span class="w"> </span>markdown<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-15
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>=== With limited iterations (fast but potentially suboptimal) ===
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> * 0.7 confidence
+ * 0.005644800000000001 prior probability
+ * 0.36612702366127026 posterior probabi</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>lity
+ * 0.1227 seconds elapsed
+Grounding:
+ * True fact_type='EquivalentTo' sub='X1' equivalent='Y1' </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>:: prior: 0.7 posterior: 0.5404732254047323
+ * False fact_type='EquivalentTo' sub='X1' equivalent='Y</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>2' :: prior: 0.6 posterior: 0.2773972602739726
+ * False fact_type='EquivalentTo' sub='X1' equivalent</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>='Y3' :: prior: 0.5 posterior: 0.025217932752179328
+ * False fact_type='EquivalentTo' sub='X2' equiv</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>alent='Y1' :: prior: 0.6 posterior: 0.1765255292652553
+ * True fact_type='EquivalentTo' sub='X2' equ</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ivalent='Y2' :: prior: 0.7 posterior: 0.5230386052303861
+ * False fact_type='EquivalentTo' sub='X2' </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>equivalent='Y3' :: prior: 0.4 posterior: 0.017434620174346202
+ * False fact_type='EquivalentTo' sub=</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>'X3' equivalent='Y1' :: prior: 0.5 posterior: 0.025217932752179328
+ * False fact_type='EquivalentTo'</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> sub='X3' equivalent='Y2' :: prior: 0.4 posterior: 0.017434620174346202
+ * True fact_type='Equivalen</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>tTo' sub='X3' equivalent='Y3' :: prior: 0.8 posterior: 0.9321295143212952
+
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>%%bash
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># Solve with more thorough search</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=== With more iterations (slower but more thorough) ===&quot;</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>/tmp/complex.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span>--max-iterations<span class="w"> </span><span class="m">10000</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span>--timeout<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span>-O<span class="w"> </span>markdown<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-15
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>=== With more iterations (slower but more thorough) ===
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> * 0.7 confidence
+ * 0.005644800000000001 prior probability
+ * 0.2053251855085115 posterior probabil</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ity
+ * 1.1806 seconds elapsed
+Grounding:
+ * True fact_type='EquivalentTo' sub='X1' equivalent='Y1' :</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>: prior: 0.7 posterior: 0.4057616761239632
+ * False fact_type='EquivalentTo' sub='X1' equivalent='Y2</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>' :: prior: 0.6 posterior: 0.20977738978611954
+ * False fact_type='EquivalentTo' sub='X1' equivalent</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>='Y3' :: prior: 0.5 posterior: 0.09271060672195541
+ * False fact_type='EquivalentTo' sub='X2' equiva</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>lent='Y1' :: prior: 0.6 posterior: 0.20977738978611954
+ * True fact_type='EquivalentTo' sub='X2' equ</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ivalent='Y2' :: prior: 0.7 posterior: 0.432649498035792
+ * False fact_type='EquivalentTo' sub='X2' e</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>quivalent='Y3' :: prior: 0.4 posterior: 0.060061108686163225
+ * False fact_type='EquivalentTo' sub='</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>X3' equivalent='Y1' :: prior: 0.5 posterior: 0.09271060672195541
+ * False fact_type='EquivalentTo' s</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ub='X3' equivalent='Y2' :: prior: 0.4 posterior: 0.060061108686163225
+ * True fact_type='EquivalentT</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>o' sub='X3' equivalent='Y3' :: prior: 0.8 posterior: 0.6170231340026187
+
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>%%bash
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Solve with more thorough search</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=== With more iterations (slower but more thorough) ===&quot;</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>/tmp/complex.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span>--max-iterations<span class="w"> </span><span class="m">10000</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span>--timeout<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span>-O<span class="w"> </span>markdown<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-15
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>=== With more iterations (slower but more thorough) ===
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> * 0.6999999999999998 confidence
+ * 0.005644800000000001 prior probability
+ * 0.2053251855085115 pos</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>terior probability
+ * 1.3197 seconds elapsed
+Grounding:
+ * True fact_type='EquivalentTo' sub='X1' eq</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>uivalent='Y1' :: prior: 0.7 posterior: 0.4057616761239632
+ * False fact_type='EquivalentTo' sub='X1'</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> equivalent='Y2' :: prior: 0.6 posterior: 0.20977738978611954
+ * False fact_type='EquivalentTo' sub=</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>'X1' equivalent='Y3' :: prior: 0.5 posterior: 0.09271060672195541
+ * False fact_type='EquivalentTo' </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>sub='X2' equivalent='Y1' :: prior: 0.6 posterior: 0.20977738978611954
+ * True fact_type='EquivalentT</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>o' sub='X2' equivalent='Y2' :: prior: 0.7 posterior: 0.432649498035792
+ * False fact_type='Equivalen</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>tTo' sub='X2' equivalent='Y3' :: prior: 0.4 posterior: 0.060061108686163225
+ * False fact_type='Equi</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>valentTo' sub='X3' equivalent='Y1' :: prior: 0.5 posterior: 0.09271060672195544
+ * False fact_type='</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>EquivalentTo' sub='X3' equivalent='Y2' :: prior: 0.4 posterior: 0.060061108686163225
+ * True fact_ty</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>pe='EquivalentTo' sub='X3' equivalent='Y3' :: prior: 0.8 posterior: 0.6170231340026187
+
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="realworld">8. Real-World Example: Disease Mapping</h2>
+<p>Let's create a realistic example mapping disease classifications between MONDO and ICD-10:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>%%bash
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># Create a disease mapping KB</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>cat<span class="w"> </span><span class="p">&amp;</span>gt<span class="p">;</span><span class="w"> </span>/tmp/diseases.yaml<span class="w"> </span><span class="p">&amp;</span>lt<span class="p">;&amp;</span>lt<span class="p">;</span><span class="w"> </span><span class="s1">&#39;EOF&#39;</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>name:<span class="w"> </span>Disease<span class="w"> </span>Ontology<span class="w"> </span>Mapping
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>description:<span class="w"> </span>Mapping<span class="w"> </span>MONDO<span class="w"> </span>disease<span class="w"> </span>ontology<span class="w"> </span>to<span class="w"> </span>ICD-10<span class="w"> </span>codes
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>comments:<span class="w"> </span>Example<span class="w"> </span>mappings<span class="w"> </span><span class="k">for</span><span class="w"> </span>common<span class="w"> </span>diseases
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>pfacts:
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">  </span><span class="c1"># High-confidence direct mappings</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;MONDO:0005015&quot;</span><span class="w">  </span><span class="c1"># Diabetes mellitus</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">      </span>equivalent:<span class="w"> </span><span class="s2">&quot;ICD10:E11&quot;</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.95
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;MONDO:0005267&quot;</span><span class="w">  </span><span class="c1"># Heart disease</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">      </span>equivalent:<span class="w"> </span><span class="s2">&quot;ICD10:I51&quot;</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.90
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;MONDO:0002251&quot;</span><span class="w">  </span><span class="c1"># Pneumonia</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">      </span>equivalent:<span class="w"> </span><span class="s2">&quot;ICD10:J18&quot;</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.92
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">  </span><span class="c1"># Ambiguous mappings - one MONDO could map to multiple ICD codes</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;MONDO:0005249&quot;</span><span class="w">  </span><span class="c1"># Hypertension</span>
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="w">      </span>equivalent:<span class="w"> </span><span class="s2">&quot;ICD10:I10&quot;</span><span class="w">  </span><span class="c1"># Essential hypertension</span>
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.70
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="w">      </span>fact_type:<span class="w"> </span>EquivalentTo
+<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;MONDO:0005249&quot;</span><span class="w">  </span><span class="c1"># Hypertension</span>
+<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a><span class="w">      </span>equivalent:<span class="w"> </span><span class="s2">&quot;ICD10:I11&quot;</span><span class="w">  </span><span class="c1"># Hypertensive heart disease</span>
+<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.40
+<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>
+<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a><span class="w">  </span><span class="c1"># Hierarchical relationships</span>
+<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a><span class="w">      </span>fact_type:<span class="w"> </span>SubClassOf
+<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;MONDO:0005015&quot;</span>
+<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a><span class="w">      </span>sup:<span class="w"> </span><span class="s2">&quot;MONDO:0005066&quot;</span><span class="w">  </span><span class="c1"># Metabolic disease</span>
+<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a>
+<a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a><span class="w">      </span>fact_type:<span class="w"> </span>SubClassOf
+<a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;MONDO:0005267&quot;</span>
+<a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a><span class="w">      </span>sup:<span class="w"> </span><span class="s2">&quot;MONDO:0005267_parent&quot;</span><span class="w">  </span><span class="c1"># Cardiovascular disease</span>
+<a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a>
+<a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-55" name="__codelineno-15-55" href="#__codelineno-15-55"></a><span class="w">      </span>fact_type:<span class="w"> </span>SubClassOf
+<a id="__codelineno-15-56" name="__codelineno-15-56" href="#__codelineno-15-56"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;ICD10:E11&quot;</span>
+<a id="__codelineno-15-57" name="__codelineno-15-57" href="#__codelineno-15-57"></a><span class="w">      </span>sup:<span class="w"> </span><span class="s2">&quot;ICD10:E00-E89&quot;</span><span class="w">  </span><span class="c1"># Endocrine chapter</span>
+<a id="__codelineno-15-58" name="__codelineno-15-58" href="#__codelineno-15-58"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-15-59" name="__codelineno-15-59" href="#__codelineno-15-59"></a>
+<a id="__codelineno-15-60" name="__codelineno-15-60" href="#__codelineno-15-60"></a><span class="w">  </span>-<span class="w"> </span>fact:
+<a id="__codelineno-15-61" name="__codelineno-15-61" href="#__codelineno-15-61"></a><span class="w">      </span>fact_type:<span class="w"> </span>SubClassOf
+<a id="__codelineno-15-62" name="__codelineno-15-62" href="#__codelineno-15-62"></a><span class="w">      </span>sub:<span class="w"> </span><span class="s2">&quot;ICD10:I51&quot;</span>
+<a id="__codelineno-15-63" name="__codelineno-15-63" href="#__codelineno-15-63"></a><span class="w">      </span>sup:<span class="w"> </span><span class="s2">&quot;ICD10:I00-I99&quot;</span><span class="w">  </span><span class="c1"># Circulatory chapter</span>
+<a id="__codelineno-15-64" name="__codelineno-15-64" href="#__codelineno-15-64"></a><span class="w">    </span>prob:<span class="w"> </span><span class="m">0</span>.99
+<a id="__codelineno-15-65" name="__codelineno-15-65" href="#__codelineno-15-65"></a>
+<a id="__codelineno-15-66" name="__codelineno-15-66" href="#__codelineno-15-66"></a>labels:
+<a id="__codelineno-15-67" name="__codelineno-15-67" href="#__codelineno-15-67"></a><span class="w">  </span><span class="s2">&quot;MONDO:0005015&quot;</span>:<span class="w"> </span><span class="s2">&quot;Diabetes mellitus&quot;</span>
+<a id="__codelineno-15-68" name="__codelineno-15-68" href="#__codelineno-15-68"></a><span class="w">  </span><span class="s2">&quot;MONDO:0005267&quot;</span>:<span class="w"> </span><span class="s2">&quot;Heart disease&quot;</span>
+<a id="__codelineno-15-69" name="__codelineno-15-69" href="#__codelineno-15-69"></a><span class="w">  </span><span class="s2">&quot;MONDO:0002251&quot;</span>:<span class="w"> </span><span class="s2">&quot;Pneumonia&quot;</span>
+<a id="__codelineno-15-70" name="__codelineno-15-70" href="#__codelineno-15-70"></a><span class="w">  </span><span class="s2">&quot;MONDO:0005249&quot;</span>:<span class="w"> </span><span class="s2">&quot;Hypertension&quot;</span>
+<a id="__codelineno-15-71" name="__codelineno-15-71" href="#__codelineno-15-71"></a><span class="w">  </span><span class="s2">&quot;MONDO:0005066&quot;</span>:<span class="w"> </span><span class="s2">&quot;Metabolic disease&quot;</span>
+<a id="__codelineno-15-72" name="__codelineno-15-72" href="#__codelineno-15-72"></a><span class="w">  </span><span class="s2">&quot;ICD10:E11&quot;</span>:<span class="w"> </span><span class="s2">&quot;Type 2 diabetes mellitus&quot;</span>
+<a id="__codelineno-15-73" name="__codelineno-15-73" href="#__codelineno-15-73"></a><span class="w">  </span><span class="s2">&quot;ICD10:I51&quot;</span>:<span class="w"> </span><span class="s2">&quot;Complications of heart disease&quot;</span>
+<a id="__codelineno-15-74" name="__codelineno-15-74" href="#__codelineno-15-74"></a><span class="w">  </span><span class="s2">&quot;ICD10:J18&quot;</span>:<span class="w"> </span><span class="s2">&quot;Pneumonia, unspecified organism&quot;</span>
+<a id="__codelineno-15-75" name="__codelineno-15-75" href="#__codelineno-15-75"></a><span class="w">  </span><span class="s2">&quot;ICD10:I10&quot;</span>:<span class="w"> </span><span class="s2">&quot;Essential (primary) hypertension&quot;</span>
+<a id="__codelineno-15-76" name="__codelineno-15-76" href="#__codelineno-15-76"></a><span class="w">  </span><span class="s2">&quot;ICD10:I11&quot;</span>:<span class="w"> </span><span class="s2">&quot;Hypertensive heart disease&quot;</span>
+<a id="__codelineno-15-77" name="__codelineno-15-77" href="#__codelineno-15-77"></a>EOF
+<a id="__codelineno-15-78" name="__codelineno-15-78" href="#__codelineno-15-78"></a>
+<a id="__codelineno-15-79" name="__codelineno-15-79" href="#__codelineno-15-79"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Created disease mapping KB&quot;</span>
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Created disease mapping KB
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>%%bash
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># Solve the disease mapping with detailed output</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>/tmp/diseases.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span>--timeout<span class="w"> </span><span class="m">60</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span>-O<span class="w"> </span>markdown
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Loaded KB with 0 facts and 9 probabilistic facts
+Starting search...
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Solving KB: Disease Ontology Mapping with 9 pfacts; threshold=200
+Search completed in 13.3022 second</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>s
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Knowledge Base: Disease Ontology Mapping
+KB num pfacts: 9
+Description: Mapping MONDO disease ontolog</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>y to ICD-10 codes
+
+Search Statistics:
+  Confidence: 0.6000
+  Prior Probability: 3.1735e-01
+  Posteri</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>or Probability: 0.3174
+  Combinations Explored: 512
+  Satisfiable Combinations: 512
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>  Time Elapsed: 13.2996 seconds
+  Sub-solutions: 0
+
+High Confidence Results (threshold &gt;= 0.8):
+  fa</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ct_type='EquivalentTo' sub='MONDO:0005015' equivalent='ICD10:E11' (posterior: 0.9500)
+  fact_type='E</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>quivalentTo' sub='MONDO:0005267' equivalent='ICD10:I51' (posterior: 0.9000)
+  fact_type='EquivalentT</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>o' sub='MONDO:0002251' equivalent='ICD10:J18' (posterior: 0.9200)
+  fact_type='SubClassOf' sub='MOND</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>O:0005015' sup='MONDO:0005066' (posterior: 0.9900)
+  fact_type='SubClassOf' sub='MONDO:0005267' sup=</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>'MONDO:0005267_parent' (posterior: 0.9900)
+  fact_type='SubClassOf' sub='ICD10:E11' sup='ICD10:E00-E</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>89' (posterior: 0.9900)
+  fact_type='SubClassOf' sub='ICD10:I51' sup='ICD10:I00-I99' (posterior: 0.9</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>900)
+
+Full Solution:
+
+ ## None
+ * 512 combinations
+ * 512 satisfiable combinations
+ * 1.0 proportion</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> of combinations explored
+ * 0.6 confidence
+ * 0.3173540250157199 prior probability
+ * 0.31735402501</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>571985 posterior probability
+ * 13.2996 seconds elapsed
+Grounding:
+ * True MONDO:0005015 (Diabetes m</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ellitus) ≡ ICD10:E11 (Type 2 diabetes mellitus) :: prior: 0.95 posterior: 0.9500000000000013
+ * Tr</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ue MONDO:0005267 (Heart disease) ≡ ICD10:I51 (Complications of heart disease) :: prior: 0.9 poster</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ior: 0.9
+ * True MONDO:0002251 (Pneumonia) ≡ ICD10:J18 (Pneumonia, unspecified organism) :: prior:</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> 0.92 posterior: 0.9200000000000005
+ * True MONDO:0005249 (Hypertension) ≡ ICD10:I10 (Essential (p</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>rimary) hypertension) :: prior: 0.7 posterior: 0.7000000000000002
+ * False MONDO:0005249 (Hypertensi</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>on) ≡ ICD10:I11 (Hypertensive heart disease) :: prior: 0.4 posterior: 0.3999999999999981
+ * True M</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ONDO:0005015 (Diabetes mellitus) ⊆ MONDO:0005066 (Metabolic disease) :: prior: 0.99 posterior: 0.9</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>899999999999999
+ * True MONDO:0005267 (Heart disease) ⊆ MONDO:0005267_parent :: prior: 0.99 poster</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ior: 0.9899999999999999
+ * True ICD10:E11 (Type 2 diabetes mellitus) ⊆ ICD10:E00-E89 :: prior: 0.9</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>9 posterior: 0.9899999999999999
+ * True ICD10:I51 (Complications of heart disease) ⊆ ICD10:I00-I99</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> :: prior: 0.99 posterior: 0.9899999999999999
+
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>%%bash
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># Export solution as TSV for integration with other tools</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>boomer.cli<span class="w"> </span>solve<span class="w"> </span>/tmp/diseases.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span>--timeout<span class="w"> </span><span class="m">60</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span>-O<span class="w"> </span>tsv<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span>-o<span class="w"> </span>/tmp/disease_mappings.tsv<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">  </span>--quiet
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Disease mappings exported to TSV:&quot;</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>cat<span class="w"> </span>/tmp/disease_mappings.tsv
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Solving KB: Disease Ontology Mapping with 9 pfacts; threshold=200
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Disease mappings exported to TSV:
+---
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code># BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2025-09-24T20:46:22.542545
+#   combin</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ations: 512
+#   satisfiable_combinations: 512
+#   confidence: 0.6000000000000001
+#   prior_probabili</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>ty: 0.31735402501572
+#   posterior_probability: 0.31735402501571985
+#   time_elapsed_seconds: 11.457</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>43203163147
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and p</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>robabilities
+#
+fact_type   arg1    arg2    arg1_label  arg2_label  truth_value prior_probability   posterior_pro</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>bability
+EquivalentTo    MONDO:0005015   ICD10:E11   Diabetes mellitus   Type 2 diabetes mellitus    True    0.95    </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>0.9500000000000013
+EquivalentTo    MONDO:0005267   ICD10:I51   Heart disease   Complications of heart diseas</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>e True    0.9 0.8999999999999999
+EquivalentTo    MONDO:0002251   ICD10:J18   Pneumonia   Pneumonia, unspecified</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> organism True    0.92    0.9200000000000005
+EquivalentTo    MONDO:0005249   ICD10:I10   Hypertension    Essential </code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>(primary) hypertension    True    0.7 0.7000000000000002
+EquivalentTo    MONDO:0005249   ICD10:I11   Hypertensio</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>n Hypertensive heart disease  False   0.4 0.39999999999999813
+SubClassOf  MONDO:0005015   MONDO:0005066   D</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>iabetes mellitus  Metabolic disease   True    0.99    0.9899999999999999
+SubClassOf  MONDO:0005267   MONDO:0005</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>267_parent    Heart disease       True    0.99    0.9899999999999999
+SubClassOf  ICD10:E11   ICD10:E00-E89   Type 2 di</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>abetes mellitus       True    0.99    0.9899999999999999
+SubClassOf  ICD10:I51   ICD10:I00-I99   Complications of h</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>eart disease      True    0.99    0.9899999999999999
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>%%bash
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># Filter for only accepted equivalences using grep</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Accepted disease mappings (EquivalentTo with truth_value=True):&quot;</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;---&quot;</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>grep<span class="w"> </span><span class="s2">&quot;^EquivalentTo.*True&quot;</span><span class="w"> </span>/tmp/disease_mappings.tsv<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-f1-5
+</code></pre></div>
+
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>Accepted disease mappings (EquivalentTo with truth_value=True):
+---
+</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>EquivalentTo  MONDO:0005015   ICD10:E11   Diabetes mellitus   Type 2 diabetes mellitus
+EquivalentTo    MONDO:0</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>005267    ICD10:I51   Heart disease   Complications of heart disease
+EquivalentTo    MONDO:0002251   ICD10:J18   P</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code>neumonia  Pneumonia, unspecified organism
+EquivalentTo    MONDO:0005249   ICD10:I10   Hypertension    Essential</code>
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+<code> (primary) hypertension
+</code>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="summary">Summary</h2>
+<p>This tutorial covered the BOOMER-PY command-line interface:</p>
+<ol>
+<li><strong>YAML Knowledge Bases</strong>: Human-readable format for defining facts and probabilities</li>
+<li><strong>Solving</strong>: Finding the most probable consistent interpretation</li>
+<li><strong>Format Conversion</strong>: Converting between YAML, JSON, and other formats</li>
+<li><strong>Merging</strong>: Combining multiple knowledge bases</li>
+<li><strong>Output Formats</strong>: TSV, JSON, YAML, and Markdown outputs</li>
+<li><strong>Advanced Options</strong>: Controlling search parameters</li>
+<li><strong>Real-World Application</strong>: Disease ontology mapping</li>
+</ol>
+<p>The CLI provides a powerful interface for probabilistic reasoning without writing code, making it accessible for:
+- <strong>Data integration pipelines</strong>: Use in shell scripts and workflows
+- <strong>Ontology alignment tasks</strong>: Map between different classification systems
+- <strong>Quick experiments</strong>: Test reasoning scenarios without programming
+- <strong>Batch processing</strong>: Process multiple KB files programmatically</p>
+<p>For more details, see the main <a href="../../">BOOMER-PY documentation</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

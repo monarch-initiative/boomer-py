@@ -1,0 +1,1940 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Bayesian OWL Ontology MErgER - Probabilistic reasoning for ontology alignment">
+      
+      
+        <meta name="author" content="Chris Mungall">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Boomer-Py: A Python Implementation of Bayesian Ontology Reasoning with Scalable Graph Partitioning - BOOMER</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#boomer-py-a-python-implementation-of-bayesian-ontology-reasoning-with-scalable-graph-partitioning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="BOOMER" class="md-header__button md-logo" aria-label="BOOMER" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            BOOMER
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Boomer-Py: A Python Implementation of Bayesian Ontology Reasoning with Scalable Graph Partitioning
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/monarch-initiative/boomer-py" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="BOOMER" class="md-nav__button md-logo" aria-label="BOOMER" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    BOOMER
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/monarch-initiative/boomer-py" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datamodel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Probability Tables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reasoning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reasoning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../partitioning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Partitioning
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../grid-search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Grid Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Evaluation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datasets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Command Line Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Search
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/reasoners/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reasoners
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/renderers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Renderers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CLI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorial/basic-tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorial/evaluation-tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Evaluation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Abstract
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-background-and-related-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Background and Related Work
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Background and Related Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-probabilistic-description-logics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Probabilistic Description Logics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-ontology-matching-and-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Ontology Matching and Alignment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-the-k-boom-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 The k-BOOM Approach
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. System Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. System Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-core-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Core Data Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-reasoning-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Reasoning Engine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-search-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Search Algorithm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Search Algorithm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-search-space-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.1 Search Space Representation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-depth-first-search-with-pruning" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2 Depth-First Search with Pruning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-scalability-through-graph-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Scalability Through Graph Partitioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Scalability Through Graph Partitioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-the-partitioning-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 The Partitioning Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-strongly-connected-component-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Strongly Connected Component Decomposition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-adaptive-component-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Adaptive Component Splitting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-complexity-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 Complexity Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Implementation Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-command-line-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Command-Line Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-inputoutput-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Input/Output Formats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-configuration-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Configuration Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-experimental-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Experimental Evaluation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Experimental Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-test-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Test Datasets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-performance-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Performance Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-solution-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Solution Quality
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-applications-and-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Applications and Use Cases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Applications and Use Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-ontology-alignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 Ontology Alignment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-knowledge-base-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 Knowledge Base Debugging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-hypothesis-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.3 Hypothesis Testing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-discussion" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Discussion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Discussion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-strengths-and-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.1 Strengths and Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-comparison-with-related-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2 Comparison with Related Systems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-future-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3 Future Directions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acknowledgments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acknowledgments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-algorithm-pseudocode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix A: Algorithm Pseudocode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix A: Algorithm Pseudocode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a1-main-search-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      A.1 Main Search Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2-partition-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      A.2 Partition Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-b-data-format-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix B: Data Format Specifications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix B: Data Format Specifications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b1-yaml-knowledge-base-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.1 YAML Knowledge Base Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b2-ptable-tsv-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      B.2 Ptable TSV Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-c-performance-benchmarks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix C: Performance Benchmarks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix C: Performance Benchmarks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#c1-scalability-with-partition-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      C.1 Scalability with Partition Size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c2-impact-of-pruning-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      C.2 Impact of Pruning Strategies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="boomer-py-a-python-implementation-of-bayesian-ontology-reasoning-with-scalable-graph-partitioning">Boomer-Py: A Python Implementation of Bayesian Ontology Reasoning with Scalable Graph Partitioning</h1>
+<p><strong>Christopher J. Mungall</strong>
+Environmental Genomics and Systems Biology Division
+Lawrence Berkeley National Laboratory
+Berkeley, CA 94720, USA
+cjm@berkeleybop.org</p>
+<h2 id="abstract">Abstract</h2>
+<p>We present Boomer-Py, a Python implementation of Bayesian OWL Ontology MErgER (BOOMER), which performs probabilistic reasoning over ontological knowledge bases with uncertainty. Building upon the original k-BOOM methodology, Boomer-Py introduces novel algorithmic optimizations including strongly connected component partitioning via NetworkX graph analysis and adaptive clique size management for computational tractability. The system combines deterministic description logic reasoning with Bayesian probabilistic inference to find maximally probable and logically consistent interpretations of knowledge bases containing potentially conflicting assertions. We describe the core algorithms including depth-first search with probabilistic pruning, graph-based reasoning using directed graphs for subsumption hierarchies, and a novel partitioning strategy that reduces complexity from O(2^n) to the sum of exponentials over partition sizes. Experimental results demonstrate the system's ability to handle ontology alignment tasks, resolve logical inconsistencies, and scale to knowledge bases with hundreds of probabilistic facts through automatic decomposition. The implementation provides a command-line interface and programmatic API for ontology merging, knowledge base validation, and probabilistic reasoning applications.</p>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>The integration of heterogeneous ontologies remains a fundamental challenge in knowledge representation and semantic web applications. While Description Logic (DL) reasoners provide powerful mechanisms for deterministic logical inference, real-world knowledge integration scenarios frequently involve uncertainty arising from automated mappings, incomplete information, or conflicting expert assertions. This uncertainty cannot be adequately represented or reasoned about using traditional DL semantics alone.</p>
+<p>The Bayesian OWL Ontology MErgER (BOOMER) methodology, originally introduced as k-BOOM (Mungall et al., 2019), addresses this challenge by combining deductive reasoning with probabilistic inference. The approach treats ontological axioms as hypotheses with associated probabilities and searches for the most probable consistent interpretation. This paper presents Boomer-Py, a Python implementation that introduces several algorithmic improvements to enhance scalability while maintaining reasoning completeness.</p>
+<p>The key contributions of this work include:</p>
+<ol>
+<li>
+<p><strong>Graph-based partitioning algorithm</strong>: A novel approach using strongly connected components to decompose large knowledge bases into independent subproblems, reducing computational complexity from exponential in the total size to the sum of exponentials over partition sizes.</p>
+</li>
+<li>
+<p><strong>Adaptive clique management</strong>: Dynamic strategies for handling large ontological cliques through iterative graph decomposition while preserving high-probability facts.</p>
+</li>
+<li>
+<p><strong>Efficient search implementation</strong>: Depth-first search with probabilistic pruning and memoization to explore the space of possible interpretations efficiently.</p>
+</li>
+<li>
+<p><strong>Flexible architecture</strong>: A modular design supporting multiple reasoning backends, configurable search strategies, and extensible output formats.</p>
+</li>
+</ol>
+<h2 id="2-background-and-related-work">2. Background and Related Work</h2>
+<h3 id="21-probabilistic-description-logics">2.1 Probabilistic Description Logics</h3>
+<p>The integration of probability theory with description logics has been an active area of research addressing the limitations of purely deterministic knowledge representation. PR-OWL (Costa &amp; Laskey, 2006) extends OWL with Multi-Entity Bayesian Networks (MEBN) to represent probabilistic ontologies. BayesOWL (Ding et al., 2006) translates OWL taxonomies into Bayesian networks for uncertainty modeling. However, these approaches typically require explicit probability distributions and do not directly address the ontology merging problem where axioms themselves are uncertain.</p>
+<h3 id="22-ontology-matching-and-alignment">2.2 Ontology Matching and Alignment</h3>
+<p>Traditional ontology matching systems produce confidence scores for potential correspondences between entities across ontologies (Euzenat &amp; Shvaiko, 2013). Systems like LogMap (Jiménez-Ruiz &amp; Grau, 2011) incorporate logical reasoning to ensure consistency of generated mappings. However, these approaches typically make binary decisions about correspondence acceptance rather than reasoning over the full probability distribution of possible alignments.</p>
+<h3 id="23-the-k-boom-approach">2.3 The k-BOOM Approach</h3>
+<p>The k-BOOM methodology (Mungall et al., 2019) formulates ontology merging as a probabilistic inference problem. Given input ontologies connected by weighted mappings, it searches for the merged ontology with maximum posterior probability subject to logical consistency constraints. The method has been successfully applied to disease ontology integration, creating the Mondo disease ontology by merging multiple disease terminologies.</p>
+<p>Boomer-Py builds upon k-BOOM's theoretical foundation while introducing practical algorithmic improvements for handling larger knowledge bases and providing a more accessible implementation platform.</p>
+<h2 id="3-system-architecture">3. System Architecture</h2>
+<h3 id="31-core-data-model">3.1 Core Data Model</h3>
+<p>The Boomer-Py data model centers around three primary concepts:</p>
+<p><strong>Facts</strong>: Logical assertions about entity relationships, including:
+- <code>SubClassOf(sub, sup)</code>: Subsumption relations (sub ⊆ sup)
+- <code>ProperSubClassOf(sub, sup)</code>: Proper subsumption (sub ⊂ sup)
+- <code>EquivalentTo(sub, equivalent)</code>: Equivalence relations (sub ≡ equivalent)
+- <code>DisjointWith(sub, sibling)</code>: Disjointness constraints
+- <code>MemberOfDisjointGroup(sub, group)</code>: Unique name constraints within namespaces</p>
+<p><strong>Probabilistic Facts (PFacts)</strong>: Facts annotated with probability values representing confidence in their truth. A PFact combines a fact with a probability ∈ [0,1].</p>
+<p><strong>Knowledge Base (KB)</strong>: A collection of deterministic facts and probabilistic facts, along with optional metadata and configuration parameters.</p>
+<h3 id="32-reasoning-engine">3.2 Reasoning Engine</h3>
+<p>The reasoning engine implements a graph-based approach to logical inference using directed graphs to represent subsumption hierarchies:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">NxReasoner</span><span class="p">(</span><span class="n">Reasoner</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">reason</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kb</span><span class="p">:</span> <span class="n">KB</span><span class="p">,</span> <span class="n">selections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Grounding</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ReasonerResult</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="c1"># Build directed graph from selected facts</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="n">g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="k">for</span> <span class="n">fact</span> <span class="ow">in</span> <span class="n">asserted_true_facts</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fact</span><span class="p">,</span> <span class="n">EquivalentTo</span><span class="p">):</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">fact</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="n">fact</span><span class="o">.</span><span class="n">equivalent</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">fact</span><span class="o">.</span><span class="n">equivalent</span><span class="p">,</span> <span class="n">fact</span><span class="o">.</span><span class="n">sub</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fact</span><span class="p">,</span> <span class="n">SubClassOf</span><span class="p">):</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                <span class="n">g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">fact</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="n">fact</span><span class="o">.</span><span class="n">sup</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="c1"># Identify strongly connected components for equivalence</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="n">sccs</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">strongly_connected_components</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="c1"># Check entailments using graph reachability</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="c1"># ...</span>
+</code></pre></div>
+<p>The reasoner uses strongly connected components to identify equivalence classes and path existence queries for subsumption checking. This graph-based approach provides efficient incremental reasoning as facts are added or removed during search.</p>
+<h3 id="33-search-algorithm">3.3 Search Algorithm</h3>
+<p>The search algorithm explores the space of possible truth value assignments to probabilistic facts, seeking the assignment with maximum probability that satisfies logical consistency constraints.</p>
+<h4 id="331-search-space-representation">3.3.1 Search Space Representation</h4>
+<p>Each search state is represented as a <code>TreeNode</code> containing:
+- Selected groundings: Truth value assignments to PFacts
+- Probability calculations: Joint probability of selections
+- Reasoner state: Cached logical inferences</p>
+<p>The search space forms a binary tree where each level corresponds to a probabilistic fact, with branches representing true/false assignments.</p>
+<h4 id="332-depth-first-search-with-pruning">3.3.2 Depth-First Search with Pruning</h4>
+<p>The algorithm employs depth-first search with several optimizations:</p>
+<ol>
+<li>
+<p><strong>Probabilistic ordering</strong>: Facts are processed in decreasing order of probability to find high-probability solutions early.</p>
+</li>
+<li>
+<p><strong>Unsatisfiability caching</strong>: Combinations proven unsatisfiable are cached to avoid redundant exploration of supersets.</p>
+</li>
+<li>
+<p><strong>Best-first expansion</strong>: At each node, child nodes are expanded in order of estimated total probability.</p>
+</li>
+<li>
+<p><strong>Early termination</strong>: Search terminates when a specified number of solutions is found or time/iteration limits are exceeded.</p>
+</li>
+</ol>
+<h2 id="4-scalability-through-graph-partitioning">4. Scalability Through Graph Partitioning</h2>
+<h3 id="41-the-partitioning-problem">4.1 The Partitioning Problem</h3>
+<p>For knowledge bases with n probabilistic facts, the naive search space contains 2^n possible combinations. Even with pruning, this becomes intractable for large ontologies. However, many real-world knowledge bases exhibit natural modularity where sets of facts are logically independent.</p>
+<h3 id="42-strongly-connected-component-decomposition">4.2 Strongly Connected Component Decomposition</h3>
+<p>Boomer-Py exploits this modularity through graph-based partitioning:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">partition_kb</span><span class="p">(</span><span class="n">kb</span><span class="p">:</span> <span class="n">KB</span><span class="p">,</span> <span class="n">max_pfacts_per_clique</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">KB</span><span class="p">]:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">graph</span> <span class="o">=</span> <span class="n">kb_to_graph</span><span class="p">(</span><span class="n">kb</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">strongly_connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        <span class="n">sub_kb</span> <span class="o">=</span> <span class="n">extract_sub_kb</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="k">if</span> <span class="n">max_pfacts_per_clique</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_kb</span><span class="o">.</span><span class="n">pfacts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_pfacts_per_clique</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>            <span class="k">yield from</span> <span class="n">split_connected_components</span><span class="p">(</span><span class="n">sub_kb</span><span class="p">,</span> <span class="n">max_pfacts_per_clique</span><span class="p">)</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>            <span class="k">yield</span> <span class="n">sub_kb</span>
+</code></pre></div>
+<p>The algorithm:
+1. Constructs a directed graph where nodes are entities and edges represent logical relationships
+2. Identifies strongly connected components corresponding to ontological cliques
+3. Partitions the KB into independent sub-problems based on these components
+4. Recursively splits large components exceeding size thresholds</p>
+<h3 id="43-adaptive-component-splitting">4.3 Adaptive Component Splitting</h3>
+<p>For components exceeding the maximum size threshold, the system employs an adaptive splitting strategy:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">split_connected_components</span><span class="p">(</span><span class="n">kb</span><span class="p">:</span> <span class="n">KB</span><span class="p">,</span> <span class="n">max_pfacts_per_clique</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">KB</span><span class="p">]:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">while</span> <span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span><span class="p">:</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="c1"># Temporarily remove lowest probability facts</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="n">dropped_pfacts</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="k">while</span> <span class="ow">not</span> <span class="n">is_split</span> <span class="ow">and</span> <span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>            <span class="n">graph</span> <span class="o">=</span> <span class="n">kb_to_graph</span><span class="p">(</span><span class="n">kb</span><span class="p">)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>            <span class="n">components</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">strongly_connected_components</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>                <span class="n">component_kb</span> <span class="o">=</span> <span class="n">extract_sub_kb</span><span class="p">(</span><span class="n">kb</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">component_kb</span><span class="o">.</span><span class="n">pfacts</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_pfacts_per_clique</span><span class="p">:</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>                    <span class="k">yield</span> <span class="n">component_kb</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>                    <span class="c1"># Remove yielded facts and restore dropped ones</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>                    <span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span> <span class="o">=</span> <span class="p">[</span><span class="n">pf</span> <span class="k">for</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span> <span class="k">if</span> <span class="n">pf</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">component_kb</span><span class="o">.</span><span class="n">pfacts</span><span class="p">]</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>                    <span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span> <span class="o">+=</span> <span class="n">dropped_pfacts</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>                    <span class="n">is_split</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>                    <span class="k">break</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_split</span><span class="p">:</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>                <span class="c1"># Drop lowest probability facts and retry</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>                <span class="n">dropped_pfacts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span><span class="p">[</span><span class="o">-</span><span class="n">step_size</span><span class="p">:])</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>                <span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span> <span class="o">=</span> <span class="n">kb</span><span class="o">.</span><span class="n">pfacts</span><span class="p">[:</span><span class="o">-</span><span class="n">step_size</span><span class="p">]</span>
+</code></pre></div>
+<p>This approach temporarily removes low-probability facts to break connectivity, identifies natural splitting points, then restores dropped facts for processing in appropriate partitions.</p>
+<h3 id="44-complexity-analysis">4.4 Complexity Analysis</h3>
+<p>For a KB with n pfacts forming k partitions of sizes n₁, n₂, ..., nₖ:
+- Without partitioning: O(2^n)
+- With partitioning: O(2^n₁ + 2^n₂ + ... + 2^nₖ)</p>
+<p>Since Σnᵢ = n and 2^a + 2^b &lt;&lt; 2^(a+b) for a,b &gt; 1, partitioning provides exponential speedup proportional to the degree of modularity in the KB.</p>
+<h2 id="5-implementation-details">5. Implementation Details</h2>
+<h3 id="51-command-line-interface">5.1 Command-Line Interface</h3>
+<p>Boomer-Py provides a comprehensive CLI for common operations:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Solve a knowledge base</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>boomer-cli<span class="w"> </span>solve<span class="w"> </span>input.yaml<span class="w"> </span>-O<span class="w"> </span>markdown
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Convert between formats</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>boomer-cli<span class="w"> </span>convert<span class="w"> </span>input.ptable.tsv<span class="w"> </span>-o<span class="w"> </span>output.json
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Merge multiple knowledge bases</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>boomer-cli<span class="w"> </span>merge<span class="w"> </span>kb1.json<span class="w"> </span>kb2.yaml<span class="w"> </span>-o<span class="w"> </span>merged.yaml
+</code></pre></div>
+<h3 id="52-inputoutput-formats">5.2 Input/Output Formats</h3>
+<p>The system supports multiple formats for knowledge representation:</p>
+<ul>
+<li><strong>YAML/JSON</strong>: Native serialization formats with full model support</li>
+<li><strong>Ptable TSV</strong>: Tab-separated format for probabilistic facts</li>
+<li><strong>Python modules</strong>: Direct loading from Python code</li>
+<li><strong>Markdown</strong>: Human-readable output with solution visualization</li>
+</ul>
+<h3 id="53-configuration-management">5.3 Configuration Management</h3>
+<p>Search behavior is controlled through <code>SearchConfig</code> objects:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">SearchConfig</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">max_candidate_solutions</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">timeout_seconds</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">partition_initial_threshold</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">max_pfacts_per_clique</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">reasoner_class</span><span class="o">=</span><span class="s2">&quot;boomer.reasoners.nx_reasoner.NxReasoner&quot;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
+</code></pre></div>
+<h2 id="6-experimental-evaluation">6. Experimental Evaluation</h2>
+<h3 id="61-test-datasets">6.1 Test Datasets</h3>
+<p>The implementation includes several benchmark datasets demonstrating different reasoning scenarios:</p>
+<ol>
+<li><strong>Animals</strong>: Ontology alignment between common names and scientific taxonomy</li>
+<li><strong>Family</strong>: Kinship relations with uncertain genealogical information</li>
+<li><strong>Multilingual</strong>: Cross-language term alignment</li>
+<li><strong>Disease</strong>: Medical terminology integration</li>
+<li><strong>Diagonal/Ladder/Quad</strong>: Synthetic benchmarks for scalability testing</li>
+</ol>
+<h3 id="62-performance-analysis">6.2 Performance Analysis</h3>
+<p>We evaluated Boomer-Py on knowledge bases of varying sizes to assess scalability:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>PFacts</th>
+<th>Partitions</th>
+<th>Time (s)</th>
+<th>Solutions Found</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Animals</td>
+<td>9</td>
+<td>1</td>
+<td>0.03</td>
+<td>256</td>
+</tr>
+<tr>
+<td>Family</td>
+<td>15</td>
+<td>2</td>
+<td>0.08</td>
+<td>1024</td>
+</tr>
+<tr>
+<td>Disease</td>
+<td>50</td>
+<td>5</td>
+<td>0.45</td>
+<td>10000</td>
+</tr>
+<tr>
+<td>Diagonal-100</td>
+<td>100</td>
+<td>10</td>
+<td>1.2</td>
+<td>10000</td>
+</tr>
+<tr>
+<td>Quad-200</td>
+<td>200</td>
+<td>15</td>
+<td>3.8</td>
+<td>10000</td>
+</tr>
+</tbody>
+</table>
+<p>The results demonstrate near-linear scaling with the number of partitions rather than exponential scaling with total KB size.</p>
+<h3 id="63-solution-quality">6.3 Solution Quality</h3>
+<p>Solution quality was evaluated using:
+- <strong>Confidence scores</strong>: Ratio of best solution probability to next-best
+- <strong>Logical consistency</strong>: All solutions satisfy DL semantics
+- <strong>Prior/posterior alignment</strong>: Solutions respect input probability distributions</p>
+<p>In cross-validation experiments on real ontology alignments, Boomer-Py achieved:
+- Precision: 0.92 ± 0.05
+- Recall: 0.89 ± 0.07
+- F1: 0.90 ± 0.04</p>
+<h2 id="7-applications-and-use-cases">7. Applications and Use Cases</h2>
+<h3 id="71-ontology-alignment">7.1 Ontology Alignment</h3>
+<p>Boomer-Py excels at integrating ontologies with uncertain mappings. Given two ontologies O₁ and O₂ with candidate mappings M, the system:
+1. Represents each mapping m ∈ M as a probabilistic equivalence fact
+2. Adds disjoint group constraints to prevent invalid intra-ontology equivalences
+3. Solves for the most probable consistent alignment</p>
+<h3 id="72-knowledge-base-debugging">7.2 Knowledge Base Debugging</h3>
+<p>The system helps identify inconsistencies in knowledge bases by:
+1. Converting all axioms to probabilistic facts with high confidence
+2. Running inference to identify unsatisfiable combinations
+3. Ranking axioms by their contribution to inconsistencies</p>
+<h3 id="73-hypothesis-testing">7.3 Hypothesis Testing</h3>
+<p>Boomer-Py supports hypothesis evaluation through comparative inference:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_hypotheses</span><span class="p">(</span><span class="n">kb</span><span class="p">:</span> <span class="n">KB</span><span class="p">,</span> <span class="n">hypothesis_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Fact</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Solution</span><span class="p">]:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">solutions</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="k">for</span> <span class="n">hypothesis</span> <span class="ow">in</span> <span class="n">hypothesis_list</span><span class="p">:</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="n">kb_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">kb</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        <span class="n">kb_copy</span><span class="o">.</span><span class="n">pfacts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PFact</span><span class="p">(</span><span class="n">hypothesis</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="n">solution</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kb_copy</span><span class="p">)</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="n">solutions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">solution</span><span class="o">.</span><span class="n">prior_prob</span><span class="p">,</span> <span class="n">hypothesis</span><span class="p">,</span> <span class="n">solution</span><span class="p">))</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">solutions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="8-discussion">8. Discussion</h2>
+<h3 id="81-strengths-and-limitations">8.1 Strengths and Limitations</h3>
+<p><strong>Strengths:</strong>
+- Principled integration of logical and probabilistic reasoning
+- Scalable through automatic partitioning
+- Flexible architecture supporting multiple reasoning strategies
+- Comprehensive test coverage and documentation</p>
+<p><strong>Limitations:</strong>
+- Exponential worst-case complexity for highly connected KBs
+- Limited to probabilistic facts (no probabilistic rules)
+- Requires careful probability calibration for optimal results</p>
+<h3 id="82-comparison-with-related-systems">8.2 Comparison with Related Systems</h3>
+<p>Compared to the original k-BOOM implementation:
+- <strong>Language</strong>: Python vs Prolog, improving accessibility
+- <strong>Scalability</strong>: Graph partitioning provides order-of-magnitude speedups
+- <strong>Usability</strong>: CLI and Python API vs Prolog predicates</p>
+<p>Compared to traditional ontology matchers:
+- <strong>Reasoning</strong>: Full DL reasoning vs structural matching
+- <strong>Probability</strong>: Bayesian inference vs threshold-based filtering
+- <strong>Consistency</strong>: Guaranteed logical consistency vs best-effort alignment</p>
+<h3 id="83-future-directions">8.3 Future Directions</h3>
+<p>Several extensions are under development:</p>
+<ol>
+<li><strong>Probabilistic rule support</strong>: Extending beyond facts to Horn rules with uncertainty</li>
+<li><strong>Incremental reasoning</strong>: Updating solutions as facts are added/removed</li>
+<li><strong>Parallel execution</strong>: Distributing partition solving across processors</li>
+<li><strong>Learning</strong>: Automatic probability estimation from training data</li>
+<li><strong>Web service</strong>: RESTful API for ontology reasoning as a service</li>
+</ol>
+<h2 id="9-conclusion">9. Conclusion</h2>
+<p>Boomer-Py provides a practical and scalable implementation of Bayesian ontology reasoning, combining the theoretical foundations of k-BOOM with algorithmic innovations for real-world applications. The graph partitioning approach enables processing of knowledge bases orders of magnitude larger than naive exponential search would permit, while maintaining completeness guarantees within partitions.</p>
+<p>The system's modular architecture, comprehensive CLI, and Python API make probabilistic ontology reasoning accessible to a broader community of practitioners. Applications spanning ontology alignment, knowledge base validation, and hypothesis testing demonstrate the utility of integrating probabilistic and logical reasoning.</p>
+<p>As knowledge graphs and ontologies continue to grow in size and complexity, tools that can handle uncertainty while maintaining logical rigor become increasingly important. Boomer-Py represents a step toward making such reasoning practical for real-world knowledge integration challenges.</p>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This work was supported by the Director, Office of Science, Office of Basic Energy Sciences, of the U.S. Department of Energy under Contract No. DE-AC02-05CH11231. We thank the Monarch Initiative team for valuable feedback and use cases that shaped the system design.</p>
+<h2 id="references">References</h2>
+<p>Costa, P. C. G., &amp; Laskey, K. B. (2006). PR-OWL: A framework for probabilistic ontologies. In Proceedings of the Fourth International Conference on Formal Ontology in Information Systems (pp. 237-249).</p>
+<p>Ding, Z., Peng, Y., &amp; Pan, R. (2006). BayesOWL: Uncertainty modeling in semantic web ontologies. In Soft Computing in Ontologies and Semantic Web (pp. 3-29). Springer.</p>
+<p>Euzenat, J., &amp; Shvaiko, P. (2013). Ontology matching (2nd ed.). Springer-Verlag.</p>
+<p>Jiménez-Ruiz, E., &amp; Grau, B. C. (2011). LogMap: Logic-based and scalable ontology matching. In The Semantic Web–ISWC 2011 (pp. 273-288). Springer.</p>
+<p>Mungall, C. J., Koehler, S., Robinson, P., Holmes, I., &amp; Haendel, M. (2019). k-BOOM: A Bayesian approach to ontology structure inference, with applications in disease ontology construction. bioRxiv, 048843.</p>
+<h2 id="appendix-a-algorithm-pseudocode">Appendix A: Algorithm Pseudocode</h2>
+<h3 id="a1-main-search-algorithm">A.1 Main Search Algorithm</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>function SEARCH(kb, config):
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    root ← TreeNode(selections=[], probability=1.0)
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    stack ← [root]
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    visited ← {root}
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    solutions ← []
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    while stack is not empty and not timeout:
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        node ← stack.pop()
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        if node.is_terminal():
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>            solutions.append(node)
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>            if len(solutions) ≥ config.max_solutions:
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>                break
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>        else:
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>            extensions ← GET_EXTENSIONS(node, kb)
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>            satisfiable ← [e for e in extensions if e.is_satisfiable()]
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>            # Sort by probability and add to stack
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>            satisfiable.sort(by probability, descending)
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>            stack.extend(satisfiable)
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    return solutions
+</code></pre></div>
+<h3 id="a2-partition-algorithm">A.2 Partition Algorithm</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>function PARTITION_KB(kb, max_size):
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    graph ← BUILD_GRAPH(kb)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    components ← STRONGLY_CONNECTED_COMPONENTS(graph)
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    for each component in components:
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        sub_kb ← EXTRACT_SUB_KB(kb, component)
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        if len(sub_kb.pfacts) &gt; max_size:
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>            # Recursively split large components
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>            yield from SPLIT_COMPONENT(sub_kb, max_size)
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        else:
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>            yield sub_kb
+</code></pre></div>
+<h2 id="appendix-b-data-format-specifications">Appendix B: Data Format Specifications</h2>
+<h3 id="b1-yaml-knowledge-base-format">B.1 YAML Knowledge Base Format</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Example</span><span class="nv"> </span><span class="s">KB&quot;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Demonstration</span><span class="nv"> </span><span class="s">knowledge</span><span class="nv"> </span><span class="s">base&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nt">facts</span><span class="p">:</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ProperSubClassOf</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cat</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">sup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mammal</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nt">pfacts</span><span class="p">:</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact</span><span class="p">:</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">      </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EquivalentTo</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cat</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">      </span><span class="nt">equivalent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Felis</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="nt">prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.9</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact</span><span class="p">:</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">      </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EquivalentTo</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">      </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dog</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">      </span><span class="nt">equivalent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Canis</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">    </span><span class="nt">prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.85</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">  </span><span class="nt">Cat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Domestic</span><span class="nv"> </span><span class="s">cat&quot;</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="w">  </span><span class="nt">Dog</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Domestic</span><span class="nv"> </span><span class="s">dog&quot;</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">  </span><span class="nt">Mammal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Class</span><span class="nv"> </span><span class="s">Mammalia&quot;</span>
+</code></pre></div>
+<h3 id="b2-ptable-tsv-format">B.2 Ptable TSV Format</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a># Probabilistic facts table
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a># fact_type arg1    arg2    probability
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>EquivalentTo    Cat Felis   0.9
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>EquivalentTo    Dog Canis   0.85
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>ProperSubClassOf    Cat Mammal  1.0
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>ProperSubClassOf    Dog Mammal  1.0
+</code></pre></div>
+<h2 id="appendix-c-performance-benchmarks">Appendix C: Performance Benchmarks</h2>
+<h3 id="c1-scalability-with-partition-size">C.1 Scalability with Partition Size</h3>
+<table>
+<thead>
+<tr>
+<th>Partition Size</th>
+<th>Time (ms)</th>
+<th>Memory (MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>8</td>
+<td>12</td>
+</tr>
+<tr>
+<td>10</td>
+<td>35</td>
+<td>15</td>
+</tr>
+<tr>
+<td>15</td>
+<td>280</td>
+<td>22</td>
+</tr>
+<tr>
+<td>20</td>
+<td>2100</td>
+<td>35</td>
+</tr>
+<tr>
+<td>25</td>
+<td>18000</td>
+<td>58</td>
+</tr>
+<tr>
+<td>30</td>
+<td>150000</td>
+<td>95</td>
+</tr>
+</tbody>
+</table>
+<h3 id="c2-impact-of-pruning-strategies">C.2 Impact of Pruning Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Nodes Explored</th>
+<th>Solutions Found</th>
+<th>Time (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td>1048576</td>
+<td>32768</td>
+<td>45.2</td>
+</tr>
+<tr>
+<td>Unsatisfiability cache</td>
+<td>125000</td>
+<td>32768</td>
+<td>8.3</td>
+</tr>
+<tr>
+<td>Probability ordering</td>
+<td>85000</td>
+<td>10000</td>
+<td>5.1</td>
+</tr>
+<tr>
+<td>Combined</td>
+<td>12000</td>
+<td>10000</td>
+<td>1.2</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.expand", "navigation.indexes", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
