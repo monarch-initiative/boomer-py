@@ -6,7 +6,7 @@
  * 0.5 confidence
  * 1.0000000000000005e-08 prior probability
  * 0.2 posterior probability
- * 0.0040 seconds elapsed
+ * 0.0042 seconds elapsed
 Grounding:
  * True fact_type='ProperSubClassOf' sub='R4' sup='R3' :: prior: 0.1 posterior: 1.0
  * True fact_type='ProperSubClassOf' sub='R3' sup='R2' :: prior: 0.1 posterior: 1.0

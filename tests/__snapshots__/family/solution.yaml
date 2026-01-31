@@ -4,7 +4,7 @@ number_of_satisfiable_combinations: 3
 number_of_combinations_explored_including_implicit: 102211
 number_of_components: null
 confidence: 0.9499999999999998
-prior_prob: 0.20761166194016065
+prior_prob: 0.2076116619401607
 posterior_prob: 0.9047619047619047
 proportion_of_combinations_explored: 0.3899040222167969
 ground_pfacts: []
@@ -160,7 +160,7 @@ solved_pfacts:
       sup: Sibling
     prob: 0.95
   truth_value: true
-  posterior_prob: 0.9523809523809523
+  posterior_prob: 1.0
   metadata: null
 - pfact:
     fact:
@@ -169,10 +169,10 @@ solved_pfacts:
       sup: Sibling
     prob: 0.95
   truth_value: true
-  posterior_prob: 1.0
+  posterior_prob: 0.9523809523809523
   metadata: null
 sub_solutions: []
-time_started: 1758781082.8743749
-time_finished: 1758781083.3383749
+time_started: 1769821848.9542558
+time_finished: 1769821849.431199
 timed_out: false
-time_elapsed: 0.46399998664855957
+time_elapsed: 0.4769432544708252

@@ -10,7 +10,7 @@ proportion_of_combinations_explored: 0.0
 ground_pfacts: []
 solved_pfacts: []
 sub_solutions: []
-time_started: 1758781080.6131022
-time_finished: 1758781080.61313
+time_started: 1769821846.516468
+time_finished: 1769821846.5165062
 timed_out: false
-time_elapsed: 2.7894973754882812e-05
+time_elapsed: 3.814697265625e-05

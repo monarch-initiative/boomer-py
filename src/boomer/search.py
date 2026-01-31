@@ -18,6 +18,9 @@ from boomer.model import (
     Grounding,
     Solution,
     SearchConfig,
+    PFactConsensus,
+    SynthesizedSolution,
+    AggregateStats,
 )
 from typing import Iterator, List, Set, Tuple
 
@@ -531,6 +534,197 @@ def evaluate_hypotheses(
     return solutions
 
 
+def compute_aggregate_stats(results: List[GridSearchResult]) -> AggregateStats:
+    """
+    Compute aggregate statistics across all grid search results.
+
+    >>> results = []  # Would normally have GridSearchResult instances
+    >>> # stats = compute_aggregate_stats(results)
+    """
+    import numpy as np
+
+    # Filter for results with evaluations if available
+    eval_results = [r for r in results if r.evaluation is not None]
+    all_results = results if not eval_results else eval_results
+
+    # Extract metrics
+    if eval_results:
+        precisions = [r.evaluation.precision for r in eval_results]
+        recalls = [r.evaluation.recall for r in eval_results]
+        f1s = [r.evaluation.f1 for r in eval_results]
+    else:
+        precisions = recalls = f1s = [0.0]
+
+    confidences = [r.result.confidence for r in all_results]
+    posterior_probs = [r.result.posterior_prob for r in all_results]
+    times = [r.result.time_elapsed or 0.0 for r in all_results]
+    combinations = [r.result.number_of_combinations for r in all_results]
+
+    # Calculate success and timeout rates
+    success_rate = sum(1 for r in all_results if r.result.confidence > 0) / len(all_results)
+    timeout_rate = sum(1 for r in all_results if r.result.timed_out) / len(all_results)
+
+    return AggregateStats(
+        mean_precision=np.mean(precisions) if precisions else 0.0,
+        std_precision=np.std(precisions) if precisions else 0.0,
+        mean_recall=np.mean(recalls) if recalls else 0.0,
+        std_recall=np.std(recalls) if recalls else 0.0,
+        mean_f1=np.mean(f1s) if f1s else 0.0,
+        std_f1=np.std(f1s) if f1s else 0.0,
+        mean_confidence=np.mean(confidences),
+        std_confidence=np.std(confidences),
+        mean_posterior_prob=np.mean(posterior_probs),
+        mean_time=np.mean(times),
+        std_time=np.std(times),
+        mean_combinations_explored=int(np.mean(combinations)),
+        success_rate=success_rate,
+        timeout_rate=timeout_rate,
+    )
+
+
+def synthesize_solution(kb: KB, results: List[GridSearchResult]) -> SynthesizedSolution:
+    """
+    Synthesize a consensus solution across all grid search results.
+
+    Creates a robust solution by aggregating evidence across all configurations,
+    identifying mappings that are consistently accepted regardless of parameter settings.
+    """
+    import numpy as np
+
+    # Collect acceptance data for each pfact
+    pfact_data: dict[int, dict] = defaultdict(lambda: {
+        "accepted_configs": [],
+        "posteriors": [],
+        "truth_values": [],
+    })
+
+    for config_idx, result in enumerate(results):
+        for pfact_idx, spfact in enumerate(result.result.solved_pfacts):
+            data = pfact_data[pfact_idx]
+            data["pfact"] = spfact.pfact
+            data["truth_values"].append(spfact.truth_value)
+
+            if spfact.truth_value:
+                data["accepted_configs"].append(config_idx)
+                data["posteriors"].append(spfact.posterior_prob)
+
+    # Build consensus for each pfact
+    pfact_consensus_list = []
+    high_confidence = []
+    uncertain = []
+
+    for pfact_idx in sorted(pfact_data.keys()):
+        data = pfact_data[pfact_idx]
+        n_accepted = len(data["accepted_configs"])
+        n_total = len(data["truth_values"])
+
+        acceptance_rate = n_accepted / n_total if n_total > 0 else 0.0
+
+        if data["posteriors"]:
+            mean_posterior = np.mean(data["posteriors"])
+            std_posterior = np.std(data["posteriors"])
+        else:
+            mean_posterior = 0.0
+            std_posterior = 0.0
+
+        # Consensus score weights acceptance rate by mean posterior probability
+        consensus_score = acceptance_rate * (mean_posterior if mean_posterior > 0 else 0.0)
+
+        consensus = PFactConsensus(
+            pfact=data["pfact"],
+            acceptance_rate=acceptance_rate,
+            mean_posterior=mean_posterior,
+            std_posterior=std_posterior,
+            consensus_score=consensus_score,
+            configurations_accepted=data["accepted_configs"],
+            configurations_total=n_total,
+        )
+        pfact_consensus_list.append(consensus)
+
+        # Categorize by consensus strength
+        if consensus_score > 0.8:
+            high_confidence.append(data["pfact"])
+        elif 0.4 <= consensus_score <= 0.6:
+            uncertain.append(data["pfact"])
+
+    return SynthesizedSolution(
+        pfact_consensus=pfact_consensus_list,
+        aggregation_method="weighted_vote",
+        min_consensus_threshold=0.5,
+        contributing_configs=len(results),
+        high_confidence_facts=high_confidence,
+        uncertain_facts=uncertain,
+    )
+
+
+def find_best_config(results: List[GridSearchResult]) -> Tuple[SearchConfig | None, str | None]:
+    """
+    Find the best configuration based on F1 score (or confidence if no evaluation).
+
+    Returns the config and the metric name used for selection.
+    """
+    if not results:
+        return None, None
+
+    # Prefer F1 score if evaluations are available
+    eval_results = [r for r in results if r.evaluation is not None]
+
+    if eval_results:
+        best = max(eval_results, key=lambda r: r.evaluation.f1)
+        return best.config, "f1_score"
+    else:
+        best = max(results, key=lambda r: r.result.confidence)
+        return best.config, "confidence"
+
+
+def find_pareto_frontier(results: List[GridSearchResult]) -> List[GridSearchResult]:
+    """
+    Find the Pareto frontier of configurations (speed vs accuracy trade-off).
+
+    A configuration is on the Pareto frontier if no other configuration is both
+    faster AND more accurate.
+    """
+    if not results:
+        return []
+
+    # For configurations with evaluation, use F1; otherwise use confidence
+    def get_accuracy(r: GridSearchResult) -> float:
+        if r.evaluation:
+            return r.evaluation.f1
+        return r.result.confidence
+
+    def get_speed(r: GridSearchResult) -> float:
+        # Inverse of time (higher is better/faster)
+        time = r.result.time_elapsed or 0.001
+        return 1.0 / time
+
+    pareto = []
+
+    for candidate in results:
+        candidate_acc = get_accuracy(candidate)
+        candidate_speed = get_speed(candidate)
+
+        # Check if dominated by any other result
+        dominated = False
+        for other in results:
+            if other is candidate:
+                continue
+
+            other_acc = get_accuracy(other)
+            other_speed = get_speed(other)
+
+            # Other dominates if better in both dimensions
+            if other_acc >= candidate_acc and other_speed >= candidate_speed:
+                if other_acc > candidate_acc or other_speed > candidate_speed:
+                    dominated = True
+                    break
+
+        if not dominated:
+            pareto.append(candidate)
+
+    return pareto
+
+
 def grid_search(
     kb: KB,
     grid: GridSearch,
@@ -581,4 +775,12 @@ def grid_search(
         else:
             results.append(GridSearchResult(config=cfg, result=sol))
     grid.results = results
+
+    # Compute aggregate statistics and synthesized solution
+    if results:
+        grid.aggregate_stats = compute_aggregate_stats(results)
+        grid.synthesized_solution = synthesize_solution(kb, results)
+        grid.best_config, grid.best_config_metric = find_best_config(results)
+        grid.pareto_frontier = find_pareto_frontier(results)
+
     return grid

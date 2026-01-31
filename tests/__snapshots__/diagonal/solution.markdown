@@ -6,7 +6,7 @@
  * 1.0 confidence
  * 0.0 prior probability
  * 0.0 posterior probability
- * 1.5843 seconds elapsed
+ * 1.5686 seconds elapsed
 Grounding:
  * None A0 (A 0) ≡ B0 (B 0) :: prior: 0.9 posterior: 0.0
  * None A1 (A 1) ≡ B1 (B 1) :: prior: 0.9 posterior: 0.0

@@ -414,6 +414,70 @@ class GridSearchResult(BaseModel):
     evaluation: EvalStats | None = None
     pr_filter: float | None = None
 
+
+class PFactConsensus(BaseModel):
+    """
+    Consensus information for a probabilistic fact across grid search configurations.
+
+    Tracks how consistently a fact is accepted/rejected across different parameter settings,
+    providing a robustness measure for each mapping.
+    """
+    pfact: PFact
+    acceptance_rate: float = Field(..., description="Proportion of configs that accepted this fact")
+    mean_posterior: float = Field(..., description="Mean posterior probability when accepted")
+    std_posterior: float = Field(..., description="Std dev of posterior probability")
+    consensus_score: float = Field(..., description="Weighted consensus score (0-1)")
+    configurations_accepted: List[int] = Field(default_factory=list, description="Indices of configs that accepted")
+    configurations_total: int = Field(..., description="Total number of configurations evaluated")
+
+
+class SynthesizedSolution(BaseModel):
+    """
+    A synthesized solution combining results across multiple grid search configurations.
+
+    Rather than picking a single "best" configuration, this aggregates evidence across
+    all configurations to identify robustly supported mappings.
+    """
+    pfact_consensus: List[PFactConsensus] = Field(..., description="Consensus for each pfact")
+    aggregation_method: str = Field("weighted_vote", description="Method used for aggregation")
+    min_consensus_threshold: float = Field(0.5, description="Minimum consensus score for acceptance")
+    contributing_configs: int = Field(..., description="Number of configs contributing to synthesis")
+    high_confidence_facts: List[PFact] = Field(default_factory=list, description="Facts accepted with >80% consensus")
+    uncertain_facts: List[PFact] = Field(default_factory=list, description="Facts with 40-60% consensus")
+
+
+class AggregateStats(BaseModel):
+    """
+    Aggregate statistics across all grid search configurations.
+
+    Provides summary statistics to understand performance distribution and stability.
+    """
+    # Performance metrics
+    mean_precision: float = Field(..., description="Mean precision across configs")
+    std_precision: float = Field(..., description="Std dev of precision")
+    mean_recall: float = Field(..., description="Mean recall across configs")
+    std_recall: float = Field(..., description="Std dev of recall")
+    mean_f1: float = Field(..., description="Mean F1 score across configs")
+    std_f1: float = Field(..., description="Std dev of F1 score")
+
+    # Solution quality metrics
+    mean_confidence: float = Field(..., description="Mean solution confidence")
+    std_confidence: float = Field(..., description="Std dev of confidence")
+    mean_posterior_prob: float = Field(..., description="Mean posterior probability")
+
+    # Computational metrics
+    mean_time: float = Field(..., description="Mean execution time (seconds)")
+    std_time: float = Field(..., description="Std dev of execution time")
+    mean_combinations_explored: int = Field(..., description="Mean combinations explored")
+
+    # Success metrics
+    success_rate: float = Field(..., description="Proportion of configs that found solutions")
+    timeout_rate: float = Field(..., description="Proportion of configs that timed out")
+
+    # Parameter impact analysis (optional)
+    parameter_impacts: Dict[str, float] | None = Field(None, description="Impact score for each parameter")
+
+
 class GridSearch(BaseModel):
     """
     A grid search is a grid search over a set of hyperparameters.
@@ -421,6 +485,11 @@ class GridSearch(BaseModel):
     configurations: list[SearchConfig]
     configuration_matrix: dict[str, list[Any]] | None = None
     results: list[GridSearchResult] | None = None
+    aggregate_stats: AggregateStats | None = None
+    synthesized_solution: SynthesizedSolution | None = None
+    best_config: SearchConfig | None = Field(None, description="Best config by chosen metric")
+    best_config_metric: str | None = Field(None, description="Metric used to select best config")
+    pareto_frontier: List[GridSearchResult] | None = Field(None, description="Pareto optimal configs (speed vs accuracy)")
 
     def to_flat_dicts(self) -> dict[str, Any]:
         """
