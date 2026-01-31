@@ -3263,7 +3263,7 @@
   ],
   "sub_solutions": [
     {
-      "name": "A 28; B 7; A 3; B 25; B 21; B 23; B 1; B 18; B 14; A 24; A 4; B 29; B 12; B 11; B 13; A 11; A 17; A 7; A 12; A 14; B 22; B 5; A 20; A 8; B 6; B 3; B 17; B 27; A 1; B 2; A 0; A 2; B 24; A 27; B 9; B 16; B 26; A 21; A 26; A 13; A 16; A 18; A 15; A 10; A 23; A 22; A 29; B 0; A 6; B 10; B 15; B 28; B 19; A 5; B 8; A 19; A 25; B 20; B 4; A 9",
+      "name": "A 10; A 20; B 0; A 11; B 16; B 19; B 26; A 3; B 10; A 2; B 20; B 17; B 7; A 27; A 14; A 21; B 21; B 22; A 25; B 27; A 29; A 6; A 4; B 14; B 9; A 15; A 22; A 26; A 28; B 6; A 23; B 24; B 23; B 3; B 25; B 13; B 1; A 13; A 16; A 7; A 18; A 5; B 11; A 8; B 29; B 18; B 12; B 4; A 0; A 24; B 2; A 12; A 19; B 8; A 1; A 17; B 5; B 28; B 15; A 9",
       "number_of_combinations": 10,
       "number_of_satisfiable_combinations": 0,
       "number_of_combinations_explored_including_implicit": 42089961335702929346570223616,
@@ -4498,13 +4498,13 @@
         }
       ],
       "sub_solutions": [],
-      "time_started": 1758781080.6893492,
-      "time_finished": 1758781081.179049,
+      "time_started": 1769821846.595148,
+      "time_finished": 1769821847.0860648,
       "timed_out": false,
-      "time_elapsed": 0.4896998405456543
+      "time_elapsed": 0.49091672897338867
     },
     {
-      "name": "A 28; B 7; A 3; B 25; B 21; B 23; B 1; B 18; B 14; A 24; B 29; A 4; B 12; B 11; B 13; A 17; A 11; A 7; B 22; A 12; A 14; B 5; A 20; A 8; B 17; B 6; B 3; B 27; A 1; B 2; A 0; A 9; A 27; B 24; B 26; B 16; B 9; A 2; A 21; A 26; A 13; A 16; A 18; A 15; A 10; A 23; A 22; B 0; B 28; B 10; B 15; A 6; B 19; A 5; A 25; A 19; B 8; B 20; B 4; A 29",
+      "name": "A 10; A 20; A 11; B 26; B 19; B 16; B 0; B 10; A 3; B 20; A 2; B 17; B 7; A 27; B 21; A 25; B 27; A 21; B 22; A 29; A 14; A 6; B 14; A 4; B 9; A 15; A 22; A 26; A 28; B 6; A 23; B 24; B 23; B 25; B 3; B 13; B 1; A 13; A 16; A 7; A 18; B 29; B 11; A 8; A 5; A 24; B 18; B 12; A 0; B 4; B 2; A 19; A 12; B 8; A 1; A 17; B 28; B 5; B 15; A 9",
       "number_of_combinations": 10,
       "number_of_satisfiable_combinations": 0,
       "number_of_combinations_explored_including_implicit": 1505335087771022414277335056384,
@@ -5817,13 +5817,13 @@
         }
       ],
       "sub_solutions": [],
-      "time_started": 1758781081.179117,
-      "time_finished": 1758781081.963768,
+      "time_started": 1769821847.08614,
+      "time_finished": 1769821847.819416,
       "timed_out": false,
-      "time_elapsed": 0.7846510410308838
+      "time_elapsed": 0.7332761287689209
     },
     {
-      "name": "A 28; B 7; B 25; B 21; B 23; B 18; B 14; A 24; A 4; B 29; B 12; B 11; B 13; A 11; A 17; A 7; A 12; A 14; B 22; B 5; A 20; A 8; B 6; B 17; B 3; B 27; A 1; B 2; A 0; B 24; A 27; B 9; B 16; B 26; A 21; A 26; A 13; A 16; A 18; A 15; A 10; A 23; A 22; A 29; A 6; B 10; B 15; B 28; B 19; A 5; B 8; A 19; A 25; B 20; B 4; A 9",
+      "name": "A 10; A 20; A 11; B 19; B 16; B 26; B 10; B 20; B 17; B 7; A 27; A 14; A 21; B 22; B 21; A 25; B 27; A 29; A 6; B 14; A 4; B 9; A 15; A 22; A 26; A 28; B 6; A 23; B 24; B 23; B 3; B 25; B 13; A 13; A 16; A 7; A 18; B 11; A 5; A 8; B 29; B 18; B 12; B 4; A 0; A 24; B 2; A 12; A 19; B 8; A 1; A 17; B 5; B 28; B 15; A 9",
       "number_of_combinations": 10,
       "number_of_satisfiable_combinations": 0,
       "number_of_combinations_explored_including_implicit": 130604389193744384,
@@ -6564,14 +6564,14 @@
         }
       ],
       "sub_solutions": [],
-      "time_started": 1758781081.963855,
-      "time_finished": 1758781082.273674,
+      "time_started": 1769821847.8194911,
+      "time_finished": 1769821848.163706,
       "timed_out": false,
-      "time_elapsed": 0.30981898307800293
+      "time_elapsed": 0.34421491622924805
     }
   ],
-  "time_started": 1758781080.6893492,
-  "time_finished": 1758781082.273674,
+  "time_started": 1769821846.595148,
+  "time_finished": 1769821848.163706,
   "timed_out": false,
-  "time_elapsed": 1.584324836730957
+  "time_elapsed": 1.5685579776763916
 }

@@ -2,11 +2,11 @@
  ## None
  * 10 combinations
  * 1 satisfiable combinations
- * 0.6408740282058716 proportion of combinations explored
+ * 0.6408778429031372 proportion of combinations explored
  * 1.0 confidence
- * 7.565974136736803e-06 prior probability
+ * 7.5659741367368e-06 prior probability
  * 1.0 posterior probability
- * 0.3916 seconds elapsed
+ * 0.4287 seconds elapsed
 Grounding:
  * True fact_type='EquivalentTo' sub='A' equivalent='B' :: prior: 0.9 posterior: 1.0
  * True fact_type='EquivalentTo' sub='A' equivalent='C' :: prior: 0.9 posterior: 1.0
@@ -20,8 +20,8 @@ Grounding:
  * True fact_type='EquivalentTo' sub='F' equivalent='G' :: prior: 0.9 posterior: 1.0
  * True fact_type='EquivalentTo' sub='F' equivalent='H' :: prior: 0.9 posterior: 1.0
  * True fact_type='EquivalentTo' sub='G' equivalent='H' :: prior: 0.9 posterior: 1.0
- * False fact_type='EquivalentTo' sub='X1' equivalent='X2' :: prior: 0.91 posterior: 0.0
- * True fact_type='EquivalentTo' sub='X2' equivalent='X3' :: prior: 0.91 posterior: 1.0
+ * True fact_type='EquivalentTo' sub='X1' equivalent='X2' :: prior: 0.91 posterior: 1.0
+ * False fact_type='EquivalentTo' sub='X2' equivalent='X3' :: prior: 0.91 posterior: 0.0
  * True fact_type='EquivalentTo' sub='X3' equivalent='X4' :: prior: 0.91 posterior: 1.0
  * True fact_type='EquivalentTo' sub='X4' equivalent='X5' :: prior: 0.91 posterior: 1.0
  * True fact_type='EquivalentTo' sub='X5' equivalent='X6' :: prior: 0.91 posterior: 1.0
