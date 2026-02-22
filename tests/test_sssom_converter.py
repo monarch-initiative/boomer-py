@@ -11,18 +11,17 @@ from boomer.model import (
     EquivalentTo,
     KB,
     MemberOfDisjointGroup,
-    PFact,
     ProperSubClassOf,
 )
 from boomer.sssom_converter import (
     DEFAULT_PREDICATE_PROBS,
-    PREDICATE_FACT_MAP,
     MappingRule,
     SSSOMConverterConfig,
     _make_fact,
     _resolve_transform,
     floor_ceil_transform,
     identity_transform,
+    load_sssom_config,
     parse_sssom_tsv,
     rescale_transform,
     sssom_mappings_to_pfacts,
@@ -34,10 +33,7 @@ from boomer.sssom_converter import (
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _fixture_path() -> str:
-    """Return the path to the SSSOM test fixture file."""
-    here = Path(os.path.dirname(os.path.abspath(__file__)))
-    return str(here / "input" / "test_mappings.sssom.tsv")
+SSSOM_FILE = Path(__file__).parent / "input" / "test_mappings.sssom.tsv"
 
 
 def _write_sssom(content: str) -> str:
@@ -59,13 +55,13 @@ class TestParseSssomTsv:
     """Tests for parse_sssom_tsv()."""
 
     def test_parse_fixture_metadata(self):
-        metadata, rows = parse_sssom_tsv(_fixture_path())
+        metadata, rows = parse_sssom_tsv(SSSOM_FILE)
         assert metadata["mapping_set_id"] == "https://example.org/test_mappings"
         assert metadata["mapping_set_description"] == "Test mappings for boomer SSSOM converter"
         assert "curie_map" in metadata
 
     def test_parse_fixture_rows(self):
-        _, rows = parse_sssom_tsv(_fixture_path())
+        _, rows = parse_sssom_tsv(SSSOM_FILE)
         assert len(rows) == 5
         assert rows[0]["subject_id"] == "ORDO:123"
         assert rows[0]["subject_label"] == "Alpha disease"
@@ -161,6 +157,10 @@ class TestResolveTransform:
     def test_none_defaults_to_identity(self):
         fn = _resolve_transform(None, None)
         assert fn(0.7) == 0.7
+
+    def test_unknown_transform_raises(self):
+        with pytest.raises(ValueError, match="Unknown confidence transform"):
+            _resolve_transform("nonexistent", None)
 
 
 # =========================================================================
@@ -496,13 +496,13 @@ class TestSssomMappingsToPfacts:
 
 class TestSssomToKb:
     def test_basic_conversion(self):
-        kb = sssom_to_kb(_fixture_path())
+        kb = sssom_to_kb(SSSOM_FILE)
         assert isinstance(kb, KB)
         assert kb.name == "https://example.org/test_mappings"
         assert kb.description == "Test mappings for boomer SSSOM converter"
 
     def test_pfacts_count_and_types(self):
-        kb = sssom_to_kb(_fixture_path())
+        kb = sssom_to_kb(SSSOM_FILE)
         # 5 rows in fixture, all have known predicates
         assert len(kb.pfacts) == 5
 
@@ -514,7 +514,7 @@ class TestSssomToKb:
         assert len(sub_pfacts) == 2
 
     def test_probabilities(self):
-        kb = sssom_to_kb(_fixture_path())
+        kb = sssom_to_kb(SSSOM_FILE)
         prob_map = {
             (type(pf.fact).__name__, _fact_key(pf.fact)): pf.prob
             for pf in kb.pfacts
@@ -525,7 +525,7 @@ class TestSssomToKb:
         assert prob_map[("EquivalentTo", ("ORDO:789", "MONDO:0005678"))] == 0.99
 
     def test_labels_extracted(self):
-        kb = sssom_to_kb(_fixture_path())
+        kb = sssom_to_kb(SSSOM_FILE)
         assert kb.labels["ORDO:123"] == "Alpha disease"
         assert kb.labels["MONDO:0001234"] == "Alpha disorder"
         assert kb.labels["ORDO:789"] == "Gamma disease"
@@ -534,7 +534,7 @@ class TestSssomToKb:
         assert kb.labels["ORDO:456"] == "Beta disease"
 
     def test_disjoint_groups(self):
-        kb = sssom_to_kb(_fixture_path())
+        kb = sssom_to_kb(SSSOM_FILE)
         groups = {(f.sub, f.group) for f in kb.facts if isinstance(f, MemberOfDisjointGroup)}
         # Check that entities get their prefix as group
         assert ("ORDO:123", "ORDO") in groups
@@ -543,14 +543,14 @@ class TestSssomToKb:
 
     def test_disjoint_groups_disabled(self):
         cfg = SSSOMConverterConfig(auto_disjoint_groups=False)
-        kb = sssom_to_kb(_fixture_path(), cfg)
+        kb = sssom_to_kb(SSSOM_FILE, cfg)
         assert len(kb.facts) == 0
 
     def test_with_rules(self):
         cfg = SSSOMConverterConfig(
             rules=[MappingRule(subject_source="OMIM", probability=0.5)],
         )
-        kb = sssom_to_kb(_fixture_path(), cfg)
+        kb = sssom_to_kb(SSSOM_FILE, cfg)
         # The OMIM row should have probability overridden
         omim_pfacts = [
             pf for pf in kb.pfacts
@@ -563,7 +563,7 @@ class TestSssomToKb:
         cfg = SSSOMConverterConfig(
             rules=[MappingRule(subject_source="OMIM", skip=True)],
         )
-        kb = sssom_to_kb(_fixture_path(), cfg)
+        kb = sssom_to_kb(SSSOM_FILE, cfg)
         omim_pfacts = [
             pf for pf in kb.pfacts
             if isinstance(pf.fact, EquivalentTo) and pf.fact.sub == "OMIM:100100"
@@ -575,7 +575,7 @@ class TestSssomToKb:
             default_confidence_transform="floor_ceil",
             default_transform_params={"floor": 0.1, "ceil": 0.9},
         )
-        kb = sssom_to_kb(_fixture_path(), cfg)
+        kb = sssom_to_kb(SSSOM_FILE, cfg)
         # Row 3: conf=0.99, clamped to 0.9
         row3_pfacts = [
             pf for pf in kb.pfacts
@@ -591,15 +591,9 @@ class TestSssomToKb:
             subject_prefixes=["ORDO"],
             object_prefixes=["MONDO"],
         )
-        kb = sssom_to_kb(_fixture_path(), cfg)
+        kb = sssom_to_kb(SSSOM_FILE, cfg)
         # Only ORDO subjects should remain (rows 1, 2, 3, 5)
         # OMIM:100100 subject (row 4) should be filtered out
-        for pf in kb.pfacts:
-            sub = pf.fact.sub
-            # For broad match the sub is reversed, but for our fixture:
-            # Row 2 broadMatch: sub=MONDO:0001234, sup=ORDO:456
-            # That's fine, the filter is on the *row* subject/object
-            pass
         omim_pfacts = [
             pf for pf in kb.pfacts
             if _has_entity(pf.fact, "OMIM:100100")
@@ -608,7 +602,7 @@ class TestSssomToKb:
 
     def test_min_probability_filtering(self):
         cfg = SSSOMConverterConfig(min_probability=0.5)
-        kb = sssom_to_kb(_fixture_path(), cfg)
+        kb = sssom_to_kb(SSSOM_FILE, cfg)
         # Row 5 has confidence=0.4, should be filtered
         for pf in kb.pfacts:
             assert pf.prob >= 0.5
@@ -631,7 +625,7 @@ class TestSssomToKb:
 
     def test_broad_match_direction_in_kb(self):
         """broadMatch should produce reversed ProperSubClassOf."""
-        kb = sssom_to_kb(_fixture_path())
+        kb = sssom_to_kb(SSSOM_FILE)
         broad_pfacts = [
             pf for pf in kb.pfacts
             if isinstance(pf.fact, ProperSubClassOf)
@@ -644,7 +638,7 @@ class TestSssomToKb:
 
     def test_narrow_match_direction_in_kb(self):
         """narrowMatch should produce non-reversed ProperSubClassOf."""
-        kb = sssom_to_kb(_fixture_path())
+        kb = sssom_to_kb(SSSOM_FILE)
         narrow_pfacts = [
             pf for pf in kb.pfacts
             if isinstance(pf.fact, ProperSubClassOf)
@@ -655,6 +649,66 @@ class TestSssomToKb:
         # => ProperSubClassOf(sub=ORDO:123, sup=MONDO:0005678)
         assert len(narrow_pfacts) == 1
         assert narrow_pfacts[0].prob == 0.4
+
+    def test_ids_without_colons(self):
+        """IDs without colons should not crash disjoint group generation."""
+        content = (
+            "subject_id\tobject_id\tpredicate_id\tconfidence\n"
+            "bare_id\tB:2\tskos:exactMatch\t0.9\n"
+        )
+        path = _write_sssom(content)
+        kb = sssom_to_kb(path)
+        # bare_id has no colon, should be skipped for disjoint groups
+        disjoint_subs = {f.sub for f in kb.facts if isinstance(f, MemberOfDisjointGroup)}
+        assert "bare_id" not in disjoint_subs
+        assert "B:2" in disjoint_subs
+        assert len(kb.pfacts) == 1
+        os.unlink(path)
+
+
+# =========================================================================
+# Task 5: Config file loading and integration
+# =========================================================================
+
+SSSOM_CONFIG_FILE = Path(__file__).parent / "input" / "sssom_config.yaml"
+
+
+class TestLoadSssomConfig:
+    def test_load_from_file(self):
+        config = load_sssom_config(SSSOM_CONFIG_FILE)
+        assert config.predicate_defaults["skos:exactMatch"] == 0.85
+        assert config.default_confidence_transform == "floor_ceil"
+        assert len(config.rules) == 2
+        assert config.rules[0].subject_source == "OMIM"
+        assert config.rules[0].probability == 0.95
+        assert config.rules[1].mapping_justification == "semapv:LexicalMatching"
+        assert config.min_probability == 0.05
+
+    def test_full_pipeline_with_config_file(self):
+        """SSSOM file + config file -> KB with correct probability overrides."""
+        config = load_sssom_config(SSSOM_CONFIG_FILE)
+        kb = sssom_to_kb(SSSOM_FILE, config=config)
+
+        # OMIM row: rule 1 applies (subject_source=OMIM), hard override prob=0.95
+        omim_pfacts = [p for p in kb.pfacts if isinstance(p.fact, EquivalentTo)
+                       and p.fact.sub == "OMIM:100100"]
+        assert len(omim_pfacts) == 1
+        assert omim_pfacts[0].prob == pytest.approx(0.95)
+
+        # ORDO:123 exactMatch MONDO:0001234: confidence=0.95, justification=LexicalMatching
+        # Rule 2 matches (LexicalMatching): rescale(0.95, low=0.2, high=0.7)
+        # = 0.2 + 0.95 * 0.5 = 0.675
+        ordo_exact = [p for p in kb.pfacts if isinstance(p.fact, EquivalentTo)
+                      and p.fact.sub == "ORDO:123" and p.fact.equivalent == "MONDO:0001234"]
+        assert len(ordo_exact) == 1
+        assert ordo_exact[0].prob == pytest.approx(0.675)
+
+        # ORDO:789 exactMatch MONDO:0005678: confidence=0.99, justification=ManualMappingCuration
+        # No rule matches -> default transform: floor_ceil(0.99, floor=0.05, ceil=0.95) = 0.95
+        manual_exact = [p for p in kb.pfacts if isinstance(p.fact, EquivalentTo)
+                        and p.fact.sub == "ORDO:789"]
+        assert len(manual_exact) == 1
+        assert manual_exact[0].prob == pytest.approx(0.95)
 
 
 # ---------------------------------------------------------------------------

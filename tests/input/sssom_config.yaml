@@ -1,0 +1,21 @@
+predicate_defaults:
+  skos:exactMatch: 0.85
+  skos:broadMatch: 0.6
+  skos:narrowMatch: 0.6
+
+default_confidence_transform: floor_ceil
+default_transform_params:
+  floor: 0.05
+  ceil: 0.95
+
+rules:
+  - subject_source: OMIM
+    probability: 0.95
+  - mapping_justification: "semapv:LexicalMatching"
+    confidence_transform: rescale
+    transform_params:
+      low: 0.2
+      high: 0.7
+
+auto_disjoint_groups: true
+min_probability: 0.05

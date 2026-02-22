@@ -21,6 +21,7 @@ package = true
 
 [project.scripts]
 boomer-cli = "boomer.cli:main"
+pyboomer = "boomer.cli:main"
 
 [dependency-groups]
 dev = [

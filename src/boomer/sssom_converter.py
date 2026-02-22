@@ -14,6 +14,7 @@ import csv
 import io
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import yaml
 from pydantic import BaseModel, Field
@@ -116,9 +117,9 @@ def rescale_transform(low: float, high: float) -> ConfidenceTransformFn:
 # ---------------------------------------------------------------------------
 
 NAMED_TRANSFORMS: dict[str, Callable[..., ConfidenceTransformFn]] = {
-    "identity": lambda **_kw: identity_transform,
-    "floor_ceil": lambda floor=0.01, ceil=0.99, **_kw: floor_ceil_transform(floor, ceil),
-    "rescale": lambda low=0.1, high=0.9, **_kw: rescale_transform(low, high),
+    "identity": lambda: identity_transform,
+    "floor_ceil": lambda floor=0.01, ceil=0.99: floor_ceil_transform(floor, ceil),
+    "rescale": lambda low=0.1, high=0.9: rescale_transform(low, high),
 }
 
 
@@ -137,7 +138,12 @@ def _resolve_transform(
     """
     if name is None:
         name = "identity"
-    factory = NAMED_TRANSFORMS[name]
+    factory = NAMED_TRANSFORMS.get(name)
+    if factory is None:
+        raise ValueError(
+            f"Unknown confidence transform: {name!r}. "
+            f"Available: {sorted(NAMED_TRANSFORMS)}"
+        )
     return factory(**(params or {}))
 
 
@@ -226,7 +232,7 @@ class SSSOMConverterConfig(BaseModel):
 # ---------------------------------------------------------------------------
 
 
-def parse_sssom_tsv(path: str | Path) -> tuple[dict, list[dict[str, str]]]:
+def parse_sssom_tsv(path: str | Path) -> tuple[dict[str, Any], list[dict[str, str]]]:
     """Parse a SSSOM TSV file into metadata and row dicts.
 
     SSSOM files have an optional YAML metadata header where every line
@@ -273,7 +279,7 @@ def parse_sssom_tsv(path: str | Path) -> tuple[dict, list[dict[str, str]]]:
             tsv_lines.append(line)
 
     # Parse YAML metadata
-    metadata: dict = {}
+    metadata: dict[str, Any] = {}
     if meta_lines:
         yaml_text = "\n".join(meta_lines)
         parsed = yaml.safe_load(yaml_text)
@@ -300,8 +306,8 @@ def _make_fact(
 ) -> EquivalentTo | ProperSubClassOf | None:
     """Create a boomer ``Fact`` from an SSSOM predicate and entity pair.
 
-    ``skos:narrowMatch`` reverses subject/object for ``ProperSubClassOf``
-    because "A narrowMatch B" means A is more specific, i.e. A subClassOf B.
+    ``skos:broadMatch`` reverses subject/object for ``ProperSubClassOf``
+    because "A broadMatch B" means A is broader, i.e. B subClassOf A.
 
     Returns ``None`` for unrecognised predicates.
 
@@ -521,7 +527,7 @@ def sssom_to_kb(
         for row in rows:
             for col in ("subject_id", "object_id"):
                 eid = row.get(col, "")
-                if eid and eid not in seen_ids:
+                if eid and eid not in seen_ids and ":" in eid:
                     seen_ids.add(eid)
                     prefix = id_prefix(eid)
                     facts.append(MemberOfDisjointGroup(sub=eid, group=prefix))
@@ -537,3 +543,22 @@ def sssom_to_kb(
         name=name,
         description=description,
     )
+
+
+# ---------------------------------------------------------------------------
+# Config file I/O
+# ---------------------------------------------------------------------------
+
+
+def load_sssom_config(path: str | Path) -> SSSOMConverterConfig:
+    """Load a :class:`SSSOMConverterConfig` from a YAML file.
+
+    >>> config = load_sssom_config("tests/input/sssom_config.yaml")
+    >>> config.predicate_defaults["skos:exactMatch"]
+    0.85
+    >>> len(config.rules)
+    2
+    """
+    path = Path(path)
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    return SSSOMConverterConfig.model_validate(data)
