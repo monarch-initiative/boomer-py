@@ -1,0 +1,14 @@
+#curie_map:
+#  MONDO: http://purl.obolibrary.org/obo/MONDO_
+#  ORDO: http://www.orpha.net/ORDO/Orphanet_
+#  OMIM: https://omim.org/entry/
+#  skos: http://www.w3.org/2004/02/skos/core#
+#  semapv: https://w3id.org/semapv/vocab/
+#mapping_set_id: https://example.org/test_mappings
+#mapping_set_description: Test mappings for boomer SSSOM converter
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence
+ORDO:123	Alpha disease	skos:exactMatch	MONDO:0001234	Alpha disorder	semapv:LexicalMatching	0.95
+ORDO:456	Beta disease	skos:broadMatch	MONDO:0001234	Alpha disorder	semapv:LexicalMatching	0.8
+ORDO:789	Gamma disease	skos:exactMatch	MONDO:0005678	Gamma disorder	semapv:ManualMappingCuration	0.99
+OMIM:100100	Delta syndrome	skos:exactMatch	MONDO:0001234	Alpha disorder	semapv:LexicalMatching	0.7
+ORDO:123	Alpha disease	skos:narrowMatch	MONDO:0005678	Gamma disorder	semapv:SemanticSimilarityThresholdMatching	0.4
