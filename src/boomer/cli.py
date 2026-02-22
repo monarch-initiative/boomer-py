@@ -34,7 +34,7 @@ from boomer.renderers.renderer import Renderer
 from boomer.evaluator import evaluate_facts
 from boomer.model import GridSearch
 from boomer.search import grid_search
-from boomer.splitter import extract_sub_kb
+from boomer.splitter import extract_neighborhood, extract_sub_kb
 
 logger = logging.getLogger(__name__)
 
@@ -491,7 +491,9 @@ def convert(input_file, output_file, input_format, output_format, name, descript
 
 @cli.command()
 @click.argument("input_file")
-@click.argument("ids_file")
+@click.argument("ids_file", required=False, default=None)
+@click.option("--id", "entity_ids_cli", multiple=True, help="Entity ID seed (repeatable)")
+@click.option("--max-hops", "-H", type=int, default=None, help="Max hops from seed (default: unlimited)")
 @click.option("--output-file", "-o", type=click.Path(writable=True), required=True, help="Output file")
 @click.option(
     "--input-format",
@@ -513,22 +515,24 @@ def convert(input_file, output_file, input_format, output_format, name, descript
     "-D",
     help="Description for the extracted knowledge base",
 )
-def extract(input_file, ids_file, output_file, input_format, output_format, name, description):
+def extract(input_file, ids_file, entity_ids_cli, max_hops, output_file, input_format, output_format, name, description):
     """
-    Extract a sub-KB from a KB using a file containing entity IDs.
+    Extract a sub-KB from a KB by entity IDs or seed neighborhood.
 
-    Takes a knowledge base and a file containing entity identifiers (one per line)
-    and extracts a sub-KB containing only facts and pfacts that involve those entities.
+    Entity IDs can be provided via --id flags (repeatable) or a file (one ID
+    per line).  When --id is used, the neighborhood of those seed entities is
+    extracted — all transitively connected entities are included.  Use
+    --max-hops to limit the BFS depth.
 
-    The IDS_FILE should contain entity identifiers, one per line.
-    
-    Supports:
-    - ptable (TSV probability tables)
-    - json (JSON KB format)
-    - yaml (YAML KB format)
-    - py (Python module paths like boomer.datasets.animals)
+    \b
+    Examples:
+      # Seed-based neighborhood extraction
+      pyboomer extract kb.yaml --id MONDO:0001234 -o cluster.yaml
+      pyboomer extract kb.yaml --id MONDO:0001234 --id ORDO:123 -o cluster.yaml
+      pyboomer extract kb.yaml --id MONDO:0001234 --max-hops 2 -o cluster.yaml
 
-    Input and output formats are auto-detected from file extensions if not specified.
+      # File-based exact extraction (legacy)
+      pyboomer extract kb.yaml ids.txt -o sub.yaml
     """
     # Load the original KB
     try:
@@ -536,31 +540,37 @@ def extract(input_file, ids_file, output_file, input_format, output_format, name
     except (ValueError, ImportError, AttributeError, FileNotFoundError) as e:
         raise click.ClickException(f"Failed to load '{input_file}': {e}")
 
-    # Read entity IDs from file
-    try:
-        with open(ids_file, 'r') as f:
-            entity_ids = {line.strip() for line in f if line.strip()}
-    except FileNotFoundError:
-        raise click.ClickException(f"IDs file '{ids_file}' not found")
-    except Exception as e:
-        raise click.ClickException(f"Failed to read IDs file '{ids_file}': {e}")
+    # Collect entity IDs from --id flags and/or IDS_FILE
+    entity_ids: set[str] = set(entity_ids_cli)
+
+    if ids_file is not None:
+        try:
+            with open(ids_file, 'r') as f:
+                entity_ids |= {line.strip() for line in f if line.strip()}
+        except FileNotFoundError:
+            raise click.ClickException(f"IDs file '{ids_file}' not found")
 
     if not entity_ids:
-        raise click.ClickException(f"No entity IDs found in '{ids_file}'")
+        raise click.ClickException("No entity IDs provided. Use --id flags or an IDS_FILE argument.")
 
     # Extract sub-KB
-    sub_kb = extract_sub_kb(kb, entity_ids, include_labels=True)
-    
+    if entity_ids_cli or max_hops is not None:
+        # Neighborhood mode: expand from seeds
+        sub_kb = extract_neighborhood(kb, entity_ids, max_hops=max_hops)
+    else:
+        # Legacy file mode: exact entity match
+        sub_kb = extract_sub_kb(kb, entity_ids, include_labels=True)
+
     # Set name and description if provided
     if name:
         sub_kb.name = name
     elif not sub_kb.name:
         sub_kb.name = f"Extracted from {Path(input_file).name}"
-    
+
     if description:
         sub_kb.description = description
     elif not sub_kb.description:
-        sub_kb.description = f"Sub-KB extracted from {input_file} using {len(entity_ids)} entities"
+        sub_kb.description = f"Sub-KB extracted from {input_file} using {len(entity_ids)} seed(s)"
 
     # Auto-detect output format if not specified
     output_path = Path(output_file)
@@ -589,7 +599,7 @@ def extract(input_file, ids_file, output_file, input_format, output_format, name
         )
         click.echo(f"Original KB: {len(kb.facts)} facts, {len(kb.pfacts)} pfacts")
         click.echo(f"Extracted KB: {len(sub_kb.facts)} facts, {len(sub_kb.pfacts)} pfacts")
-        click.echo(f"Used {len(entity_ids)} entity IDs from {ids_file}")
+        click.echo(f"Seeds: {sorted(entity_ids)}")
     else:
         raise click.ClickException(f"Unsupported output format: {output_format}")
 

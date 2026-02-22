@@ -87,6 +87,62 @@ def extract_sub_kb(kb: KB, component: Set[EntityIdentifier], include_labels: boo
         )
     return sub_kb
 
+def extract_neighborhood(
+    kb: KB,
+    seeds: set[EntityIdentifier],
+    max_hops: int | None = None,
+) -> KB:
+    """Extract a sub-KB containing *seeds* and all transitively connected entities.
+
+    Builds an undirected view of the entity graph (from both facts and pfacts)
+    and finds every entity reachable from any seed.  An optional *max_hops*
+    parameter limits the BFS depth.
+
+    After the reachable entity set is determined, ``extract_sub_kb`` is used
+    to collect all facts, pfacts, and labels that touch those entities.
+
+    >>> from boomer.model import KB, PFact, EquivalentTo, SubClassOf
+    >>> kb = KB(
+    ...     pfacts=[
+    ...         PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=0.9),
+    ...         PFact(fact=EquivalentTo(sub="B", equivalent="C"), prob=0.8),
+    ...         PFact(fact=EquivalentTo(sub="D", equivalent="E"), prob=0.7),
+    ...     ],
+    ...     labels={"A": "alpha", "B": "beta", "C": "gamma", "D": "delta", "E": "epsilon"},
+    ... )
+    >>> sub = extract_neighborhood(kb, {"A"})
+    >>> sorted(sub.labels)
+    ['A', 'B', 'C']
+    >>> len(sub.pfacts)
+    2
+
+    >>> sub2 = extract_neighborhood(kb, {"A"}, max_hops=1)
+    >>> sorted(sub2.labels)
+    ['A', 'B']
+    """
+    graph = kb_to_graph(kb)
+    undirected = graph.to_undirected()
+
+    reachable: set[EntityIdentifier] = set()
+    if max_hops is None:
+        # Full transitive closure — collect entire connected component(s)
+        for seed in seeds:
+            if seed in undirected:
+                reachable |= nx.node_connected_component(undirected, seed)
+            else:
+                reachable.add(seed)
+    else:
+        # BFS with hop limit
+        for seed in seeds:
+            if seed not in undirected:
+                reachable.add(seed)
+                continue
+            lengths = nx.single_source_shortest_path_length(undirected, seed, cutoff=max_hops)
+            reachable |= set(lengths)
+
+    return extract_sub_kb(kb, reachable, include_labels=True)
+
+
 def partition_kb(kb: KB, max_pfacts_per_clique: int | None = None, min_pfacts_per_clique: int = 5) -> Iterator[KB]:
     """
     Partition a KB into sub-KBs based on strongly connected components of the entity graph.
