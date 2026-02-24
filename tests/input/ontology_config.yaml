@@ -1,0 +1,10 @@
+xref_default_probability: 0.8
+xref_prefix_probabilities:
+  MESH: 0.6
+  EXT: 0.8
+skos_exact_match_prob: 0.95
+skos_close_match_prob: 0.65
+skip_obsolete: true
+include_xrefs: true
+include_skos: true
+auto_disjoint_groups: true
