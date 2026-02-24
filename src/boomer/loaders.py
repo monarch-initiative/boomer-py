@@ -16,7 +16,7 @@ from boomer.model import KB
 class KBLoader:
     """Unified KB loader supporting multiple formats and sources."""
     
-    SUPPORTED_FORMATS = ["ptable", "json", "yaml", "py"]
+    SUPPORTED_FORMATS = ["ptable", "json", "yaml", "py", "obo", "owl"]
     
     @classmethod
     def detect_format(cls, input_path: Union[str, Path]) -> str:
@@ -61,7 +61,11 @@ class KBLoader:
             return "yaml"
         elif ext == ".py":
             return "py"
-        
+        elif ext == ".obo":
+            return "obo"
+        elif ext in [".owl", ".owx", ".ofn"]:
+            return "owl"
+
         # Check for Python module path (contains dots, no path separators, not a known file extension)
         if ("." in input_str and 
             "/" not in input_str and 
@@ -116,6 +120,8 @@ class KBLoader:
             return cls._load_structured(input_path, format_name)
         elif format_name == "py":
             return cls._load_python_module(input_path, name, description)
+        elif format_name in ["obo", "owl"]:
+            return cls._load_ontology(input_path)
         else:
             raise ValueError(f"Unsupported format: {format_name}")
     
@@ -129,6 +135,12 @@ class KBLoader:
         """Load KB from JSON or YAML format."""
         return load_kb_file(str(input_path), format_name)
     
+    @classmethod
+    def _load_ontology(cls, input_path: Union[str, Path]) -> KB:
+        """Load KB from OBO or OWL ontology file."""
+        from boomer.ontology_converter import ontology_to_kb
+        return ontology_to_kb(input_path)
+
     @classmethod
     def _load_python_module(cls, module_path: Union[str, Path], name: Optional[str], description: Optional[str]) -> KB:
         """

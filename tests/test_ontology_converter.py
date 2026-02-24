@@ -3,7 +3,10 @@
 from pathlib import Path
 
 import pytest
+from click.testing import CliRunner
 
+from boomer.cli import cli
+from boomer.loaders import KBLoader, load_kb_smart
 from boomer.ontology_converter import (
     OntologyConverterConfig,
     _has_pyhornedowl,
@@ -298,3 +301,55 @@ class TestOntologyToKb:
 )
 class TestOwlToKb:
     pass  # OWL tests would go here when OWL fixtures are available
+
+
+# ---------------------------------------------------------------------------
+# Loader integration tests
+# ---------------------------------------------------------------------------
+
+
+class TestLoaderIntegration:
+    def test_detect_format_obo(self):
+        assert KBLoader.detect_format("test.obo") == "obo"
+
+    def test_detect_format_owl(self):
+        assert KBLoader.detect_format("test.owl") == "owl"
+        assert KBLoader.detect_format("test.owx") == "owl"
+        assert KBLoader.detect_format("test.ofn") == "owl"
+
+    def test_load_kb_smart_obo(self):
+        kb = load_kb_smart(OBO_FIXTURE)
+        assert kb.name == "test-ontology"
+        assert len(kb.pfacts) > 0
+
+    def test_load_kb_explicit_format(self):
+        kb = load_kb_smart(OBO_FIXTURE, format_name="obo")
+        assert kb.name == "test-ontology"
+
+
+# ---------------------------------------------------------------------------
+# CLI integration tests
+# ---------------------------------------------------------------------------
+
+
+class TestCLIIntegration:
+    def test_convert_obo_to_yaml(self, tmp_path):
+        out = tmp_path / "out.yaml"
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "convert", str(OBO_FIXTURE), "-o", str(out),
+        ])
+        assert result.exit_code == 0, result.output
+        assert out.exists()
+        # Reload and verify
+        kb = load_kb_smart(str(out), format_name="yaml")
+        assert kb is not None
+
+    def test_convert_obo_to_json(self, tmp_path):
+        out = tmp_path / "out.json"
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "convert", str(OBO_FIXTURE), "-o", str(out),
+        ])
+        assert result.exit_code == 0, result.output
+        assert out.exists()
