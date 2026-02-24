@@ -251,10 +251,10 @@ def obo_to_kb(
     >>> kb = obo_to_kb("tests/input/test_ontology.obo")
     >>> kb.name
     'test-ontology'
-    >>> any(f.fact.fact_type == "ProperSubClassOf" for f in kb.pfacts)
-    False
-    >>> len([f for f in kb.facts if hasattr(f, 'sup')])
+    >>> len([f for f in kb.facts if f.fact_type == "ProperSubClassOf"])
     2
+    >>> len(kb.pfacts) > 0
+    True
     """
     if config is None:
         config = OntologyConverterConfig()
