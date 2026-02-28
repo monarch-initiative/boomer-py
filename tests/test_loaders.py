@@ -98,7 +98,7 @@ class TestKBLoader:
             
     def test_supported_formats(self):
         """Test that all supported formats are listed."""
-        expected = {"ptable", "json", "yaml", "py", "obo", "owl"}
+        expected = {"ptable", "json", "yaml", "py", "obo", "owl", "sssom"}
         assert set(KBLoader.SUPPORTED_FORMATS) == expected
 
 

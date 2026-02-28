@@ -6,15 +6,17 @@ Structural axioms (is_a, equivalent_to, disjoint_from) become hard facts;
 xrefs and SKOS mappings become probabilistic facts.
 
 OBO parsing is hand-rolled with no external dependencies.
-OWL support requires the optional ``py-horned-owl`` package.
+OWL support uses ``py-horned-owl``.
 """
 
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
+import pyhornedowl
 import yaml
 from pydantic import BaseModel, Field
+from pyhornedowl import model as owlmodel
 
 from boomer.io import id_prefix
 from boomer.model import (
@@ -337,18 +339,8 @@ def obo_to_kb(
 
 
 # ---------------------------------------------------------------------------
-# OWL → KB conversion (optional py-horned-owl)
+# OWL → KB conversion (py-horned-owl)
 # ---------------------------------------------------------------------------
-
-
-def _has_pyhornedowl() -> bool:
-    """Check whether ``pyhornedowl`` is importable."""
-    try:
-        import pyhornedowl  # noqa: F401
-        return True
-    except ImportError:
-        return False
-
 
 # OBO-style IRI pattern: http://purl.obolibrary.org/obo/GO_0008150 → GO:0008150
 _OBO_IRI_RE = re.compile(r"^http://purl\.obolibrary\.org/obo/(\w+?)_(.+)$")
@@ -398,9 +390,9 @@ def owl_to_kb(
 ) -> KB:
     """Convert an OWL file into a boomer :class:`~boomer.model.KB`.
 
-    Requires the optional ``py-horned-owl`` package. Extracts SubClassOf,
-    EquivalentClasses, DisjointClasses axioms as hard facts, and
-    annotation assertions for labels, xrefs, and SKOS mappings.
+    Extracts SubClassOf, EquivalentClasses, DisjointClasses axioms as
+    hard facts, and annotation assertions for labels, xrefs, and SKOS
+    mappings.
 
     Args:
         path: Path to the OWL file (.owl, .owx, .ofn).
@@ -408,29 +400,16 @@ def owl_to_kb(
 
     Returns:
         A :class:`~boomer.model.KB` ready for probabilistic reasoning.
-
-    Raises:
-        ImportError: If ``py-horned-owl`` is not installed.
     """
-    try:
-        import pyhornedowl
-        from pyhornedowl import model as owlmodel
-    except ImportError:
-        raise ImportError(
-            "py-horned-owl is required for OWL support. "
-            "Install with: pip install 'boomer[owl]'"
-        )
-
     if config is None:
         config = OntologyConverterConfig()
 
     onto = pyhornedowl.open_ontology(str(path))
 
-    # Build prefix map from ontology
-    prefix_map: dict[str, str] = {}
-    for prefix, iri in onto.prefix_mapping.items():
-        if prefix:
-            prefix_map[prefix] = iri
+    # Build prefix map from ontology (filter out empty prefix)
+    prefix_map: dict[str, str] = {
+        k: v for k, v in dict(onto.prefix_mapping).items() if k
+    }
 
     def curie(iri_or_str) -> str:
         iri_str = str(iri_or_str)
@@ -447,8 +426,8 @@ def owl_to_kb(
     labels: dict[str, str] = {}
     seen_ids: set[str] = set()
 
-    for axiom in onto.get_axioms():
-        ax = axiom.axiom
+    for annotated in onto.get_axioms():
+        ax = annotated.component
 
         # SubClassOf(Class, Class) → ProperSubClassOf
         if isinstance(ax, owlmodel.SubClassOf):
@@ -477,17 +456,13 @@ def owl_to_kb(
         # AnnotationAssertion
         elif isinstance(ax, owlmodel.AnnotationAssertion):
             prop_iri = str(ax.ann.ap.first)
-            if prop_iri.startswith("<"):
-                prop_iri = prop_iri[1:-1]
             subject_iri = str(ax.subject)
-            if subject_iri.startswith("<"):
-                subject_iri = subject_iri[1:-1]
             subject_id = _iri_to_curie(subject_iri, prefix_map)
 
             # rdfs:label
             if prop_iri == _RDFS_LABEL:
                 ann_val = ax.ann.av
-                if isinstance(ann_val, owlmodel.Literal):
+                if isinstance(ann_val, (owlmodel.SimpleLiteral, owlmodel.Literal)):
                     label_str = str(ann_val.literal)
                     if label_str:
                         labels[subject_id] = label_str
@@ -497,10 +472,10 @@ def owl_to_kb(
             elif prop_iri == _HAS_DBXREF and config.include_xrefs:
                 ann_val = ax.ann.av
                 val_str = ""
-                if isinstance(ann_val, owlmodel.Literal):
+                if isinstance(ann_val, (owlmodel.SimpleLiteral, owlmodel.Literal)):
                     val_str = str(ann_val.literal)
-                elif hasattr(ann_val, "first"):
-                    val_str = _iri_to_curie(str(ann_val.first), prefix_map)
+                elif isinstance(ann_val, owlmodel.IRI):
+                    val_str = _iri_to_curie(str(ann_val), prefix_map)
                 if val_str and ":" in val_str:
                     prefix = val_str.split(":")[0]
                     prob = config.xref_prefix_probabilities.get(
@@ -520,9 +495,9 @@ def owl_to_kb(
                 skos_pred = _SKOS_IRI_MAP[prop_iri]
                 ann_val = ax.ann.av
                 target = ""
-                if hasattr(ann_val, "first"):
-                    target = _iri_to_curie(str(ann_val.first), prefix_map)
-                elif isinstance(ann_val, owlmodel.Literal):
+                if isinstance(ann_val, owlmodel.IRI):
+                    target = _iri_to_curie(str(ann_val), prefix_map)
+                elif isinstance(ann_val, (owlmodel.SimpleLiteral, owlmodel.Literal)):
                     target = str(ann_val.literal)
                 if target:
                     prob_attr = SKOS_PROB_MAP.get(skos_pred)
@@ -542,8 +517,8 @@ def owl_to_kb(
                 hard_facts.append(MemberOfDisjointGroup(sub=eid, group=prefix))
 
     # Derive name from ontology IRI
-    onto_id = onto.get_id()
-    name = str(onto_id) if onto_id else Path(path).stem
+    onto_iri = onto.get_iri()
+    name = str(onto_iri) if onto_iri else Path(path).stem
 
     return KB(
         facts=hard_facts,

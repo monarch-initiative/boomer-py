@@ -9,16 +9,18 @@ from boomer.cli import cli
 from boomer.loaders import KBLoader, load_kb_smart
 from boomer.ontology_converter import (
     OntologyConverterConfig,
-    _has_pyhornedowl,
     _strip_comment,
     _strip_qualifiers,
     load_ontology_config,
     obo_to_kb,
     ontology_to_kb,
+    owl_to_kb,
     parse_obo,
 )
 
 OBO_FIXTURE = Path("tests/input/test_ontology.obo")
+OFN_FIXTURE = Path("tests/input/test_ontology.ofn")
+SSSOM_FIXTURE = Path("tests/input/test_mappings.sssom.tsv")
 CONFIG_FIXTURE = Path("tests/input/ontology_config.yaml")
 
 
@@ -276,6 +278,163 @@ class TestOboToKb:
 
 
 # ---------------------------------------------------------------------------
+# OWL → KB conversion tests
+# ---------------------------------------------------------------------------
+
+
+class TestOwlToKb:
+    @pytest.fixture()
+    def kb(self):
+        return owl_to_kb(OFN_FIXTURE)
+
+    def test_basic_conversion(self, kb):
+        assert kb is not None
+
+    def test_kb_name(self, kb):
+        assert kb.name == "http://example.org/test-ontology"
+
+    def test_labels(self, kb):
+        assert kb.labels["TEST:0001"] == "Root class"
+        assert kb.labels["TEST:0002"] == "Child class A"
+        assert kb.labels["TEST:0003"] == "Child class B"
+        assert kb.labels["TEST:0004"] == "Narrow mapped class"
+
+    def test_subclass_hard_facts(self, kb):
+        subclass_facts = [
+            f for f in kb.facts if f.fact_type == "ProperSubClassOf"
+        ]
+        subs = {(f.sub, f.sup) for f in subclass_facts}
+        assert ("TEST:0002", "TEST:0001") in subs
+        assert ("TEST:0003", "TEST:0001") in subs
+        assert len(subclass_facts) == 2
+
+    def test_equivalent_hard_facts(self, kb):
+        equiv_facts = [
+            f for f in kb.facts if f.fact_type == "EquivalentTo"
+        ]
+        assert len(equiv_facts) == 1
+        assert equiv_facts[0].sub == "TEST:0003"
+        assert equiv_facts[0].equivalent == "EXT:EQ001"
+
+    def test_disjoint_hard_facts(self, kb):
+        disj_facts = [
+            f for f in kb.facts if f.fact_type == "DisjointWith"
+        ]
+        assert len(disj_facts) == 1
+        pair = {disj_facts[0].sub, disj_facts[0].sibling}
+        assert pair == {"TEST:0002", "TEST:0003"}
+
+    def test_xref_pfacts(self, kb):
+        xref_pfacts = [
+            p for p in kb.pfacts
+            if p.fact.fact_type == "EquivalentTo"
+            and p.fact.equivalent in ("EXT:R001", "EXT:C001")
+        ]
+        assert len(xref_pfacts) == 2
+        for p in xref_pfacts:
+            assert p.prob == 0.7
+
+    def test_skos_exact_match(self, kb):
+        exact = next(
+            p for p in kb.pfacts
+            if p.fact.fact_type == "EquivalentTo" and p.fact.equivalent == "EXT:C001A"
+        )
+        assert exact.prob == 0.9
+
+    def test_skos_broad_match_reversed(self, kb):
+        broad = next(
+            p for p in kb.pfacts
+            if p.fact.fact_type == "ProperSubClassOf"
+            and p.fact.sup == "TEST:0002"
+            and p.fact.sub == "EXT:BROAD1"
+        )
+        assert broad.prob == 0.7
+
+    def test_skos_narrow_match(self, kb):
+        narrow = next(
+            p for p in kb.pfacts
+            if p.fact.fact_type == "ProperSubClassOf"
+            and p.fact.sub == "TEST:0004"
+            and p.fact.sup == "EXT:NARROW1"
+        )
+        assert narrow.prob == 0.7
+
+    def test_skos_close_match(self, kb):
+        close = next(
+            p for p in kb.pfacts
+            if p.fact.fact_type == "EquivalentTo" and p.fact.equivalent == "EXT:CLOSE1"
+        )
+        assert close.prob == 0.7
+
+    def test_disjoint_groups(self, kb):
+        disjoint_groups = [
+            f for f in kb.facts if f.fact_type == "MemberOfDisjointGroup"
+        ]
+        prefixes = {f.group for f in disjoint_groups}
+        assert "TEST" in prefixes
+        assert "EXT" in prefixes
+
+    def test_obo_iri_conversion(self):
+        """OBO-style IRIs like http://purl.obolibrary.org/obo/GO_0008150 → GO:0008150."""
+        from boomer.ontology_converter import _iri_to_curie
+        assert _iri_to_curie("http://purl.obolibrary.org/obo/GO_0008150") == "GO:0008150"
+        assert _iri_to_curie("http://purl.obolibrary.org/obo/MONDO_0001234") == "MONDO:0001234"
+
+
+# ---------------------------------------------------------------------------
+# OBO vs OWL parity: both fixtures should produce equivalent KB structure
+# ---------------------------------------------------------------------------
+
+
+class TestOboOwlParity:
+    """Verify that OBO and OWL converters produce structurally equivalent KBs."""
+
+    @pytest.fixture()
+    def obo_kb(self):
+        return obo_to_kb(OBO_FIXTURE)
+
+    @pytest.fixture()
+    def owl_kb(self):
+        return owl_to_kb(OFN_FIXTURE)
+
+    def test_same_subclass_count(self, obo_kb, owl_kb):
+        obo_sc = [f for f in obo_kb.facts if f.fact_type == "ProperSubClassOf"]
+        owl_sc = [f for f in owl_kb.facts if f.fact_type == "ProperSubClassOf"]
+        assert len(obo_sc) == len(owl_sc)
+
+    def test_same_equivalence_count(self, obo_kb, owl_kb):
+        obo_eq = [f for f in obo_kb.facts if f.fact_type == "EquivalentTo"]
+        owl_eq = [f for f in owl_kb.facts if f.fact_type == "EquivalentTo"]
+        assert len(obo_eq) == len(owl_eq)
+
+    def test_same_disjoint_count(self, obo_kb, owl_kb):
+        obo_dj = [f for f in obo_kb.facts if f.fact_type == "DisjointWith"]
+        owl_dj = [f for f in owl_kb.facts if f.fact_type == "DisjointWith"]
+        assert len(obo_dj) == len(owl_dj)
+
+    def test_same_xref_pfact_count(self, obo_kb, owl_kb):
+        def xref_pfacts(kb):
+            return [
+                p for p in kb.pfacts
+                if p.fact.fact_type == "EquivalentTo"
+                and p.fact.equivalent in ("EXT:R001", "EXT:C001")
+            ]
+        assert len(xref_pfacts(obo_kb)) == len(xref_pfacts(owl_kb))
+
+    def test_same_skos_pfact_count(self, obo_kb, owl_kb):
+        def skos_pfacts(kb):
+            return [
+                p for p in kb.pfacts
+                if any(t in str(p.fact) for t in ("C001A", "BROAD1", "NARROW1", "CLOSE1"))
+            ]
+        assert len(skos_pfacts(obo_kb)) == len(skos_pfacts(owl_kb))
+
+    def test_same_label_keys(self, obo_kb, owl_kb):
+        # OBO has 4 labels (excluding obsolete), OWL also has 4
+        assert set(obo_kb.labels.keys()) == set(owl_kb.labels.keys())
+
+
+# ---------------------------------------------------------------------------
 # Dispatch tests
 # ---------------------------------------------------------------------------
 
@@ -285,22 +444,13 @@ class TestOntologyToKb:
         kb = ontology_to_kb(OBO_FIXTURE)
         assert kb.name == "test-ontology"
 
+    def test_dispatch_ofn(self):
+        kb = ontology_to_kb(OFN_FIXTURE)
+        assert kb.name == "http://example.org/test-ontology"
+
     def test_dispatch_unknown(self):
         with pytest.raises(ValueError, match="Unrecognized ontology extension"):
             ontology_to_kb("foo.xyz")
-
-
-# ---------------------------------------------------------------------------
-# OWL backend tests (skipped if py-horned-owl not installed)
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.skipif(
-    not _has_pyhornedowl(),
-    reason="py-horned-owl not installed",
-)
-class TestOwlToKb:
-    pass  # OWL tests would go here when OWL fixtures are available
 
 
 # ---------------------------------------------------------------------------
@@ -322,34 +472,75 @@ class TestLoaderIntegration:
         assert kb.name == "test-ontology"
         assert len(kb.pfacts) > 0
 
+    def test_load_kb_smart_ofn(self):
+        kb = load_kb_smart(OFN_FIXTURE)
+        assert "test-ontology" in kb.name
+        assert len(kb.pfacts) > 0
+
     def test_load_kb_explicit_format(self):
         kb = load_kb_smart(OBO_FIXTURE, format_name="obo")
         assert kb.name == "test-ontology"
 
 
 # ---------------------------------------------------------------------------
-# CLI integration tests
+# CLI integration tests: convert all three formats (OBO, OWL, SSSOM)
 # ---------------------------------------------------------------------------
 
 
-class TestCLIIntegration:
-    def test_convert_obo_to_yaml(self, tmp_path):
+class TestCLIConvert:
+    """Test CLI convert command with OBO, OWL, and SSSOM inputs."""
+
+    @pytest.mark.parametrize("input_file,expected_name", [
+        (OBO_FIXTURE, "test-ontology"),
+        (OFN_FIXTURE, "http://example.org/test-ontology"),
+        (SSSOM_FIXTURE, "https://example.org/test_mappings"),
+    ])
+    def test_convert_to_yaml(self, tmp_path, input_file, expected_name):
         out = tmp_path / "out.yaml"
         runner = CliRunner()
         result = runner.invoke(cli, [
-            "convert", str(OBO_FIXTURE), "-o", str(out),
+            "convert", str(input_file), "-o", str(out),
         ])
         assert result.exit_code == 0, result.output
         assert out.exists()
-        # Reload and verify
         kb = load_kb_smart(str(out), format_name="yaml")
-        assert kb is not None
+        assert kb.name == expected_name
 
-    def test_convert_obo_to_json(self, tmp_path):
+    @pytest.mark.parametrize("input_file", [
+        OBO_FIXTURE,
+        OFN_FIXTURE,
+        SSSOM_FIXTURE,
+    ])
+    def test_convert_to_json(self, tmp_path, input_file):
         out = tmp_path / "out.json"
         runner = CliRunner()
         result = runner.invoke(cli, [
-            "convert", str(OBO_FIXTURE), "-o", str(out),
+            "convert", str(input_file), "-o", str(out),
         ])
         assert result.exit_code == 0, result.output
         assert out.exists()
+        kb = load_kb_smart(str(out), format_name="json")
+        assert kb is not None
+        assert len(kb.pfacts) > 0
+
+    @pytest.mark.parametrize("input_file", [
+        OBO_FIXTURE,
+        OFN_FIXTURE,
+    ])
+    def test_convert_roundtrip(self, tmp_path, input_file):
+        """Convert to YAML, then load back and verify structure."""
+        out = tmp_path / "out.yaml"
+        runner = CliRunner()
+        result = runner.invoke(cli, [
+            "convert", str(input_file), "-o", str(out),
+        ])
+        assert result.exit_code == 0, result.output
+        kb = load_kb_smart(str(out), format_name="yaml")
+        # Should have structural facts
+        structural = [
+            f for f in kb.facts
+            if f.fact_type in ("ProperSubClassOf", "EquivalentTo", "DisjointWith")
+        ]
+        assert len(structural) > 0
+        # Should have pfacts from xrefs/SKOS
+        assert len(kb.pfacts) > 0

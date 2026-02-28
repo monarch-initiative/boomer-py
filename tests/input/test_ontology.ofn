@@ -1,0 +1,38 @@
+Prefix(:=<http://example.org/test/>)
+Prefix(TEST:=<http://example.org/test/>)
+Prefix(EXT:=<http://example.org/ext/>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(skos:=<http://www.w3.org/2004/02/skos/core#>)
+Prefix(oboInOwl:=<http://www.geneontology.org/formats/oboInOwl#>)
+
+Ontology(<http://example.org/test-ontology>
+
+Declaration(Class(:0001))
+Declaration(Class(:0002))
+Declaration(Class(:0003))
+Declaration(Class(:0004))
+Declaration(Class(EXT:EQ001))
+
+SubClassOf(:0002 :0001)
+SubClassOf(:0003 :0001)
+
+EquivalentClasses(:0003 EXT:EQ001)
+
+DisjointClasses(:0002 :0003)
+
+AnnotationAssertion(rdfs:label :0001 "Root class")
+AnnotationAssertion(rdfs:label :0002 "Child class A")
+AnnotationAssertion(rdfs:label :0003 "Child class B")
+AnnotationAssertion(rdfs:label :0004 "Narrow mapped class")
+
+AnnotationAssertion(oboInOwl:hasDbXref :0001 "EXT:R001")
+AnnotationAssertion(oboInOwl:hasDbXref :0002 "EXT:C001")
+
+AnnotationAssertion(skos:exactMatch :0002 EXT:C001A)
+AnnotationAssertion(skos:broadMatch :0002 EXT:BROAD1)
+AnnotationAssertion(skos:narrowMatch :0004 EXT:NARROW1)
+AnnotationAssertion(skos:closeMatch :0004 EXT:CLOSE1)
+)

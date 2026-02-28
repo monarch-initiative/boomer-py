@@ -120,7 +120,7 @@ def cli():
 @click.option(
     "--format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Input format (auto-detected if not specified)",
 )
@@ -310,7 +310,7 @@ def solve(
 @click.option(
     "--input-format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     help="Input format (auto-detected from extension if not specified)",
 )
 @click.option(
@@ -414,7 +414,7 @@ def merge(input_files, output_file, input_format, output_format, name, descripti
 @click.option(
     "--input-format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     help="Input format (auto-detected from extension if not specified)",
 )
 @click.option(
@@ -498,7 +498,7 @@ def convert(input_file, output_file, input_format, output_format, name, descript
 @click.option(
     "--input-format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     help="Input format (auto-detected from extension if not specified)",
 )
 @click.option(
@@ -610,7 +610,7 @@ def extract(input_file, ids_file, entity_ids_cli, max_hops, output_file, input_f
 @click.option("--label-kb", "-l", help="Path to a KB file with labels")
 @click.option(
     "--kb-format", "-k",
-    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Format for the gold KB (auto-detected if not specified)"
 )
@@ -702,7 +702,7 @@ def eval_(kb_file, solution_file, kb_format, solution_format, output_file, equiv
 @click.argument("grid_file")
 @click.option(
     "--kb-format", "-k",
-    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Format for the KB (auto-detected if not specified)",
 )
@@ -712,7 +712,7 @@ def eval_(kb_file, solution_file, kb_format, solution_format, output_file, equiv
 )
 @click.option(
     "--eval-kb-format", "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Format for the evaluation KB (auto-detected if not specified)",
 )
