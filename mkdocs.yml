@@ -54,6 +54,7 @@ nav:
   - Examples: examples.md
   - Tutorials:
     - Basic: tutorial/basic-tutorial.ipynb
+    - Ontology Alignment: tutorial/ontology-alignment.ipynb
     - Evaluation: tutorial/evaluation-tutorial.ipynb
   - Contributing: contributing.md
 
