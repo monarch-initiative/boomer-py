@@ -40,6 +40,7 @@ nav:
     - Search: search.md
     - Partitioning: partitioning.md
     - Grid Search: grid-search.md
+    - Ontology Conversion: ontology-conversion.md
     - Evaluation: evaluation.md
     - Datasets: datasets.md
   - Command Line Interface: cli.md

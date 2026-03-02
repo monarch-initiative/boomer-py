@@ -9,15 +9,15 @@ BOOMER supports multiple data formats for knowledge bases, making it easy to wor
 - **JSON** (`.json`) - JSON serialization of Pydantic models
 - **YAML** (`.yaml`, `.yml`) - YAML serialization of Pydantic models
 - **Python** (`py`) - Python modules with a `kb` attribute
+- **OBO** (`.obo`) - OBO format ontologies
+- **OWL** (`.owl`, `.owx`, `.ofn`) - OWL ontologies (via py-horned-owl)
+- **SSSOM** (`.sssom.tsv`) - SSSOM mapping set TSV files
 
 ### Output Formats
 - **Markdown** - Human-readable reports (default)
 - **TSV** - Tab-separated values for downstream processing
 - **JSON** - Machine-readable JSON
 - **YAML** - Machine-readable YAML
-
-### Future Support
-- **OWL** - Web Ontology Language support is planned for future releases
 
 ## Format Details
 
@@ -295,12 +295,123 @@ boomer-cli solve input.yaml -O tsv -o solution.tsv
 4. **Use TSV output for analysis** - Easy to import into spreadsheets or data analysis tools
 5. **Use JSON/YAML output for integration** - Machine-readable formats for downstream processing
 
-## Future: OWL Support
+## Ontology Formats (OBO and OWL)
 
-Future releases will support OWL (Web Ontology Language) for:
-- Importing existing OWL ontologies
-- Exporting BOOMER solutions to OWL format
-- Integration with standard ontology tools
-- Support for OWL axioms and annotations
+BOOMER can directly import OBO and OWL ontology files, extracting structural axioms as hard facts and cross-references/SKOS mappings as probabilistic facts.
 
-This will enable BOOMER to work seamlessly with existing semantic web infrastructure and ontology management systems.
+### What Gets Extracted
+
+| Ontology Axiom | KB Fact Type | Probability |
+|---|---|---|
+| `is_a` / `SubClassOf` | `ProperSubClassOf` | 1.0 (hard fact) |
+| `equivalent_to` / `EquivalentClasses` | `EquivalentTo` | 1.0 (hard fact) |
+| `disjoint_from` / `DisjointClasses` | `DisjointWith` | 1.0 (hard fact) |
+| `xref` / `oboInOwl:hasDbXref` | `EquivalentTo` | configurable (default 0.7) |
+| `skos:exactMatch` | `EquivalentTo` | configurable (default 0.9) |
+| `skos:closeMatch` | `EquivalentTo` | configurable (default 0.7) |
+| `skos:broadMatch` | `ProperSubClassOf` (reversed) | configurable (default 0.7) |
+| `skos:narrowMatch` | `ProperSubClassOf` | configurable (default 0.7) |
+
+Additionally, `MemberOfDisjointGroup` facts are auto-generated per ID prefix, so entities from different namespaces are treated as members of disjoint groups.
+
+### CLI Usage
+
+```bash
+# Convert OBO ontology to YAML KB
+pyboomer convert my_ontology.obo -o kb.yaml
+
+# Convert OWL ontology to JSON KB
+pyboomer convert my_ontology.owl -o kb.json
+
+# Solve directly from an ontology
+pyboomer solve my_ontology.obo -O markdown
+
+# Extract a cluster around a seed entity
+pyboomer extract my_ontology.obo --id MONDO:0001234 -o cluster.yaml
+```
+
+### Python API
+
+```python
+from boomer.ontology_converter import obo_to_kb, owl_to_kb, ontology_to_kb
+
+# Parse OBO file
+kb = obo_to_kb("my_ontology.obo")
+
+# Parse OWL file (functional syntax, OWL/XML, etc.)
+kb = owl_to_kb("my_ontology.ofn")
+
+# Auto-dispatch by extension
+kb = ontology_to_kb("my_ontology.obo")  # detects OBO
+kb = ontology_to_kb("my_ontology.owl")  # detects OWL
+```
+
+### Configuration
+
+You can customize conversion behavior with `OntologyConverterConfig`:
+
+```python
+from boomer.ontology_converter import OntologyConverterConfig, obo_to_kb
+
+config = OntologyConverterConfig(
+    xref_default_probability=0.5,
+    xref_prefix_probabilities={"OMIM": 0.9, "ICD10": 0.6},
+    skos_exact_match_prob=0.95,
+    skip_obsolete=True,
+    include_xrefs=True,
+    include_skos=True,
+    auto_disjoint_groups=True,
+)
+kb = obo_to_kb("my_ontology.obo", config=config)
+```
+
+Or load config from a YAML file:
+
+```yaml
+# ontology_config.yaml
+xref_default_probability: 0.5
+xref_prefix_probabilities:
+  OMIM: 0.9
+  ICD10: 0.6
+skos_exact_match_prob: 0.95
+skip_obsolete: true
+```
+
+```python
+from boomer.ontology_converter import load_ontology_config, obo_to_kb
+
+config = load_ontology_config("ontology_config.yaml")
+kb = obo_to_kb("my_ontology.obo", config=config)
+```
+
+### Supported OWL Serializations
+
+The OWL backend uses [py-horned-owl](https://github.com/phillord/py-horned-owl) and supports:
+
+- OWL Functional Syntax (`.ofn`)
+- OWL/XML (`.owx`)
+- RDF/OWL (`.owl`)
+
+## SSSOM Format
+
+[SSSOM](https://mapping-commons.github.io/sssom/) (Simple Standard for Sharing Ontological Mappings) TSV files can be imported as boomer KBs. Each mapping row becomes a probabilistic fact, with the SKOS predicate determining the fact type.
+
+### CLI Usage
+
+```bash
+# Convert SSSOM to YAML KB
+pyboomer convert mappings.sssom.tsv -o kb.yaml
+
+# Solve directly from SSSOM
+pyboomer solve mappings.sssom.tsv -f sssom -O markdown
+```
+
+### Python API
+
+```python
+from boomer.sssom_converter import sssom_to_kb
+
+kb = sssom_to_kb("mappings.sssom.tsv")
+```
+
+See the SSSOM converter documentation for configuration options including per-prefix probabilities and predicate mapping customization.
