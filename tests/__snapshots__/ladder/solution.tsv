@@ -1,13 +1,13 @@
 # BOOMER Solution TSV Output
 #
 # Metadata:
-#   generated_date: 2025-09-24T23:18:03.350272
+#   generated_date: 2026-03-02T17:43:38.191346
 #   combinations: 10
 #   satisfiable_combinations: 5
 #   confidence: 0.5
 #   prior_probability: 1.0000000000000005e-08
 #   posterior_probability: 0.2
-#   time_elapsed_seconds: 0.004001140594482422
+#   time_elapsed_seconds: 0.003898143768310547
 #   timed_out: False
 #
 # Format: fact_type followed by arguments, then truth_value and probabilities

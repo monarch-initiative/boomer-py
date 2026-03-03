@@ -6,7 +6,7 @@
   "number_of_components": null,
   "confidence": 0.8999999999999999,
   "prior_prob": 0.12960000000000002,
-  "posterior_prob": 0.7941176470588237,
+  "posterior_prob": 0.7941176470588236,
   "proportion_of_combinations_explored": 1.0,
   "ground_pfacts": [],
   "solved_pfacts": [
@@ -46,7 +46,7 @@
         "prob": 0.6
       },
       "truth_value": false,
-      "posterior_prob": 0.014705882352941171,
+      "posterior_prob": 0.014705882352941175,
       "metadata": null
     },
     {
@@ -64,8 +64,8 @@
     }
   ],
   "sub_solutions": [],
-  "time_started": 1758781083.4755998,
-  "time_finished": 1758781083.4803462,
+  "time_started": 1772502218.3052092,
+  "time_finished": 1772502218.309136,
   "timed_out": false,
-  "time_elapsed": 0.004746437072753906
+  "time_elapsed": 0.003926753997802734
 }

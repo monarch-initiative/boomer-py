@@ -1,13 +1,13 @@
 {
   "name": null,
   "number_of_combinations": 10,
-  "number_of_satisfiable_combinations": 3,
-  "number_of_combinations_explored_including_implicit": 102211,
+  "number_of_satisfiable_combinations": 2,
+  "number_of_combinations_explored_including_implicit": 134978,
   "number_of_components": null,
-  "confidence": 0.9499999999999998,
-  "prior_prob": 0.20761166194016065,
-  "posterior_prob": 0.9047619047619047,
-  "proportion_of_combinations_explored": 0.3899040222167969,
+  "confidence": 0.9500000000000001,
+  "prior_prob": 0.20761166194016067,
+  "posterior_prob": 0.95,
+  "proportion_of_combinations_explored": 0.5149002075195312,
   "ground_pfacts": [],
   "solved_pfacts": [
     {
@@ -176,7 +176,7 @@
         "prob": 0.95
       },
       "truth_value": true,
-      "posterior_prob": 0.9523809523809523,
+      "posterior_prob": 1.0,
       "metadata": null
     },
     {
@@ -189,7 +189,7 @@
         "prob": 0.95
       },
       "truth_value": true,
-      "posterior_prob": 1.0,
+      "posterior_prob": 0.95,
       "metadata": null
     },
     {
@@ -228,7 +228,7 @@
         "prob": 0.95
       },
       "truth_value": true,
-      "posterior_prob": 0.9523809523809523,
+      "posterior_prob": 1.0,
       "metadata": null
     },
     {
@@ -246,8 +246,8 @@
     }
   ],
   "sub_solutions": [],
-  "time_started": 1758781082.8743749,
-  "time_finished": 1758781083.3383749,
+  "time_started": 1772502217.650697,
+  "time_finished": 1772502218.179305,
   "timed_out": false,
-  "time_elapsed": 0.46399998664855957
+  "time_elapsed": 0.5286080837249756
 }

@@ -4,8 +4,8 @@ number_of_satisfiable_combinations: 28
 number_of_combinations_explored_including_implicit: 152
 number_of_components: null
 confidence: 0.5
-prior_prob: 0.157437
-posterior_prob: 0.111142878926502
+prior_prob: 0.15743699999999994
+posterior_prob: 0.11114287892650197
 proportion_of_combinations_explored: 1.0
 ground_pfacts: []
 solved_pfacts:
@@ -52,7 +52,7 @@ solved_pfacts:
       equivalent: ORDO:300
     prob: 0.6
   truth_value: true
-  posterior_prob: 0.5972095150960656
+  posterior_prob: 0.5972095150960655
   metadata: null
 - pfact:
     fact:
@@ -61,10 +61,10 @@ solved_pfacts:
       equivalent: ORDO:100
     prob: 0.3
   truth_value: false
-  posterior_prob: 0.004650808173223541
+  posterior_prob: 0.004650808173223542
   metadata: null
 sub_solutions: []
-time_started: 1772498212.7973912
-time_finished: 1772498212.889481
+time_started: 1772508731.125963
+time_finished: 1772508731.2317069
 timed_out: false
-time_elapsed: 0.09208989143371582
+time_elapsed: 0.1057438850402832

@@ -82,7 +82,7 @@ solved_pfacts:
   posterior_prob: 1.0
   metadata: null
 sub_solutions: []
-time_started: 1758781083.3459399
-time_finished: 1758781083.349941
+time_started: 1772502218.18695
+time_finished: 1772502218.190848
 timed_out: false
-time_elapsed: 0.004001140594482422
+time_elapsed: 0.003898143768310547
