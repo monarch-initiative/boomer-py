@@ -1,3 +1,26 @@
+# Run full test suite (pytest + doctests)
+test: test-python doctest
+
+# Run pytest
+test-python:
+    uv run pytest
+
+# Run doctests on all Python source files
+doctest:
+    find src -type f \( -name "*.rst" -o -name "*.md" -o -name "*.py" \) -print0 | xargs -0 uv run python -m doctest --option ELLIPSIS --option NORMALIZE_WHITESPACE
+
+# Run ruff linter
+lint:
+    uv run ruff check src/
+
+# Format code with ruff
+format:
+    uv run ruff format src/
+
+# Fix lint issues
+lint-fix:
+    uv run ruff check --fix src/
+
 # Execute all Jupyter notebooks in-place with papermill
 notebooks:
     #!/usr/bin/env bash
