@@ -290,7 +290,7 @@ def test_cli_extract_command():
         assert "Extracted sub-KB from boomer.datasets.animals to extracted.json" in result.output
         assert "Original KB: 8 facts, 9 pfacts" in result.output
         assert "Extracted KB: 4 facts, 7 pfacts" in result.output
-        assert "Used 3 entity IDs from" in result.output
+        assert "Seeds:" in result.output
         
         # Check that the output file was created
         assert os.path.exists("extracted.json")
@@ -331,7 +331,7 @@ def test_cli_extract_command_help():
     runner = CliRunner()
     result = runner.invoke(cli, ["extract", "--help"])
     assert result.exit_code == 0
-    assert "Extract a sub-KB from a KB using a file containing entity IDs" in result.output
+    assert "Extract a sub-KB from a KB by entity IDs or seed neighborhood" in result.output
     assert "INPUT_FILE" in result.output
     assert "IDS_FILE" in result.output
     assert "--output-file" in result.output
