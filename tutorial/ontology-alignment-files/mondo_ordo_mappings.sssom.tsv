@@ -1,0 +1,12 @@
+#curie_map:
+#  MONDO: http://purl.obolibrary.org/obo/MONDO_
+#  ORDO: http://www.orpha.net/ORDO/Orphanet_
+#  skos: http://www.w3.org/2004/02/skos/core#
+#  semapv: https://w3id.org/semapv/vocab/
+#mapping_set_id: https://example.org/mondo-ordo-mappings
+#mapping_set_description: MONDO to ORDO candidate mappings
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence
+MONDO:0001234	alpha disease	skos:exactMatch	ORDO:100	Alpha rare disease	semapv:LexicalMatching	0.9
+MONDO:0005678	beta disease	skos:exactMatch	ORDO:200	Beta rare disease	semapv:LexicalMatching	0.85
+MONDO:0009999	gamma disease	skos:exactMatch	ORDO:300	Delta rare disease	semapv:LexicalMatching	0.6
+MONDO:0009999	gamma disease	skos:exactMatch	ORDO:100	Alpha rare disease	semapv:LexicalMatching	0.3

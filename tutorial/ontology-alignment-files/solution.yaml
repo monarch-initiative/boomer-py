@@ -1,0 +1,70 @@
+name: null
+number_of_combinations: 37
+number_of_satisfiable_combinations: 28
+number_of_combinations_explored_including_implicit: 152
+number_of_components: null
+confidence: 0.5
+prior_prob: 0.15743699999999994
+posterior_prob: 0.11114287892650197
+proportion_of_combinations_explored: 1.0
+ground_pfacts: []
+solved_pfacts:
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: MONDO:0001234
+      equivalent: ORDO:100
+    prob: 0.9
+  truth_value: true
+  posterior_prob: 0.968219477482972
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: MONDO:0005678
+      equivalent: ORDO:200
+    prob: 0.85
+  truth_value: true
+  posterior_prob: 0.9571896919792617
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: MONDO:0001234
+      equivalent: ORDO:100
+    prob: 0.7
+  truth_value: true
+  posterior_prob: 0.968219477482972
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: MONDO:0005678
+      equivalent: ORDO:200
+    prob: 0.7
+  truth_value: true
+  posterior_prob: 0.9571896919792617
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: MONDO:0009999
+      equivalent: ORDO:300
+    prob: 0.6
+  truth_value: true
+  posterior_prob: 0.5972095150960655
+  metadata: null
+- pfact:
+    fact:
+      fact_type: EquivalentTo
+      sub: MONDO:0009999
+      equivalent: ORDO:100
+    prob: 0.3
+  truth_value: false
+  posterior_prob: 0.004650808173223542
+  metadata: null
+sub_solutions: []
+time_started: 1772508731.125963
+time_finished: 1772508731.2317069
+timed_out: false
+time_elapsed: 0.1057438850402832
