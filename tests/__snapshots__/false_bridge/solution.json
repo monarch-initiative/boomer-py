@@ -2,12 +2,12 @@
   "name": null,
   "number_of_combinations": 10,
   "number_of_satisfiable_combinations": 1,
-  "number_of_combinations_explored_including_implicit": 5376041,
+  "number_of_combinations_explored_including_implicit": 5376521,
   "number_of_components": null,
   "confidence": 1.0,
-  "prior_prob": 7.565974136736803e-06,
+  "prior_prob": 7.565974136736801e-06,
   "posterior_prob": 1.0,
-  "proportion_of_combinations_explored": 0.6408740282058716,
+  "proportion_of_combinations_explored": 0.640931248664856,
   "ground_pfacts": [],
   "solved_pfacts": [
     {
@@ -175,8 +175,8 @@
         },
         "prob": 0.91
       },
-      "truth_value": false,
-      "posterior_prob": 0.0,
+      "truth_value": true,
+      "posterior_prob": 1.0,
       "metadata": null
     },
     {
@@ -188,8 +188,8 @@
         },
         "prob": 0.91
       },
-      "truth_value": true,
-      "posterior_prob": 1.0,
+      "truth_value": false,
+      "posterior_prob": 0.0,
       "metadata": null
     },
     {
@@ -311,8 +311,8 @@
     }
   ],
   "sub_solutions": [],
-  "time_started": 1758781082.438432,
-  "time_finished": 1758781082.830053,
+  "time_started": 1772502217.19716,
+  "time_finished": 1772502217.642924,
   "timed_out": false,
-  "time_elapsed": 0.39162111282348633
+  "time_elapsed": 0.44576406478881836
 }

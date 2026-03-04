@@ -1,0 +1,22 @@
+Prefix(ORDO:=<http://www.orpha.net/ORDO/Orphanet_>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+Ontology(<http://www.orpha.net/ORDO/ordo-subset>
+
+Declaration(Class(ORDO:100))
+Declaration(Class(ORDO:200))
+Declaration(Class(ORDO:300))
+Declaration(Class(ORDO:999))
+
+SubClassOf(ORDO:100 ORDO:999)
+SubClassOf(ORDO:200 ORDO:999)
+SubClassOf(ORDO:300 ORDO:999)
+
+DisjointClasses(ORDO:100 ORDO:200 ORDO:300)
+
+AnnotationAssertion(rdfs:label ORDO:100 "Alpha rare disease")
+AnnotationAssertion(rdfs:label ORDO:200 "Beta rare disease")
+AnnotationAssertion(rdfs:label ORDO:300 "Delta rare disease")
+AnnotationAssertion(rdfs:label ORDO:999 "Rare disease grouping")
+)

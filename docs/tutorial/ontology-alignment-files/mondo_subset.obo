@@ -1,0 +1,23 @@
+format-version: 1.4
+ontology: mondo-subset
+
+[Term]
+id: MONDO:0000001
+name: disease
+
+[Term]
+id: MONDO:0001234
+name: alpha disease
+is_a: MONDO:0000001 ! disease
+xref: ORDO:100
+
+[Term]
+id: MONDO:0005678
+name: beta disease
+is_a: MONDO:0000001 ! disease
+xref: ORDO:200
+
+[Term]
+id: MONDO:0009999
+name: gamma disease
+is_a: MONDO:0000001 ! disease

@@ -1,0 +1,120 @@
+name: MONDO-ORDO Alignment
+facts:
+- fact_type: ProperSubClassOf
+  sub: MONDO:0001234
+  sup: MONDO:0000001
+- fact_type: ProperSubClassOf
+  sub: MONDO:0005678
+  sup: MONDO:0000001
+- fact_type: ProperSubClassOf
+  sub: MONDO:0009999
+  sup: MONDO:0000001
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:200
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: MONDO:0000001
+  group: MONDO
+- fact_type: MemberOfDisjointGroup
+  sub: MONDO:0005678
+  group: MONDO
+- fact_type: MemberOfDisjointGroup
+  sub: MONDO:0009999
+  group: MONDO
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:100
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: MONDO:0001234
+  group: MONDO
+- fact_type: ProperSubClassOf
+  sub: ORDO:300
+  sup: ORDO:999
+- fact_type: ProperSubClassOf
+  sub: ORDO:200
+  sup: ORDO:999
+- fact_type: DisjointWith
+  sub: ORDO:100
+  sibling: ORDO:200
+- fact_type: DisjointWith
+  sub: ORDO:100
+  sibling: ORDO:300
+- fact_type: DisjointWith
+  sub: ORDO:200
+  sibling: ORDO:300
+- fact_type: ProperSubClassOf
+  sub: ORDO:100
+  sup: ORDO:999
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:200
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:999
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:100
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:300
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: MONDO:0001234
+  group: MONDO
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:100
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: MONDO:0005678
+  group: MONDO
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:200
+  group: ORDO
+- fact_type: MemberOfDisjointGroup
+  sub: MONDO:0009999
+  group: MONDO
+- fact_type: MemberOfDisjointGroup
+  sub: ORDO:300
+  group: ORDO
+pfacts:
+- fact:
+    fact_type: EquivalentTo
+    sub: MONDO:0001234
+    equivalent: ORDO:100
+  prob: 0.9
+- fact:
+    fact_type: EquivalentTo
+    sub: MONDO:0005678
+    equivalent: ORDO:200
+  prob: 0.85
+- fact:
+    fact_type: EquivalentTo
+    sub: MONDO:0001234
+    equivalent: ORDO:100
+  prob: 0.7
+- fact:
+    fact_type: EquivalentTo
+    sub: MONDO:0005678
+    equivalent: ORDO:200
+  prob: 0.7
+- fact:
+    fact_type: EquivalentTo
+    sub: MONDO:0009999
+    equivalent: ORDO:300
+  prob: 0.6
+- fact:
+    fact_type: EquivalentTo
+    sub: MONDO:0009999
+    equivalent: ORDO:100
+  prob: 0.3
+hypotheses: []
+labels:
+  MONDO:0000001: disease
+  MONDO:0001234: alpha disease
+  MONDO:0005678: beta disease
+  MONDO:0009999: gamma disease
+  ORDO:999: Rare disease grouping
+  ORDO:300: Delta rare disease
+  ORDO:100: Alpha rare disease
+  ORDO:200: Beta rare disease
+hyperparams: []
+pfacts_entailed: []

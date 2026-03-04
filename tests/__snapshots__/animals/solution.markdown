@@ -6,7 +6,7 @@
  * 0.8999999999999999 confidence
  * 0.38742048900000015 prior probability
  * 0.9 posterior probability
- * 0.0460 seconds elapsed
+ * 0.0390 seconds elapsed
 Grounding:
  * True fact_type='EquivalentTo' sub='cat' equivalent='Felix' :: prior: 0.9 posterior: 0.9
  * True fact_type='EquivalentTo' sub='dog' equivalent='Canus' :: prior: 0.9 posterior: 1.0

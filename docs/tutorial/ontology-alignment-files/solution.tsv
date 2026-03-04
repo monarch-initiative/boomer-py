@@ -1,0 +1,21 @@
+# BOOMER Solution TSV Output
+#
+# Metadata:
+#   generated_date: 2026-03-02T19:32:11.670343
+#   combinations: 37
+#   satisfiable_combinations: 28
+#   confidence: 0.5
+#   prior_probability: 0.15743699999999997
+#   posterior_probability: 0.11114287892650197
+#   time_elapsed_seconds: 0.09324312210083008
+#   timed_out: False
+#
+# Format: fact_type followed by arguments, then truth_value and probabilities
+#
+fact_type	arg1	arg2	arg1_label	arg2_label	truth_value	prior_probability	posterior_probability
+EquivalentTo	MONDO:0001234	ORDO:100	alpha disease	Alpha rare disease	True	0.9	0.968219477482972
+EquivalentTo	MONDO:0005678	ORDO:200	beta disease	Beta rare disease	True	0.85	0.9571896919792622
+EquivalentTo	MONDO:0001234	ORDO:100	alpha disease	Alpha rare disease	True	0.7	0.968219477482972
+EquivalentTo	MONDO:0005678	ORDO:200	beta disease	Beta rare disease	True	0.7	0.9571896919792622
+EquivalentTo	MONDO:0009999	ORDO:300	gamma disease	Delta rare disease	True	0.6	0.5972095150960658
+EquivalentTo	MONDO:0009999	ORDO:100	gamma disease	Alpha rare disease	False	0.3	0.004650808173223544

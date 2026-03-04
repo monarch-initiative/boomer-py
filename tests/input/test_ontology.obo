@@ -1,0 +1,41 @@
+format-version: 1.4
+ontology: test-ontology
+idspace: TEST http://example.org/TEST_
+idspace: skos http://www.w3.org/2004/02/skos/core#
+
+[Term]
+id: TEST:0001
+name: Root class
+xref: EXT:R001 {source="manual"}
+
+[Term]
+id: TEST:0002
+name: Child class A
+is_a: TEST:0001 ! Root class
+xref: EXT:C001
+property_value: skos:exactMatch EXT:C001A
+property_value: skos:broadMatch EXT:BROAD1
+
+[Term]
+id: TEST:0003
+name: Child class B
+is_a: TEST:0001 ! Root class
+equivalent_to: EXT:EQ001
+disjoint_from: TEST:0002
+
+[Term]
+id: TEST:0004
+name: Narrow mapped class
+property_value: skos:narrowMatch EXT:NARROW1
+property_value: skos:closeMatch EXT:CLOSE1
+
+[Term]
+id: TEST:0005
+name: Obsolete class
+is_obsolete: true
+xref: EXT:OBS001
+is_a: TEST:0001
+
+[Typedef]
+id: TEST:R001
+name: test_relation

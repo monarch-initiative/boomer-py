@@ -1,13 +1,13 @@
 # BOOMER Solution TSV Output
 #
 # Metadata:
-#   generated_date: 2025-09-24T23:18:03.338841
+#   generated_date: 2026-03-02T17:43:38.179843
 #   combinations: 10
-#   satisfiable_combinations: 3
-#   confidence: 0.9499999999999998
-#   prior_probability: 0.20761166194016065
-#   posterior_probability: 0.9047619047619047
-#   time_elapsed_seconds: 0.46399998664855957
+#   satisfiable_combinations: 2
+#   confidence: 0.9500000000000001
+#   prior_probability: 0.20761166194016067
+#   posterior_probability: 0.95
+#   time_elapsed_seconds: 0.5286080837249756
 #   timed_out: False
 #
 # Format: fact_type followed by arguments, then truth_value and probabilities
@@ -25,9 +25,9 @@ EquivalentTo	Son	FemaleChild	False	0.1	0.0
 EquivalentTo	Daughter	MaleChild	False	0.1	0.0
 EquivalentTo	Brother	FemaleSibling	False	0.1	0.0
 EquivalentTo	Sister	MaleSibling	False	0.1	0.0
-ProperSubClassOf	FemaleParent	Parent	True	0.95	0.9523809523809523
-ProperSubClassOf	MaleParent	Parent	True	0.95	1.0
+ProperSubClassOf	FemaleParent	Parent	True	0.95	1.0
+ProperSubClassOf	MaleParent	Parent	True	0.95	0.95
 ProperSubClassOf	FemaleChild	Child	True	0.95	1.0
 ProperSubClassOf	MaleChild	Child	True	0.95	1.0
-ProperSubClassOf	FemaleSibling	Sibling	True	0.95	0.9523809523809523
+ProperSubClassOf	FemaleSibling	Sibling	True	0.95	1.0
 ProperSubClassOf	MaleSibling	Sibling	True	0.95	1.0

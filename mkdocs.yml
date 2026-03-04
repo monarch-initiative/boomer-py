@@ -40,6 +40,7 @@ nav:
     - Search: search.md
     - Partitioning: partitioning.md
     - Grid Search: grid-search.md
+    - Ontology Conversion: ontology-conversion.md
     - Evaluation: evaluation.md
     - Datasets: datasets.md
   - Command Line Interface: cli.md
@@ -53,6 +54,7 @@ nav:
   - Examples: examples.md
   - Tutorials:
     - Basic: tutorial/basic-tutorial.ipynb
+    - Ontology Alignment: tutorial/ontology-alignment.ipynb
     - Evaluation: tutorial/evaluation-tutorial.ipynb
   - Contributing: contributing.md
 

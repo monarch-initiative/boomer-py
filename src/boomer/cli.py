@@ -30,6 +30,8 @@ from boomer.renderers.markdown_renderer import MarkdownRenderer
 from boomer.renderers.tsv_renderer import TSVRenderer
 from boomer.renderers.json_renderer import JSONRenderer
 from boomer.renderers.yaml_renderer import YAMLRenderer
+from boomer.renderers.sssom_renderer import SSSOMRenderer
+from boomer.renderers.obographs_renderer import OBOGraphsRenderer
 from boomer.renderers.renderer import Renderer
 from boomer.evaluator import evaluate_facts
 from boomer.model import GridSearch
@@ -37,6 +39,16 @@ from boomer.search import grid_search
 from boomer.splitter import extract_neighborhood, extract_sub_kb
 
 logger = logging.getLogger(__name__)
+
+
+FORMAT_EXTENSIONS: dict[str, str] = {
+    "markdown": "markdown",
+    "tsv": "tsv",
+    "json": "json",
+    "yaml": "yaml",
+    "sssom": "sssom.tsv",
+    "obographs": "obographs.json",
+}
 
 
 def get_renderer(format_name: str) -> Renderer:
@@ -49,6 +61,10 @@ def get_renderer(format_name: str) -> Renderer:
         return JSONRenderer()
     elif format_name == "yaml":
         return YAMLRenderer()
+    elif format_name == "sssom":
+        return SSSOMRenderer()
+    elif format_name == "obographs":
+        return OBOGraphsRenderer()
     else:
         # Default to markdown for unknown formats
         return MarkdownRenderer()
@@ -120,7 +136,7 @@ def cli():
 @click.option(
     "--format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Input format (auto-detected if not specified)",
 )
@@ -171,7 +187,7 @@ def cli():
 @click.option(
     "--format-output",
     "-O",
-    type=click.Choice(["markdown", "tsv", "json", "yaml"]),
+    type=click.Choice(["markdown", "tsv", "json", "yaml", "sssom", "obographs"]),
     default="markdown",
     help="Output format",
 )
@@ -273,14 +289,14 @@ def solve(
     if output_dir:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
-        for fmt in ["markdown", "tsv", "json", "yaml"]:
-            renderer = get_renderer(fmt) 
-            output_file = output_dir / f"solution.{fmt}"
+        for fmt, ext in FORMAT_EXTENSIONS.items():
+            renderer = get_renderer(fmt)
+            output_file = output_dir / f"solution.{ext}"
             write_output(output_file, renderer.render(solution, kb))
             component_dir = output_dir / "components"
             component_dir.mkdir(parents=True, exist_ok=True)
             for i, sub_solution in enumerate(solution.sub_solutions):
-                sub_solution_file = component_dir / f"solution_{i}.{fmt}"
+                sub_solution_file = component_dir / f"solution_{i}.{ext}"
                 write_output(sub_solution_file, renderer.render(sub_solution, kb))
 
     # Get the renderer and generate output
@@ -310,7 +326,7 @@ def solve(
 @click.option(
     "--input-format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     help="Input format (auto-detected from extension if not specified)",
 )
 @click.option(
@@ -414,7 +430,7 @@ def merge(input_files, output_file, input_format, output_format, name, descripti
 @click.option(
     "--input-format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     help="Input format (auto-detected from extension if not specified)",
 )
 @click.option(
@@ -498,7 +514,7 @@ def convert(input_file, output_file, input_format, output_format, name, descript
 @click.option(
     "--input-format",
     "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     help="Input format (auto-detected from extension if not specified)",
 )
 @click.option(
@@ -610,7 +626,7 @@ def extract(input_file, ids_file, entity_ids_cli, max_hops, output_file, input_f
 @click.option("--label-kb", "-l", help="Path to a KB file with labels")
 @click.option(
     "--kb-format", "-k",
-    type=click.Choice(["ptable", "json", "yaml", "py"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Format for the gold KB (auto-detected if not specified)"
 )
@@ -702,7 +718,7 @@ def eval_(kb_file, solution_file, kb_format, solution_format, output_file, equiv
 @click.argument("grid_file")
 @click.option(
     "--kb-format", "-k",
-    type=click.Choice(["ptable", "json", "yaml", "py"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Format for the KB (auto-detected if not specified)",
 )
@@ -712,7 +728,7 @@ def eval_(kb_file, solution_file, kb_format, solution_format, output_file, equiv
 )
 @click.option(
     "--eval-kb-format", "-f",
-    type=click.Choice(["ptable", "json", "yaml", "py"]),
+    type=click.Choice(["ptable", "json", "yaml", "py", "obo", "owl", "sssom"]),
     default=None,
     help="Format for the evaluation KB (auto-detected if not specified)",
 )

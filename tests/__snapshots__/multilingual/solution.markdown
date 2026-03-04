@@ -6,7 +6,7 @@
  * 1.0 confidence
  * 0.0 prior probability
  * 0.0 posterior probability
- * 0.1126 seconds elapsed
+ * 0.0986 seconds elapsed
 Grounding:
  * None fact_type='EquivalentTo' sub='privacy' equivalent='privacidad' :: prior: 0.9 posterior: 0.0
  * None fact_type='EquivalentTo' sub='privacy' equivalent='Privatsphäre' :: prior: 0.7 posterior: 0.0
