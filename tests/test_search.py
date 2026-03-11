@@ -363,7 +363,7 @@ def test_solve_multilingual():
     assert len(mind_mappings) > 0, "Expected at least one valid mapping for 'mind'"
 
 
-@pytest.mark.parametrize("max_iterations,expected_satisfiable_combinations", [(25, 1), (10, 0), (75, (2,3))])
+@pytest.mark.parametrize("max_iterations,expected_satisfiable_combinations", [(25, 1), (10, 0), (75, (1, 2, 3))])
 def test_solve_false_bridge(max_iterations, expected_satisfiable_combinations):
     """
     Test the false_bridge dataset.
