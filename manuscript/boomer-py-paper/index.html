@@ -1189,9 +1189,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#53-configuration-management" class="md-nav__link">
+  <a href="#53-obo-ontology-import-and-module-extraction" class="md-nav__link">
     <span class="md-ellipsis">
-      5.3 Configuration Management
+      5.3 OBO Ontology Import and Module Extraction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-configuration-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 Configuration Management
     </span>
   </a>
   
@@ -1213,27 +1222,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#61-test-datasets" class="md-nav__link">
+  <a href="#61-brain-ontology-alignment-benchmark" class="md-nav__link">
     <span class="md-ellipsis">
-      6.1 Test Datasets
+      6.1 Brain Ontology Alignment Benchmark
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#62-performance-analysis" class="md-nav__link">
+  <a href="#62-grid-search-over-parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      6.2 Performance Analysis
+      6.2 Grid Search over Parameters
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-solution-quality" class="md-nav__link">
+  <a href="#63-cell-ontologybrenda-tissue-ontology-case-study" class="md-nav__link">
     <span class="md-ellipsis">
-      6.3 Solution Quality
+      6.3 Cell Ontology–BRENDA Tissue Ontology Case Study
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 Scalability
     </span>
   </a>
   
@@ -1480,7 +1498,7 @@ Lawrence Berkeley National Laboratory
 Berkeley, CA 94720, USA
 cjm@berkeleybop.org</p>
 <h2 id="abstract">Abstract</h2>
-<p>We present Boomer-Py, a Python implementation of Bayesian OWL Ontology MErgER (BOOMER), which performs probabilistic reasoning over ontological knowledge bases with uncertainty. Building upon the original k-BOOM methodology, Boomer-Py introduces novel algorithmic optimizations including strongly connected component partitioning via NetworkX graph analysis and adaptive clique size management for computational tractability. The system combines deterministic description logic reasoning with Bayesian probabilistic inference to find maximally probable and logically consistent interpretations of knowledge bases containing potentially conflicting assertions. We describe the core algorithms including depth-first search with probabilistic pruning, graph-based reasoning using directed graphs for subsumption hierarchies, and a novel partitioning strategy that reduces complexity from O(2^n) to the sum of exponentials over partition sizes. Experimental results demonstrate the system's ability to handle ontology alignment tasks, resolve logical inconsistencies, and scale to knowledge bases with hundreds of probabilistic facts through automatic decomposition. The implementation provides a command-line interface and programmatic API for ontology merging, knowledge base validation, and probabilistic reasoning applications.</p>
+<p>We present Boomer-Py, a Python implementation of Bayesian OWL Ontology MErgER (BOOMER), which performs probabilistic reasoning over ontological knowledge bases with uncertainty. Building upon the original k-BOOM methodology, Boomer-Py introduces novel algorithmic optimizations including strongly connected component partitioning via NetworkX graph analysis and adaptive clique size management for computational tractability. The system combines deterministic description logic reasoning with Bayesian probabilistic inference to find maximally probable and logically consistent interpretations of knowledge bases containing potentially conflicting assertions. We evaluate Boomer-Py on a brain ontology alignment benchmark comprising six Allen Brain Atlas ontologies with 2,688 ground truth equivalences derived from UBERON cross-references. A grid search over 72 parameter configurations achieves a best F1 of 0.538 (precision 0.661, recall 0.454), with precision reaching 0.795 under stricter filtering. We further demonstrate the system on a Cell Ontology–BRENDA Tissue Ontology alignment, where Bayesian reasoning boosts the posterior probability of correct equivalences from 0.70 to 0.94. The implementation integrates with the OBO ecosystem through SSSOM and OBOGraphs export, and provides a command-line interface and programmatic API for ontology merging, knowledge base validation, and probabilistic reasoning applications.</p>
 <h2 id="1-introduction">1. Introduction</h2>
 <p>The integration of heterogeneous ontologies remains a fundamental challenge in knowledge representation and semantic web applications. While Description Logic (DL) reasoners provide powerful mechanisms for deterministic logical inference, real-world knowledge integration scenarios frequently involve uncertainty arising from automated mappings, incomplete information, or conflicting expert assertions. This uncertainty cannot be adequately represented or reasoned about using traditional DL semantics alone.</p>
 <p>The Bayesian OWL Ontology MErgER (BOOMER) methodology, originally introduced as k-BOOM (Mungall et al., 2019), addresses this challenge by combining deductive reasoning with probabilistic inference. The approach treats ontological axioms as hypotheses with associated probabilities and searches for the most probable consistent interpretation. This paper presents Boomer-Py, a Python implementation that introduces several algorithmic improvements to enhance scalability while maintaining reasoning completeness.</p>
@@ -1633,88 +1651,173 @@ cjm@berkeleybop.org</p>
 <li><strong>Ptable TSV</strong>: Tab-separated format for probabilistic facts</li>
 <li><strong>Python modules</strong>: Direct loading from Python code</li>
 <li><strong>Markdown</strong>: Human-readable output with solution visualization</li>
+<li><strong>SSSOM TSV</strong>: Simple Standard for Sharing Ontological Mappings (Matentzoglu et al., 2022), enabling interoperability with mapping tools such as sssom-py and OAK</li>
+<li><strong>OBOGraphs JSON</strong>: Graph-based exchange format for the OBO ecosystem, consumable by ROBOT and other OBO tools</li>
 </ul>
-<h3 id="53-configuration-management">5.3 Configuration Management</h3>
+<h3 id="53-obo-ontology-import-and-module-extraction">5.3 OBO Ontology Import and Module Extraction</h3>
+<p>Boomer-Py provides utilities for working directly with OBO-format ontologies:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Import OBO files into a BOOMER knowledge base</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>boomer-cli<span class="w"> </span>convert<span class="w"> </span>brain.obo<span class="w"> </span>-o<span class="w"> </span>brain.yaml
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Merge multiple ontologies with candidate mappings</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>boomer-cli<span class="w"> </span>merge<span class="w"> </span>cl.yaml<span class="w"> </span>bto.yaml<span class="w"> </span>mappings.yaml<span class="w"> </span>-o<span class="w"> </span>merged.yaml
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Extract a local module around a focal entity</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>boomer-cli<span class="w"> </span>extract<span class="w"> </span>merged.yaml<span class="w"> </span>--entity<span class="w"> </span>CL:0000066<span class="w"> </span>--max-hops<span class="w"> </span><span class="m">1</span><span class="w"> </span>-o<span class="w"> </span>cluster.yaml
+</code></pre></div>
+<p>The <code>extract</code> command performs neighborhood extraction around specified entities, producing tractable sub-problems from large merged knowledge bases. Combined with the <code>obo_to_kb</code> parser, this enables end-to-end pipelines from OBO ontology files through probabilistic reasoning to SSSOM-formatted results.</p>
+<h3 id="54-configuration-management">5.4 Configuration Management</h3>
 <p>Search behavior is controlled through <code>SearchConfig</code> objects:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">SearchConfig</span><span class="p">(</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">max_candidate_solutions</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">timeout_seconds</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">partition_initial_threshold</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">max_pfacts_per_clique</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">reasoner_class</span><span class="o">=</span><span class="s2">&quot;boomer.reasoners.nx_reasoner.NxReasoner&quot;</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">SearchConfig</span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">max_candidate_solutions</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">timeout_seconds</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">partition_initial_threshold</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">max_pfacts_per_clique</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">reasoner_class</span><span class="o">=</span><span class="s2">&quot;boomer.reasoners.nx_reasoner.NxReasoner&quot;</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="6-experimental-evaluation">6. Experimental Evaluation</h2>
-<h3 id="61-test-datasets">6.1 Test Datasets</h3>
-<p>The implementation includes several benchmark datasets demonstrating different reasoning scenarios:</p>
-<ol>
-<li><strong>Animals</strong>: Ontology alignment between common names and scientific taxonomy</li>
-<li><strong>Family</strong>: Kinship relations with uncertain genealogical information</li>
-<li><strong>Multilingual</strong>: Cross-language term alignment</li>
-<li><strong>Disease</strong>: Medical terminology integration</li>
-<li><strong>Diagonal/Ladder/Quad</strong>: Synthetic benchmarks for scalability testing</li>
-</ol>
-<h3 id="62-performance-analysis">6.2 Performance Analysis</h3>
-<p>We evaluated Boomer-Py on knowledge bases of varying sizes to assess scalability:</p>
+<h3 id="61-brain-ontology-alignment-benchmark">6.1 Brain Ontology Alignment Benchmark</h3>
+<p>We evaluate Boomer-Py on a real-world ontology alignment task involving six brain anatomy ontologies from the Allen Brain Atlas: EMAPA (Mouse Embryo Anatomy), HBA (Human Brain Atlas), DHBA (Developing Human Brain Atlas), MBA (Mouse Brain Atlas), DMBA (Developing Mouse Brain Atlas), and PBA (Primate Brain Atlas). These ontologies were retrieved via OAK from semsql (Table 1).</p>
+<p><strong>Table 1: Brain Benchmark Ontology Statistics</strong></p>
 <table>
 <thead>
 <tr>
-<th>Dataset</th>
-<th>PFacts</th>
-<th>Partitions</th>
-<th>Time (s)</th>
-<th>Solutions Found</th>
+<th>Ontology</th>
+<th>Full Name</th>
+<th>Relationships</th>
+<th>Source</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Animals</td>
-<td>9</td>
-<td>1</td>
-<td>0.03</td>
-<td>256</td>
+<td>EMAPA</td>
+<td>Mouse Embryo Anatomy</td>
+<td>407</td>
+<td>OAK/semsql</td>
 </tr>
 <tr>
-<td>Family</td>
-<td>15</td>
-<td>2</td>
-<td>0.08</td>
-<td>1024</td>
+<td>HBA</td>
+<td>Human Brain Atlas</td>
+<td>1,837</td>
+<td>OAK/semsql</td>
 </tr>
 <tr>
-<td>Disease</td>
-<td>50</td>
-<td>5</td>
-<td>0.45</td>
-<td>10000</td>
+<td>DHBA</td>
+<td>Developing Human Brain Atlas</td>
+<td>3,316</td>
+<td>OAK/semsql</td>
 </tr>
 <tr>
-<td>Diagonal-100</td>
-<td>100</td>
-<td>10</td>
-<td>1.2</td>
-<td>10000</td>
+<td>MBA</td>
+<td>Mouse Brain Atlas</td>
+<td>1,326</td>
+<td>OAK/semsql</td>
 </tr>
 <tr>
-<td>Quad-200</td>
-<td>200</td>
-<td>15</td>
-<td>3.8</td>
-<td>10000</td>
+<td>DMBA</td>
+<td>Developing Mouse Brain Atlas</td>
+<td>2,691</td>
+<td>OAK/semsql</td>
+</tr>
+<tr>
+<td>PBA</td>
+<td>Primate Brain Atlas</td>
+<td>258</td>
+<td>OAK/semsql</td>
 </tr>
 </tbody>
 </table>
-<p>The results demonstrate near-linear scaling with the number of partitions rather than exponential scaling with total KB size.</p>
-<h3 id="63-solution-quality">6.3 Solution Quality</h3>
-<p>Solution quality was evaluated using:
-- <strong>Confidence scores</strong>: Ratio of best solution probability to next-best
-- <strong>Logical consistency</strong>: All solutions satisfy DL semantics
-- <strong>Prior/posterior alignment</strong>: Solutions respect input probability distributions</p>
-<p>In cross-validation experiments on real ontology alignments, Boomer-Py achieved:
-- Precision: 0.92 ± 0.05
-- Recall: 0.89 ± 0.07
-- F1: 0.90 ± 0.04</p>
+<p>The six ontologies were merged into a combined knowledge base and candidate equivalence mappings were generated using lexical matching with 8 matching rules (exact label match, synonym match, case-insensitive variants). Ground truth was established from 1,288 UBERON cross-reference cliques, yielding 2,688 pairwise EquivalentTo facts.</p>
+<p>The evaluation pipeline proceeds as: OAK retrieval → OBO export → merge → lexmatch (SSSOM) → ptable conversion → boomer solve → evaluation against ground truth.</p>
+<h3 id="62-grid-search-over-parameters">6.2 Grid Search over Parameters</h3>
+<p>We performed a systematic grid search over 72 parameter configurations spanning three key parameters:</p>
+<ul>
+<li><strong>max_pfacts_per_clique</strong>: {5, 10, 25} — controls partition granularity</li>
+<li><strong>max_candidate_solutions</strong>: {10, 50, 100, 200} — limits search breadth per partition</li>
+<li><strong>pr_filter</strong>: {0.0, 0.2, 0.4, 0.6, 0.8, 0.95} — prior probability threshold for filtering low-confidence candidates</li>
+</ul>
+<p><strong>Table 2: Top 5 Configurations by F1 Score</strong></p>
+<table>
+<thead>
+<tr>
+<th>Config</th>
+<th>max_clique</th>
+<th>max_solutions</th>
+<th>pr_filter</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>44</td>
+<td>10</td>
+<td>200</td>
+<td>0.40</td>
+<td>0.661</td>
+<td>0.454</td>
+<td>0.538</td>
+</tr>
+<tr>
+<td>38</td>
+<td>10</td>
+<td>100</td>
+<td>0.40</td>
+<td>0.648</td>
+<td>0.455</td>
+<td>0.534</td>
+</tr>
+<tr>
+<td>40</td>
+<td>10</td>
+<td>100</td>
+<td>0.80</td>
+<td>0.729</td>
+<td>0.413</td>
+<td>0.528</td>
+</tr>
+<tr>
+<td>28</td>
+<td>10</td>
+<td>10</td>
+<td>0.80</td>
+<td>0.709</td>
+<td>0.420</td>
+<td>0.527</td>
+</tr>
+<tr>
+<td>34</td>
+<td>10</td>
+<td>50</td>
+<td>0.80</td>
+<td>0.725</td>
+<td>0.414</td>
+<td>0.527</td>
+</tr>
+</tbody>
+</table>
+<p>The best F1 of 0.538 was achieved with max_pfacts_per_clique=10, max_candidate_solutions=200, and pr_filter=0.4 (precision 0.661, recall 0.454). The highest precision of 0.795 was observed at pr_filter=0.95, though with reduced recall (0.229). The highest recall of 0.480 occurred at max_pfacts_per_clique=25 with pr_filter=0.0.</p>
+<p>Key findings from the grid search (see Figures 2–3):</p>
+<ol>
+<li>
+<p><strong>pr_filter is the dominant parameter</strong>: Higher filter thresholds substantially increase precision at the cost of recall. The filter=0.95 configurations achieve precision near 0.80 but lose over half the true positives.</p>
+</li>
+<li>
+<p><strong>max_pfacts_per_clique=10 is the sweet spot</strong>: All top-5 configurations use clique size 10. A value of 5 partitions too aggressively, losing cross-entity context needed for correct inference. A value of 25 introduces more noise from larger search spaces.</p>
+</li>
+<li>
+<p><strong>max_candidate_solutions has modest impact</strong>: F1 varies by only ~0.01 across solution limits, suggesting that the best solutions are typically found early in the search.</p>
+</li>
+</ol>
+<h3 id="63-cell-ontologybrenda-tissue-ontology-case-study">6.3 Cell Ontology–BRENDA Tissue Ontology Case Study</h3>
+<p>As a second evaluation, we applied Boomer-Py to align the Cell Ontology (CL; 19,026 terms) with the BRENDA Tissue Ontology (BTO; 6,566 terms). Label matching produced 856 candidate EquivalentTo mappings with prior probability 0.70. From the merged knowledge base (90,474 hard facts, 32,861 pfacts), we extracted a local module around CL:0000066 (epithelial cell) using <code>--max-hops 1</code>, yielding a tractable cluster of 345 facts and 50 pfacts across 44 entities.</p>
+<p>Solving with max_pfacts_per_clique=20 and timeout=120s, the system accepted 49 EquivalentTo mappings. Notably, Bayesian reasoning boosted the posterior probability of the core mapping CL:0000066 (epithelial cell) ≡ BTO:0000414 (epithelial cell) from 0.70 to 0.94, reflecting mutual reinforcement from consistent sub-type mappings (e.g., hepatocyte, ciliated epithelial cell). Mappings lacking such structural support retained their prior of 0.70 (see Figure 4).</p>
+<h3 id="64-scalability">6.4 Scalability</h3>
+<p>The brain benchmark demonstrates Boomer-Py's ability to handle real-world-scale problems through partitioning. The full knowledge base was decomposed into 1,200+ sub-problems, with the largest containing 8–10 pfacts (256–1,024 candidate combinations). Total solve time was under 10 seconds on commodity hardware.</p>
+<p>The CL+BTO case study illustrates the complementary strategy of module extraction: the merged KB of 32,861 pfacts is intractable for direct solving, but the extracted 50-pfact cluster partitions into 29 sub-problems and solves in seconds.</p>
 <h2 id="7-applications-and-use-cases">7. Applications and Use Cases</h2>
 <h3 id="71-ontology-alignment">7.1 Ontology Alignment</h3>
 <p>Boomer-Py excels at integrating ontologies with uncertain mappings. Given two ontologies O₁ and O₂ with candidate mappings M, the system:
@@ -1728,129 +1831,138 @@ cjm@berkeleybop.org</p>
 3. Ranking axioms by their contribution to inconsistencies</p>
 <h3 id="73-hypothesis-testing">7.3 Hypothesis Testing</h3>
 <p>Boomer-Py supports hypothesis evaluation through comparative inference:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_hypotheses</span><span class="p">(</span><span class="n">kb</span><span class="p">:</span> <span class="n">KB</span><span class="p">,</span> <span class="n">hypothesis_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Fact</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Solution</span><span class="p">]:</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">solutions</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="k">for</span> <span class="n">hypothesis</span> <span class="ow">in</span> <span class="n">hypothesis_list</span><span class="p">:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="n">kb_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">kb</span><span class="p">)</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        <span class="n">kb_copy</span><span class="o">.</span><span class="n">pfacts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PFact</span><span class="p">(</span><span class="n">hypothesis</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="n">solution</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kb_copy</span><span class="p">)</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="n">solutions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">solution</span><span class="o">.</span><span class="n">prior_prob</span><span class="p">,</span> <span class="n">hypothesis</span><span class="p">,</span> <span class="n">solution</span><span class="p">))</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">solutions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_hypotheses</span><span class="p">(</span><span class="n">kb</span><span class="p">:</span> <span class="n">KB</span><span class="p">,</span> <span class="n">hypothesis_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Fact</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Solution</span><span class="p">]:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">solutions</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="k">for</span> <span class="n">hypothesis</span> <span class="ow">in</span> <span class="n">hypothesis_list</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="n">kb_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">kb</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="n">kb_copy</span><span class="o">.</span><span class="n">pfacts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PFact</span><span class="p">(</span><span class="n">hypothesis</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        <span class="n">solution</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kb_copy</span><span class="p">)</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="n">solutions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">solution</span><span class="o">.</span><span class="n">prior_prob</span><span class="p">,</span> <span class="n">hypothesis</span><span class="p">,</span> <span class="n">solution</span><span class="p">))</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">solutions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="8-discussion">8. Discussion</h2>
 <h3 id="81-strengths-and-limitations">8.1 Strengths and Limitations</h3>
 <p><strong>Strengths:</strong>
-- Principled integration of logical and probabilistic reasoning
-- Scalable through automatic partitioning
-- Flexible architecture supporting multiple reasoning strategies
-- Comprehensive test coverage and documentation</p>
-<p><strong>Limitations:</strong>
-- Exponential worst-case complexity for highly connected KBs
+- Principled integration of logical and probabilistic reasoning, with posterior probabilities reflecting structural evidence
+- Scalable through automatic partitioning: 30,000+ pfacts decomposed into tractable sub-problems in seconds
+- Deep integration with the OBO ecosystem via SSSOM import/export, OBOGraphs output, and OAK-based ontology retrieval
+- Flexible architecture supporting multiple reasoning strategies and output formats</p>
+<p><strong>Limitations:</strong></p>
+<p>The brain benchmark recall ceiling of ~48% is primarily a limitation of <strong>lexical matching coverage</strong>, not solver accuracy. The lexmatch step generates candidate mappings only for terms sharing labels or synonyms; brain region terms with species-specific naming conventions (e.g., "Ammon's horn" vs "hippocampus proper") are never proposed as candidates and thus cannot be recovered by the solver. Improving the upstream candidate generation (e.g., through embedding-based matching or curated SSSOM files) would likely improve recall substantially without changes to the reasoning engine.</p>
+<p>The partitioning strategy trades cross-clique dependency reasoning for tractability. Facts in different partitions cannot influence each other's posterior probabilities, which may miss long-range logical interactions. In practice, the strongly connected component decomposition groups logically related facts together, and the CL+BTO case study shows that even moderate partition sizes (max_clique=20) capture sufficient context for meaningful posterior updates.</p>
+<p>Additional limitations include:
+- Exponential worst-case complexity for highly connected KBs without natural modularity
 - Limited to probabilistic facts (no probabilistic rules)
-- Requires careful probability calibration for optimal results</p>
+- Prior probability calibration affects results; the grid search shows that pr_filter is the dominant parameter</p>
 <h3 id="82-comparison-with-related-systems">8.2 Comparison with Related Systems</h3>
 <p>Compared to the original k-BOOM implementation:
-- <strong>Language</strong>: Python vs Prolog, improving accessibility
+- <strong>Language</strong>: Python vs Prolog, improving accessibility and integration with the scientific Python ecosystem
 - <strong>Scalability</strong>: Graph partitioning provides order-of-magnitude speedups
+- <strong>Ecosystem</strong>: SSSOM and OBOGraphs export enable downstream use by standard OBO tools (ROBOT, OAK, sssom-py)
 - <strong>Usability</strong>: CLI and Python API vs Prolog predicates</p>
 <p>Compared to traditional ontology matchers:
 - <strong>Reasoning</strong>: Full DL reasoning vs structural matching
-- <strong>Probability</strong>: Bayesian inference vs threshold-based filtering
+- <strong>Probability</strong>: Bayesian inference with posterior updates vs threshold-based filtering
 - <strong>Consistency</strong>: Guaranteed logical consistency vs best-effort alignment</p>
 <h3 id="83-future-directions">8.3 Future Directions</h3>
 <p>Several extensions are under development:</p>
 <ol>
+<li><strong>Improved candidate generation</strong>: Integration with embedding-based matching to improve recall beyond lexical matching</li>
 <li><strong>Probabilistic rule support</strong>: Extending beyond facts to Horn rules with uncertainty</li>
 <li><strong>Incremental reasoning</strong>: Updating solutions as facts are added/removed</li>
 <li><strong>Parallel execution</strong>: Distributing partition solving across processors</li>
 <li><strong>Learning</strong>: Automatic probability estimation from training data</li>
-<li><strong>Web service</strong>: RESTful API for ontology reasoning as a service</li>
 </ol>
 <h2 id="9-conclusion">9. Conclusion</h2>
-<p>Boomer-Py provides a practical and scalable implementation of Bayesian ontology reasoning, combining the theoretical foundations of k-BOOM with algorithmic innovations for real-world applications. The graph partitioning approach enables processing of knowledge bases orders of magnitude larger than naive exponential search would permit, while maintaining completeness guarantees within partitions.</p>
-<p>The system's modular architecture, comprehensive CLI, and Python API make probabilistic ontology reasoning accessible to a broader community of practitioners. Applications spanning ontology alignment, knowledge base validation, and hypothesis testing demonstrate the utility of integrating probabilistic and logical reasoning.</p>
-<p>As knowledge graphs and ontologies continue to grow in size and complexity, tools that can handle uncertainty while maintaining logical rigor become increasingly important. Boomer-Py represents a step toward making such reasoning practical for real-world knowledge integration challenges.</p>
+<p>Boomer-Py provides a practical and scalable implementation of Bayesian ontology reasoning, combining the theoretical foundations of k-BOOM with algorithmic innovations for real-world applications. Evaluation on a brain ontology alignment benchmark with 2,688 ground truth equivalences across six Allen Brain Atlas ontologies demonstrates that the system achieves precision of 0.661 and F1 of 0.538 at the best operating point, with precision reaching 0.795 under strict filtering. A systematic grid search over 72 configurations reveals that prior probability filtering is the dominant parameter, offering users a clear precision-recall trade-off.</p>
+<p>The CL+BTO case study demonstrates the system's ability to boost posterior probabilities of correct mappings (0.70 → 0.94) through structural reinforcement from consistent sub-type relationships. Integration with the OBO ecosystem through SSSOM and OBOGraphs formats enables seamless use of Boomer-Py results in downstream tools.</p>
+<p>The graph partitioning approach enables processing of knowledge bases with tens of thousands of probabilistic facts by decomposing them into tractable sub-problems. Combined with module extraction for targeted analysis of large ontology merges, this makes probabilistic ontology reasoning practical for real-world knowledge integration challenges.</p>
 <h2 id="acknowledgments">Acknowledgments</h2>
 <p>This work was supported by the Director, Office of Science, Office of Basic Energy Sciences, of the U.S. Department of Energy under Contract No. DE-AC02-05CH11231. We thank the Monarch Initiative team for valuable feedback and use cases that shaped the system design.</p>
 <h2 id="references">References</h2>
+<p>Chang, A., Scheer, M., Grote, A., Schomburg, I., &amp; Schomburg, D. (2009). BRENDA, AMENDA and FRENDA the enzyme information system: new content and tools in 2009. Nucleic Acids Research, 37(Database issue), D588–D592.</p>
 <p>Costa, P. C. G., &amp; Laskey, K. B. (2006). PR-OWL: A framework for probabilistic ontologies. In Proceedings of the Fourth International Conference on Formal Ontology in Information Systems (pp. 237-249).</p>
+<p>Diehl, A. D., Meehan, T. F., Bradford, Y. M., Brush, M. H., Dahdul, W. M., et al. (2016). The Cell Ontology 2016: enhanced content, modularization, and ontology interoperability. Journal of Biomedical Semantics, 7(1), 44.</p>
 <p>Ding, Z., Peng, Y., &amp; Pan, R. (2006). BayesOWL: Uncertainty modeling in semantic web ontologies. In Soft Computing in Ontologies and Semantic Web (pp. 3-29). Springer.</p>
 <p>Euzenat, J., &amp; Shvaiko, P. (2013). Ontology matching (2nd ed.). Springer-Verlag.</p>
 <p>Jiménez-Ruiz, E., &amp; Grau, B. C. (2011). LogMap: Logic-based and scalable ontology matching. In The Semantic Web–ISWC 2011 (pp. 273-288). Springer.</p>
+<p>Lein, E. S., Hawrylycz, M. J., Ao, N., et al. (2007). Genome-wide atlas of gene expression in the adult mouse brain. Nature, 445(7124), 168–176.</p>
+<p>Matentzoglu, N., Balhoff, J. P., Bello, S. M., et al. (2022). A Simple Standard for Sharing Ontological Mappings (SSSOM). Database, 2022, baac035.</p>
 <p>Mungall, C. J., Koehler, S., Robinson, P., Holmes, I., &amp; Haendel, M. (2019). k-BOOM: A Bayesian approach to ontology structure inference, with applications in disease ontology construction. bioRxiv, 048843.</p>
+<p>Mungall, C. J., Torniai, C., Gkoutos, G. V., Lewis, S. E., &amp; Haendel, M. A. (2012). Uberon, an integrative multi-species anatomy ontology. Genome Biology, 13(1), R5.</p>
 <h2 id="appendix-a-algorithm-pseudocode">Appendix A: Algorithm Pseudocode</h2>
 <h3 id="a1-main-search-algorithm">A.1 Main Search Algorithm</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>function SEARCH(kb, config):
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    root ← TreeNode(selections=[], probability=1.0)
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    stack ← [root]
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    visited ← {root}
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    solutions ← []
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    while stack is not empty and not timeout:
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        node ← stack.pop()
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        if node.is_terminal():
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>            solutions.append(node)
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>            if len(solutions) ≥ config.max_solutions:
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>                break
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>        else:
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>            extensions ← GET_EXTENSIONS(node, kb)
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>            satisfiable ← [e for e in extensions if e.is_satisfiable()]
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>            # Sort by probability and add to stack
-<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>            satisfiable.sort(by probability, descending)
-<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>            stack.extend(satisfiable)
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
-<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    return solutions
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>function SEARCH(kb, config):
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    root ← TreeNode(selections=[], probability=1.0)
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    stack ← [root]
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    visited ← {root}
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    solutions ← []
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    while stack is not empty and not timeout:
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        node ← stack.pop()
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        if node.is_terminal():
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>            solutions.append(node)
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>            if len(solutions) ≥ config.max_solutions:
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>                break
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>        else:
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>            extensions ← GET_EXTENSIONS(node, kb)
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>            satisfiable ← [e for e in extensions if e.is_satisfiable()]
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>            # Sort by probability and add to stack
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>            satisfiable.sort(by probability, descending)
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>            stack.extend(satisfiable)
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    return solutions
 </code></pre></div>
 <h3 id="a2-partition-algorithm">A.2 Partition Algorithm</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>function PARTITION_KB(kb, max_size):
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    graph ← BUILD_GRAPH(kb)
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    components ← STRONGLY_CONNECTED_COMPONENTS(graph)
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    for each component in components:
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        sub_kb ← EXTRACT_SUB_KB(kb, component)
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        if len(sub_kb.pfacts) &gt; max_size:
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>            # Recursively split large components
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>            yield from SPLIT_COMPONENT(sub_kb, max_size)
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        else:
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>            yield sub_kb
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>function PARTITION_KB(kb, max_size):
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    graph ← BUILD_GRAPH(kb)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    components ← STRONGLY_CONNECTED_COMPONENTS(graph)
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    for each component in components:
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        sub_kb ← EXTRACT_SUB_KB(kb, component)
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        if len(sub_kb.pfacts) &gt; max_size:
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>            # Recursively split large components
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>            yield from SPLIT_COMPONENT(sub_kb, max_size)
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        else:
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>            yield sub_kb
 </code></pre></div>
 <h2 id="appendix-b-data-format-specifications">Appendix B: Data Format Specifications</h2>
 <h3 id="b1-yaml-knowledge-base-format">B.1 YAML Knowledge Base Format</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Example</span><span class="nv"> </span><span class="s">KB&quot;</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Demonstration</span><span class="nv"> </span><span class="s">knowledge</span><span class="nv"> </span><span class="s">base&quot;</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nt">facts</span><span class="p">:</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ProperSubClassOf</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cat</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">sup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mammal</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nt">pfacts</span><span class="p">:</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact</span><span class="p">:</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">      </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EquivalentTo</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cat</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">      </span><span class="nt">equivalent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Felis</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="nt">prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.9</span>
-<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact</span><span class="p">:</span>
-<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">      </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EquivalentTo</span>
-<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">      </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dog</span>
-<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">      </span><span class="nt">equivalent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Canis</span>
-<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">    </span><span class="nt">prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.85</span>
-<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>
-<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">  </span><span class="nt">Cat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Domestic</span><span class="nv"> </span><span class="s">cat&quot;</span>
-<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="w">  </span><span class="nt">Dog</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Domestic</span><span class="nv"> </span><span class="s">dog&quot;</span>
-<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">  </span><span class="nt">Mammal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Class</span><span class="nv"> </span><span class="s">Mammalia&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Example</span><span class="nv"> </span><span class="s">KB&quot;</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Demonstration</span><span class="nv"> </span><span class="s">knowledge</span><span class="nv"> </span><span class="s">base&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nt">facts</span><span class="p">:</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ProperSubClassOf</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cat</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">sup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mammal</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="nt">pfacts</span><span class="p">:</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact</span><span class="p">:</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">      </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EquivalentTo</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">      </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cat</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">      </span><span class="nt">equivalent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Felis</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">    </span><span class="nt">prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.9</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">fact</span><span class="p">:</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">      </span><span class="nt">fact_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EquivalentTo</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">      </span><span class="nt">sub</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dog</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">      </span><span class="nt">equivalent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Canis</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">    </span><span class="nt">prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.85</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">  </span><span class="nt">Cat</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Domestic</span><span class="nv"> </span><span class="s">cat&quot;</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">  </span><span class="nt">Dog</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Domestic</span><span class="nv"> </span><span class="s">dog&quot;</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">  </span><span class="nt">Mammal</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Class</span><span class="nv"> </span><span class="s">Mammalia&quot;</span>
 </code></pre></div>
 <h3 id="b2-ptable-tsv-format">B.2 Ptable TSV Format</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a># Probabilistic facts table
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a># fact_type arg1    arg2    probability
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>EquivalentTo    Cat Felis   0.9
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>EquivalentTo    Dog Canis   0.85
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>ProperSubClassOf    Cat Mammal  1.0
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>ProperSubClassOf    Dog Mammal  1.0
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a># Probabilistic facts table
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a># fact_type arg1    arg2    probability
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>EquivalentTo    Cat Felis   0.9
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>EquivalentTo    Dog Canis   0.85
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>ProperSubClassOf    Cat Mammal  1.0
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>ProperSubClassOf    Dog Mammal  1.0
 </code></pre></div>
 <h2 id="appendix-c-performance-benchmarks">Appendix C: Performance Benchmarks</h2>
 <h3 id="c1-scalability-with-partition-size">C.1 Scalability with Partition Size</h3>
