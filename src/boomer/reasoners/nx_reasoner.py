@@ -191,7 +191,7 @@ class NxReasoner(Reasoner):
                                 ) & set(nx.ancestors(g, entity2))
                                 if common_descendants:
                                     add_entailment(False)
-        checked_selections = list(set(checked_selections))
+        checked_selections = list(dict.fromkeys(checked_selections))
         return ReasonerResult(
             unsatisfiable_facts=filter_unsats(
                 checked_selections + [(True, None, f) for f in kb.facts]
