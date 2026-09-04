@@ -3,11 +3,22 @@ import boomer.datasets.diagonal as diagonal
 from boomer.model import (
     KB,
     PFact,
+    DisjointSet,
     EquivalentTo,
+    NegatedFact,
     ProperSubClassOf,
     MemberOfDisjointGroup,
+    SearchConfig,
+    SubClassOf,
 )
-from boomer.splitter import extract_neighborhood, split_connected_components
+from boomer.search import solve
+from boomer.splitter import (
+    extract_neighborhood,
+    fact_entities,
+    kb_to_graph,
+    partition_kb,
+    split_connected_components,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -114,3 +125,56 @@ def test_split_connected_components(max_pfacts_per_clique, min_pfacts_per_clique
             print(f"pfact {pfact} in pfacts but not in combined sub-kbs")
     #assert all_pfacts == pfacts
     assert total_pfacts == num_pfacts
+
+
+# ---------------------------------------------------------------------------
+# fact_entities / kb_to_graph / DisjointSet identity
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize(
+    "fact,expected",
+    [
+        (SubClassOf(sub="a", sup="b"), {"a", "b"}),
+        (DisjointSet(entities=("a", "b", "c")), {"a", "b", "c"}),
+        (NegatedFact(negated=SubClassOf(sub="a", sup="b")), {"a", "b"}),
+    ],
+)
+def test_fact_entities(fact, expected):
+    assert fact_entities(fact) == expected
+
+
+def test_partition_keeps_set_and_negated_facts():
+    """DisjointSet and NegatedFact facts used to be dropped from every sub-KB."""
+    disjoint = DisjointSet(entities=("a", "b", "c"))
+    negated = NegatedFact(negated=SubClassOf(sub="a", sup="d"))
+    kb = KB(
+        facts=[disjoint, negated],
+        pfacts=[PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.9)],
+    )
+    [sub_kb] = [s for s in partition_kb(kb) if s.pfacts]
+    assert disjoint in sub_kb.facts
+    assert negated in sub_kb.facts
+
+
+@pytest.mark.parametrize("partition_initial_threshold", [200, 1])
+def test_partition_respects_disjoint_set(partition_initial_threshold):
+    kb = KB(
+        facts=[DisjointSet(entities=("a", "b"))],
+        pfacts=[PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.9)],
+    )
+    config = SearchConfig(partition_initial_threshold=partition_initial_threshold)
+    solution = solve(kb, config)
+    assert [sp.truth_value for sp in solution.solved_pfacts] == [False]
+
+
+def test_kb_to_graph_keeps_pfact_probability():
+    kb = KB(pfacts=[PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.8)])
+    graph = kb_to_graph(kb)
+    assert graph.edges["a", "b"]["prob"] == 0.8
+    assert graph.edges["b", "a"]["prob"] == 0.8
+
+
+def test_disjoint_set_entities_are_sorted():
+    assert DisjointSet(entities=("b", "a")).entities == ("a", "b")
+    assert DisjointSet(entities=["b", "a"]) == DisjointSet(entities=("a", "b"))
+    assert hash(DisjointSet(entities=["b", "a"])) == hash(DisjointSet(entities=("a", "b")))

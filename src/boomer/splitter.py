@@ -10,15 +10,37 @@ from boomer.model import (
 )
 from typing import Iterator, Set
 import networkx as nx
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
 
 def fact_entities(fact: Fact) -> Set[EntityIdentifier]:
-    # introspect the fact to get the entities; don't assume properties
-    entities = set()
-    for k, v in fact.__dict__.items():
-        entities.add(v)
+    """
+    Return the entity identifiers mentioned by a fact.
+
+    Introspects the fact's fields rather than assuming property names, so it
+    works for every fact type. Tuple-valued fields (DisjointSet) and nested
+    facts (NegatedFact) are flattened.
+
+    >>> sorted(fact_entities(SubClassOf(sub="a", sup="b")))
+    ['a', 'b']
+    >>> from boomer.model import DisjointSet, NegatedFact
+    >>> sorted(fact_entities(DisjointSet(entities=("a", "b", "c"))))
+    ['a', 'b', 'c']
+    >>> sorted(fact_entities(NegatedFact(negated=SubClassOf(sub="a", sup="b"))))
+    ['a', 'b']
+    """
+    entities: Set[EntityIdentifier] = set()
+    for name, value in fact.__dict__.items():
+        if name == "fact_type":
+            continue
+        if isinstance(value, str):
+            entities.add(value)
+        elif isinstance(value, (tuple, list)):
+            entities.update(value)
+        elif isinstance(value, BaseModel):
+            entities.update(fact_entities(value))
     return entities
 
 def kb_to_graph(kb: KB) -> nx.DiGraph:
@@ -39,7 +61,6 @@ def kb_to_graph(kb: KB) -> nx.DiGraph:
     def add_edges(fact: Fact, edge_properties: dict = None):
         if not edge_properties:
             edge_properties = {}
-        edge_properties = {}
         if isinstance(fact, EquivalentTo):
             graph.add_edge(fact.sub, fact.equivalent, **edge_properties)
             graph.add_edge(fact.equivalent, fact.sub, **edge_properties)
