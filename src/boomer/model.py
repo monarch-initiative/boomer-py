@@ -1,6 +1,6 @@
 from abc import ABC
 from copy import deepcopy
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, List, Tuple, Optional, Dict, Union, Literal, Annotated
 
 NodeIdentifier = str
@@ -121,10 +121,12 @@ class DisjointSet(BaseFact):
     fact_type: Literal["DisjointSet"] = "DisjointSet"
     entities: Tuple[EntityIdentifier, ...]
 
-    def model_post_init(self, __context):
-        # Ensure immutable tuple and sorted for consistency
-        if not isinstance(self.entities, tuple):
-            object.__setattr__(self, "entities", tuple(sorted(self.entities)))
+    @field_validator("entities", mode="after")
+    @classmethod
+    def _sort_entities(cls, entities: Tuple[EntityIdentifier, ...]) -> Tuple[EntityIdentifier, ...]:
+        # Sort so that the same set of entities compares and hashes equal
+        # regardless of the order it was written in.
+        return tuple(sorted(entities))
 
 
 class NegatedFact(BaseFact):
