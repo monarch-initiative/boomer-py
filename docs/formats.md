@@ -415,3 +415,32 @@ kb = sssom_to_kb("mappings.sssom.tsv")
 ```
 
 See the SSSOM converter documentation for configuration options including per-prefix probabilities and predicate mapping customization.
+
+## Hyperparameters and entailment-only pfacts
+
+A KB can carry `hyperparams`: priors about axioms an input ontology may have
+*omitted*. The example below says that two terms of ontology `Y` stand in a
+proper subclass relation that `Y` does not assert with probability 0.05:
+
+```yaml
+hyperparams:
+  - hyperparam_type: ProbabilityMissingProperSubClassOf
+    prob: 0.05
+    disjoint_group_sub: Y
+    disjoint_group_sup: Y
+```
+
+`solve()` expands each hyperparameter into entailment-only pfacts
+(`pfacts_entailed`): one per ordered pair of entities from the named disjoint
+groups, minus any that are already pfacts or that the hard facts already
+decide. The search never selects these pfacts. Whenever a node's selections
+*entail* one of them, its probability multiplies the node's prior; whenever
+they *refute* one, the complement does; an undetermined one contributes
+nothing. A mapping that would imply a missing within-ontology subclass axiom
+is therefore penalised by that axiom's prior. `ProbabilityMissingEquivalentTo`
+works the same way for unstated equivalences.
+
+Entailment-only pfacts are listed in `solved_pfacts` with
+`metadata: {entailment_only: true}`; their `truth_value` is their status in
+the best solution (`null` when undetermined) and their posterior is the
+probability mass of the solutions that entail them.

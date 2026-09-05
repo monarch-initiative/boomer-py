@@ -149,23 +149,41 @@ Fact = Annotated[
     Field(discriminator="fact_type"),
 ]
 
-# TODO: implement these
-class KBHyperParameter(BaseModel, ABC):
+class _HyperParameter(BaseModel):
+    """
+    Base for KB-level priors about axioms an input ontology may have omitted.
+
+    solve() expands each hyperparameter into entailment-only pfacts; see
+    KB.pfacts_entailed and boomer.fact_generator.
+    """
     prob: float
 
-class ProbabilityMissingEquivalentTo(KBHyperParameter):
+
+class ProbabilityMissingEquivalentTo(_HyperParameter):
     """
-    The probability of a missing EquivalentTo fact.
+    The probability that two entities from the named disjoint groups are
+    equivalent even though no EquivalentTo fact says so.
     """
+    hyperparam_type: Literal["ProbabilityMissingEquivalentTo"] = "ProbabilityMissingEquivalentTo"
     disjoint_group_sub: str | None = None
     disjoint_group_equivalent: str | None = None
 
-class ProbabilityMissingProperSubClassOf(KBHyperParameter):
+
+class ProbabilityMissingProperSubClassOf(_HyperParameter):
     """
-    The probability of a missing ProperSubClassOf fact.
+    The probability that an entity from disjoint_group_sub is a proper subclass
+    of one from disjoint_group_sup even though no ProperSubClassOf fact says so.
     """
+    hyperparam_type: Literal["ProbabilityMissingProperSubClassOf"] = "ProbabilityMissingProperSubClassOf"
     disjoint_group_sub: str | None = None
     disjoint_group_sup: str | None = None
+
+
+# discriminated so that hyperparameters survive JSON/YAML round trips
+KBHyperParameter = Annotated[
+    Union[ProbabilityMissingEquivalentTo, ProbabilityMissingProperSubClassOf],
+    Field(discriminator="hyperparam_type"),
+]
 
 class PFact(BaseModel):
     """
@@ -237,7 +255,7 @@ class KB(BaseModel):
     hypotheses: List[Fact] = Field(default_factory=list)
     labels: Dict[EntityIdentifier, str] = Field(default_factory=dict)
     hyperparams: List[KBHyperParameter] = Field(default_factory=list)
-    pfacts_entailed: List[PFact] = Field(default_factory=list, description="Pfacts that are only check as entailments")
+    pfacts_entailed: List[PFact] = Field(default_factory=list, description="Entailment-only pfacts: never selected by the search, but when a node's selections entail one its probability multiplies the node's prior, and when they refute it the complement does")
     default_configurations: dict[str, SearchConfig] | None = None
 
     name: Optional[str] = None
@@ -341,6 +359,7 @@ class TreeNode(BaseModel):
     pr: Optional[float] = Field(None, description="Estimated probability of the overall solution, including estimated of best path to terminal node")
     surprise_factor: Optional[float] = Field(None, description="Ratio between pr of parent and pr of child")
     terminal: bool = Field(False, description="Whether the node is a terminal node")
+    entailed_hypotheses: List[Tuple[Fact, bool]] = Field(default_factory=list, description="Entailment-only pfacts (KB.pfacts_entailed) whose truth value follows from this node's selections")
     reasoner_state: Union[ReasonerState, None] = None
 
     @property

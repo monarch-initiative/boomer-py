@@ -8,12 +8,14 @@ from boomer.model import (
     NegatedFact,
     ProperSubClassOf,
     MemberOfDisjointGroup,
+    ProbabilityMissingProperSubClassOf,
     SearchConfig,
     SubClassOf,
 )
 from boomer.search import solve
 from boomer.splitter import (
     extract_neighborhood,
+    extract_sub_kb,
     fact_entities,
     kb_to_graph,
     partition_kb,
@@ -178,3 +180,22 @@ def test_disjoint_set_entities_are_sorted():
     assert DisjointSet(entities=("b", "a")).entities == ("a", "b")
     assert DisjointSet(entities=["b", "a"]) == DisjointSet(entities=("a", "b"))
     assert hash(DisjointSet(entities=["b", "a"])) == hash(DisjointSet(entities=("a", "b")))
+
+
+def test_extract_sub_kb_keeps_kb_level_settings():
+    kb = KB(
+        facts=[MemberOfDisjointGroup(sub="a", group="G"), MemberOfDisjointGroup(sub="b", group="G")],
+        pfacts=[PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.5)],
+        hyperparams=[
+            ProbabilityMissingProperSubClassOf(prob=0.2, disjoint_group_sub="G", disjoint_group_sup="G")
+        ],
+        pfacts_entailed=[
+            PFact(fact=ProperSubClassOf(sub="a", sup="b"), prob=0.2),
+            PFact(fact=ProperSubClassOf(sub="c", sup="d"), prob=0.2),
+        ],
+        default_configurations={"default": SearchConfig(max_candidate_solutions=7)},
+    )
+    sub = extract_sub_kb(kb, {"a", "b"})
+    assert sub.hyperparams == kb.hyperparams
+    assert sub.pfacts_entailed == [kb.pfacts_entailed[0]]
+    assert sub.default_configurations == kb.default_configurations

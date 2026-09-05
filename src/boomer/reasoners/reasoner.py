@@ -27,7 +27,7 @@ class Reasoner(ABC):
         self,
         kb: KB,
         selections: List[Grounding] | None = None,
-        #candidates: List[Grounding] | None = None,
+        additional_hypotheses: List[Fact] | None = None,
     ) -> ReasonerResult:
         """
         Reason about a KB.
@@ -35,7 +35,8 @@ class Reasoner(ABC):
         Args:
             kb: The knowledge base to reason about.
             selections: The selections to reason about.
-            candidates: The candidates to reason about.
+            additional_hypotheses: Facts that are not pfacts but whose entailment
+                status under the selections should be reported.
 
         Returns:
             A ReasonerResult object containing the unsatisfiable facts, entailed selections, and entailed hypotheses.

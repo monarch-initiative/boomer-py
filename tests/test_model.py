@@ -8,6 +8,8 @@ from boomer.model import (
     NegatedFact,
     OneOf,
     PFact,
+    ProbabilityMissingEquivalentTo,
+    ProbabilityMissingProperSubClassOf,
     Solution,
     SubClassOf,
     canonical_fact,
@@ -90,3 +92,15 @@ def test_kb_extend_keeps_multi_labeled_edges_until_deduped():
 def test_oneof_round_trips_through_the_fact_union():
     kb = KB(facts=[OneOf(sub="a", sibling="b")])
     assert KB.model_validate_json(kb.model_dump_json()).facts == kb.facts
+
+
+def test_hyperparameters_round_trip_with_their_fields():
+    kb = KB(
+        hyperparams=[
+            ProbabilityMissingProperSubClassOf(prob=0.2, disjoint_group_sub="A", disjoint_group_sup="B"),
+            ProbabilityMissingEquivalentTo(prob=0.1, disjoint_group_sub="A", disjoint_group_equivalent="B"),
+        ]
+    )
+    restored = KB.model_validate_json(kb.model_dump_json())
+    assert restored.hyperparams == kb.hyperparams
+    assert isinstance(restored.hyperparams[0], ProbabilityMissingProperSubClassOf)
