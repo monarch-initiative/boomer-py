@@ -4,7 +4,7 @@ Tests for the boomer.evaluator module.
 import pytest
 
 from boomer.evaluator import evaluate_facts, EvalStats
-from boomer.model import SubClassOf
+from boomer.model import DisjointWith, NotInSubsumptionWith, SubClassOf
 
 
 def make_facts(pairs):
@@ -82,3 +82,20 @@ def test_duplicate_predictions_deduplicated():
     assert stats.precision == pytest.approx(1.0)
     assert stats.recall == pytest.approx(1.0)
     assert stats.f1 == pytest.approx(1.0)
+
+def test_entailed_predictions_count_as_true_positives():
+    gold = make_facts([("A", "B"), ("B", "C")])
+    preds = make_facts([("A", "C"), ("C", "A")])
+    stats = evaluate_facts(gold, preds)
+    # A ⊆ C follows from the gold facts; C ⊆ A does not
+    assert (stats.tp, stats.fp, stats.fn) == (1, 1, 2)
+    assert stats.fp_list == [SubClassOf(sub="C", sup="A")]
+    # the caller's list is not extended with the entailed fact
+    assert len(gold) == 2
+
+
+def test_symmetric_facts_match_regardless_of_argument_order():
+    gold = [DisjointWith(sub="A", sibling="B"), NotInSubsumptionWith(sub="C", sibling="D")]
+    preds = [DisjointWith(sub="B", sibling="A"), NotInSubsumptionWith(sub="D", sibling="C")]
+    stats = evaluate_facts(gold, preds)
+    assert (stats.tp, stats.fp, stats.fn) == (2, 0, 0)

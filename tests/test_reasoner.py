@@ -122,3 +122,17 @@ def test_negated_fact_selected_false_asserts_the_negated_fact():
     assert result.satisfiable
     assert (1, False) in result.entailed_selections
     assert not reasoner.reason(kb, [(0, False), (1, True)]).satisfiable
+
+
+def test_entailed_hypotheses_reports_additional_hypotheses():
+    kb = KB(facts=[SubClassOf(sub="A", sup="B"), SubClassOf(sub="B", sup="C")])
+    hypotheses = [
+        SubClassOf(sub="A", sup="C"),          # entailed
+        DisjointWith(sub="A", sibling="C"),    # refuted
+        SubClassOf(sub="C", sup="A"),          # undetermined
+    ]
+    result = NxReasoner().reason(kb, additional_hypotheses=hypotheses)
+    assert result.satisfiable
+    assert set(result.entailed_hypotheses) == {(hypotheses[0], True), (hypotheses[1], False)}
+    # kb.facts are not reported as hypotheses, and there are no pfacts to select
+    assert result.entailed_selections == []
