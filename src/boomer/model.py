@@ -376,7 +376,7 @@ class Solution(BaseModel):
                                 if label:
                                     distinct_labels.add(label)
                     if distinct_labels:
-                        sub_solution.name = "; ".join(distinct_labels)
+                        sub_solution.name = "; ".join(sorted(distinct_labels))
                     else:
                         sub_solution.name = f"sub_solution_{i}"
 
