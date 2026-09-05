@@ -360,6 +360,7 @@ class TreeNode(BaseModel):
     surprise_factor: Optional[float] = Field(None, description="Ratio between pr of parent and pr of child")
     terminal: bool = Field(False, description="Whether the node is a terminal node")
     entailed_hypotheses: List[Tuple[Fact, bool]] = Field(default_factory=list, description="Entailment-only pfacts (KB.pfacts_entailed) whose truth value follows from this node's selections")
+    inherited_decisions: int = Field(0, description="Number of pfacts decided at the root by the hard facts alone, before any choice was made")
     reasoner_state: Union[ReasonerState, None] = None
 
     @property

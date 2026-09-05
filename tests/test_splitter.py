@@ -4,8 +4,10 @@ from boomer.model import (
     KB,
     PFact,
     DisjointSet,
+    DisjointWith,
     EquivalentTo,
     NegatedFact,
+    NotInSubsumptionWith,
     ProperSubClassOf,
     MemberOfDisjointGroup,
     ProbabilityMissingProperSubClassOf,
@@ -13,12 +15,15 @@ from boomer.model import (
     SubClassOf,
 )
 from boomer.search import solve
+from boomer.reasoners.nx_reasoner import NxReasoner
 from boomer.splitter import (
+    add_carried_facts,
     extract_neighborhood,
     extract_sub_kb,
     fact_entities,
     kb_to_graph,
     partition_kb,
+    pfact_owner_entity,
     split_connected_components,
 )
 
@@ -199,3 +204,76 @@ def test_extract_sub_kb_keeps_kb_level_settings():
     assert sub.hyperparams == kb.hyperparams
     assert sub.pfacts_entailed == [kb.pfacts_entailed[0]]
     assert sub.default_configurations == kb.default_configurations
+
+
+# ---------------------------------------------------------------------------
+# pfact ownership, carry-forward, and bounded splitting
+# ---------------------------------------------------------------------------
+
+
+def _chain_kb():
+    return KB(
+        facts=[NotInSubsumptionWith(sub="A", sibling="C")],
+        pfacts=[
+            PFact(fact=SubClassOf(sub="A", sup="B"), prob=0.9),
+            PFact(fact=SubClassOf(sub="B", sup="C"), prob=0.9),
+        ],
+    )
+
+
+def test_partition_assigns_each_pfact_to_one_component():
+    subs = [s for s in partition_kb(_chain_kb()) if s.pfacts]
+    owners = [pf.fact for s in subs for pf in s.pfacts]
+    assert sorted(owners, key=str) == sorted([pf.fact for pf in _chain_kb().pfacts], key=str)
+    # the sub-KB owning A ⊆ B sees the hard fact on A; the one owning B ⊆ C sees the one on C
+    for s in subs:
+        assert NotInSubsumptionWith(sub="A", sibling="C") in s.facts
+
+
+def test_partition_keeps_pfacts_whose_entities_have_no_edges():
+    kb = KB(pfacts=[PFact(fact=DisjointWith(sub="p", sibling="q"), prob=0.8)])
+    subs = [s for s in partition_kb(kb) if s.pfacts]
+    assert len(subs) == 1
+    assert subs[0].pfacts == kb.pfacts
+
+
+def test_pfact_owner_entity():
+    assert pfact_owner_entity(ProperSubClassOf(sub="b", sup="a")) == "b"
+    assert pfact_owner_entity(EquivalentTo(sub="b", equivalent="a")) == "b"
+    assert pfact_owner_entity(NotInSubsumptionWith(sub="b", sibling="a")) == "a"
+
+
+def test_partitioned_solve_respects_hard_facts_across_components():
+    kb = _chain_kb()
+    solution = solve(kb, SearchConfig(partition_initial_threshold=1))
+    assert len(solution.solved_pfacts) == 2  # each pfact solved exactly once
+    accepted = [sp.pfact.fact for sp in solution.solved_pfacts if sp.truth_value]
+    assert len(accepted) == 1  # A ⊆ B and B ⊆ C together violate the hard fact
+    assert NxReasoner().reason(KB(facts=kb.facts + accepted)).satisfiable
+    assert solution.prior_prob == pytest.approx(0.9 * 0.1)
+
+
+def test_add_carried_facts_brings_context_without_mutating():
+    kb = _chain_kb()
+    sub = KB(pfacts=[kb.pfacts[1]])
+    extended = add_carried_facts(sub, kb, [SubClassOf(sub="A", sup="B")])
+    assert SubClassOf(sub="A", sup="B") in extended.facts
+    assert NotInSubsumptionWith(sub="A", sibling="C") in extended.facts
+    assert sub.facts == []
+    # nothing carried, nothing added
+    assert add_carried_facts(sub, kb, [SubClassOf(sub="X", sup="Y")]) is sub
+
+
+def test_split_connected_components_terminates_on_unsplittable_hub():
+    """
+    A hub with many equal-probability spokes: every pfact is owned by the hub,
+    so no component fits the limit until enough spokes have been dropped. This
+    used to loop forever (step size larger than the limit); it must terminate
+    with every pfact yielded exactly once and no oversized part.
+    """
+    kb = KB(
+        pfacts=[PFact(fact=EquivalentTo(sub="HUB", equivalent=f"X{i}"), prob=0.9) for i in range(150)]
+    )
+    parts = list(split_connected_components(kb, max_pfacts_per_clique=5))
+    assert sum(len(p.pfacts) for p in parts) == 150
+    assert all(0 < len(p.pfacts) <= 5 for p in parts)
