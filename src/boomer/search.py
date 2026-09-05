@@ -362,7 +362,11 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
 
     # partition the KB into sub-clusters of pfacts
     print(f"Solving KB: {kb.name} with {len(kb.pfacts)} pfacts; threshold={config.partition_initial_threshold}")
-    if len(kb.pfacts) > config.max_pfacts_per_clique or len(kb.pfacts) > config.partition_initial_threshold:
+    exceeds_clique_limit = (
+        config.max_pfacts_per_clique is not None
+        and len(kb.pfacts) > config.max_pfacts_per_clique
+    )
+    if exceeds_clique_limit or len(kb.pfacts) > config.partition_initial_threshold:
         solutions = []
         print(f"Partitioning KB, num pfacts= {len(kb.pfacts)} sub-KBs (threshold={config.partition_initial_threshold})")
         sub_kbs = list(
@@ -520,10 +524,10 @@ def evaluate_hypotheses(
     epsilon = 1e-10
     for i, hypothesis in enumerate(hypothesis_list):
         kb_copy = deepcopy(kb)
-        kb_copy.pfacts.append(PFact(hypothesis, 1.0))
+        kb_copy.pfacts.append(PFact(fact=hypothesis, prob=1.0))
         for k in range(len(hypothesis_list)):
             if k != i:
-                kb_copy.pfacts.append(PFact(hypothesis_list[k], 0.0))
+                kb_copy.pfacts.append(PFact(fact=hypothesis_list[k], prob=0.0))
         solution = solve(kb_copy, config)
         pr = solution.prior_prob
         solutions.append((pr, hypothesis, solution))

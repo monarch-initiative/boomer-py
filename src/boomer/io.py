@@ -99,7 +99,7 @@ def ptable_to_kb(
 
     # Add disjoint group memberships as facts, not pfacts
     # Only add if IDs have prefixes (e.g., "MONDO:123")
-    for id in ids:
+    for id in sorted(ids):
         try:
             prefix = id_prefix(id)
             facts.append(MemberOfDisjointGroup(sub=id, group=prefix))

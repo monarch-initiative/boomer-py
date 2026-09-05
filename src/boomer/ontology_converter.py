@@ -325,7 +325,7 @@ def obo_to_kb(
 
     # Auto MemberOfDisjointGroup per prefix
     if config.auto_disjoint_groups:
-        for eid in seen_ids:
+        for eid in sorted(seen_ids):
             if ":" in eid:
                 prefix = id_prefix(eid)
                 hard_facts.append(MemberOfDisjointGroup(sub=eid, group=prefix))
@@ -511,7 +511,7 @@ def owl_to_kb(
 
     # Auto MemberOfDisjointGroup per prefix
     if config.auto_disjoint_groups:
-        for eid in seen_ids:
+        for eid in sorted(seen_ids):
             if ":" in eid:
                 prefix = id_prefix(eid)
                 hard_facts.append(MemberOfDisjointGroup(sub=eid, group=prefix))

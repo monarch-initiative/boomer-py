@@ -17,6 +17,7 @@ AGGS = {
     "confidence": "product",
     "prior_prob": "product",
     "posterior_prob": "product",
+    "timed_out": "any",
 }
 
 def aggegate_objects(objects: List[BaseModel|dict], field_aggs: dict[str, str]) -> BaseModel | dict:
@@ -43,6 +44,9 @@ def aggegate_objects(objects: List[BaseModel|dict], field_aggs: dict[str, str]) 
 
         >>> aggegate_objects([{"x": 1}, {"x": 2}], {"x": "max"})
         {'x': 2}
+
+        >>> aggegate_objects([{"x": False}, {"x": True}], {"x": "any"})
+        {'x': True}
     """
 
     def _get_field(obj: BaseModel|dict, field: str) -> Any:
@@ -64,6 +68,8 @@ def aggegate_objects(objects: List[BaseModel|dict], field_aggs: dict[str, str]) 
             new_object[field] = max(_get_field(obj, field) for obj in objects)
         elif agg == "product":
             new_object[field] = prod(_get_field(obj, field) for obj in objects)
+        elif agg == "any":
+            new_object[field] = any(_get_field(obj, field) for obj in objects)
         else:
             raise ValueError(f"Invalid aggregation function: {agg}")
     if isinstance(objects[0], BaseModel):

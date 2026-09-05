@@ -1,6 +1,6 @@
 from copy import deepcopy
 import pytest
-from boomer.model import KB, EquivalentTo, MemberOfDisjointGroup, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution
+from boomer.model import KB, DisjointWith, EquivalentTo, MemberOfDisjointGroup, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution
 from boomer.search import evaluate_hypotheses, search, solve
 import boomer.datasets.animals as animals
 import boomer.datasets.quad as quad
@@ -799,3 +799,63 @@ def test_exhaustive_search_depth_false_bridge(exhaustive_depth):
         # With exhaustive search, we explore more combinations
         print(f"Explored {solution.number_of_combinations} combinations")
         assert solution.number_of_combinations >= 2, "Should explore multiple starting points"
+
+def test_solve_disjointwith_entity_outside_graph():
+    """
+    A DisjointWith hard fact must not crash the reasoner when one of its entities has
+    no subclass or equivalence edge in the current graph.
+
+    This happens directly when an entity only appears in unselected pfacts, and after
+    partitioning, which keeps the DisjointWith fact in a sub-KB but not the subclass
+    facts that anchored its entities in the graph.
+    """
+    bare = KB(
+        facts=[DisjointWith(sub="A", sibling="B")],
+        pfacts=[PFact(fact=EquivalentTo(sub="A", equivalent="C"), prob=0.9)],
+    )
+    solution = solve(bare)
+    assert [sp.truth_value for sp in solution.solved_pfacts] == [True]
+
+    kb = KB(
+        pfacts=[
+            PFact(fact=SubClassOf(sub="A", sup="B"), prob=0.9),
+            PFact(fact=SubClassOf(sub="B", sup="C"), prob=0.9),
+        ],
+        facts=[
+            DisjointWith(sub="A", sibling="C"),
+            SubClassOf(sub="A", sup="T"),
+            SubClassOf(sub="B", sup="T"),
+            SubClassOf(sub="C", sup="T"),
+        ],
+    )
+    assert solve(kb).number_of_satisfiable_combinations > 0
+    partitioned = solve(kb, SearchConfig(partition_initial_threshold=1))
+    assert partitioned.number_of_satisfiable_combinations > 0
+@pytest.mark.parametrize("partition_initial_threshold", [200, 1])
+def test_solve_without_clique_limit(partition_initial_threshold):
+    """max_pfacts_per_clique=None is documented as 'no limit' and must not raise."""
+    config = SearchConfig(
+        max_pfacts_per_clique=None,
+        partition_initial_threshold=partition_initial_threshold,
+    )
+    solution = solve(animals.kb, config)
+    assert solution.number_of_satisfiable_combinations > 0
+    assert len(solution.solved_pfacts) == len(animals.kb.pfacts)
+
+
+def test_evaluate_hypotheses_ranks_consistent_hypothesis_first():
+    kb = KB(
+        facts=[
+            MemberOfDisjointGroup(sub="A", group="G"),
+            MemberOfDisjointGroup(sub="B", group="G"),
+        ],
+        pfacts=[PFact(fact=SubClassOf(sub="A", sup="B"), prob=0.9)],
+    )
+    hypotheses = [
+        EquivalentTo(sub="A", equivalent="B"),  # refuted by the shared disjoint group
+        ProperSubClassOf(sub="A", sup="B"),
+    ]
+    ranked = evaluate_hypotheses(kb, hypotheses, SearchConfig())
+    assert [h for _, h, _ in ranked][0] == ProperSubClassOf(sub="A", sup="B")
+    assert ranked[0][0] == pytest.approx(1.0)
+    assert ranked[-1][0] == pytest.approx(0.0)
