@@ -6,6 +6,7 @@ from boomer.model import (
     EquivalentTo,
     HypothesisTest,
     NegatedFact,
+    OneOf,
     PFact,
     Solution,
     SubClassOf,
@@ -84,3 +85,8 @@ def test_kb_extend_keeps_multi_labeled_edges_until_deduped():
     assert merged.pfacts == [PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.8)]
     # the original is untouched
     assert len(kb.pfacts) == 1 and kb.pfacts[0].prob == 0.7
+
+
+def test_oneof_round_trips_through_the_fact_union():
+    kb = KB(facts=[OneOf(sub="a", sibling="b")])
+    assert KB.model_validate_json(kb.model_dump_json()).facts == kb.facts
