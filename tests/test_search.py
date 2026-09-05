@@ -859,3 +859,58 @@ def test_evaluate_hypotheses_ranks_consistent_hypothesis_first():
     assert [h for _, h, _ in ranked][0] == ProperSubClassOf(sub="A", sup="B")
     assert ranked[0][0] == pytest.approx(1.0)
     assert ranked[-1][0] == pytest.approx(0.0)
+
+
+def test_solution_cap_waits_for_a_satisfiable_node():
+    kb = KB(
+        facts=[
+            SubClassOf(sub="A", sup="T"),
+            SubClassOf(sub="B", sup="T"),
+            DisjointWith(sub="A", sibling="B"),
+        ],
+        pfacts=[PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=0.9)],
+    )
+    # the first terminal node explored (A ≡ B) is unsatisfiable and reaches the
+    # cap of 1; the search must still go on to the satisfiable rejection
+    solution = solve(kb, SearchConfig(max_candidate_solutions=1))
+    assert solution.number_of_satisfiable_combinations == 1
+    assert [sp.truth_value for sp in solution.solved_pfacts] == [False]
+    assert solution.prior_prob == pytest.approx(0.1)
+
+
+def test_all_unsat_result_has_no_confidence():
+    kb = KB(
+        facts=[
+            SubClassOf(sub="A", sup="T"),
+            SubClassOf(sub="B", sup="T"),
+            DisjointWith(sub="A", sibling="B"),
+        ],
+        # prob 1.0: rejecting it has probability 0, accepting it is refuted
+        pfacts=[PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=1.0)],
+    )
+    solution = solve(kb)
+    assert solution.number_of_satisfiable_combinations == 0
+    assert solution.confidence == 0.0
+    assert solution.prior_prob == 0.0
+    assert [sp.truth_value for sp in solution.solved_pfacts] == [None]
+
+
+def test_exhaustive_depth_timeout_restarts_the_clock(monkeypatch, capsys):
+    """After a timeout resets the stack, the next sub-search gets a fresh time budget."""
+    import itertools
+    import re
+    import boomer.search as search_module
+
+    ticks = itertools.count()
+    monkeypatch.setattr(search_module.time, "time", lambda: float(next(ticks)))
+    solve(
+        false_bridge.kb,
+        SearchConfig(timeout_seconds=2.5, exhaustive_search_depth=1, max_iterations=50),
+    )
+    reported = [
+        float(m) for m in re.findall(r"Search timeout after ([0-9.]+) seconds", capsys.readouterr().out)
+    ]
+    assert reported, "the timeout must fire at least once"
+    # with the clock restarting, no report can be far beyond one timeout budget;
+    # without it the reported elapsed time grew on every iteration
+    assert max(reported) < 2 * 2.5 + 2

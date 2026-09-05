@@ -228,7 +228,9 @@ def search(kb: KB, config: SearchConfig) -> Iterator[TreeNode]:
                 #print("===========")
                 if not stack:
                     break
+                # each exhaustive sub-search gets a fresh iteration and time budget
                 n = 0
+                start_time = time.time()
             else:
                 break
 
@@ -414,15 +416,21 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     # Flag to track if search timed out
     timed_out = False
 
-    # use the main search function to find terminal nodes
+    # use the main search function to find terminal nodes. The cap bounds the
+    # search effort, so unsat terminal nodes count toward it too, but the
+    # search does not stop before at least one satisfiable node is found.
     nodes: list[TreeNode] = []
+    n_satisfiable = 0
     for n in search(kb, config):
         if not n.terminal:
             continue
         nodes.append(n)
+        if n.satifiable:
+            n_satisfiable += 1
         if (
             config.max_candidate_solutions
             and len(nodes) >= config.max_candidate_solutions
+            and n_satisfiable > 0
         ):
             break
 
@@ -438,29 +446,29 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     number_of_possible_combinations = kb.number_of_combinations()
     number_of_combinations_explored = len(nodes)
     number_of_satisfiable_combinations = sum(1 for n in nodes if n.satifiable)
-    number_of_combinations_explored_including_implicit = (
-        number_of_satisfiable_combinations
+    # each terminal node stands for every assignment consistent with the
+    # decisions on its path: the pfacts it did not decide on were entailed
+    # (satisfiable node) or ruled out wholesale (unsat node). Coverage of
+    # different nodes can overlap, so this is an estimate.
+    number_of_combinations_explored_including_implicit = sum(
+        2 ** (len(kb.pfacts) - n.depth) for n in nodes
     )
-    for n in nodes:
-        if not n.satifiable:
-            number_of_combinations_explored_including_implicit += 2 ** (
-                len(n.selections) - len(n.asserted_selections)
-            )
     est_prop_explored = (
         number_of_combinations_explored_including_implicit
         / number_of_possible_combinations
     )
     est_prop_explored = min(est_prop_explored, 1.0)
 
-    if nodes:
+    satisfiable_nodes = [n for n in nodes if n.satifiable]
+    if satisfiable_nodes:
         # sort nodes by pr; 0th element is best/highest pr
-        nodes.sort(key=lambda x: x.pr, reverse=True)
-        best = nodes[0]
+        satisfiable_nodes.sort(key=lambda x: x.pr, reverse=True)
+        best = satisfiable_nodes[0]
         prior_prob = best.pr
-        total_pr = sum(n.pr for n in nodes)
+        total_pr = sum(n.pr for n in satisfiable_nodes)
         posterior_prob = (best.pr / total_pr) if total_pr > 0.0 else 0.0
-        if len(nodes) >= 2:
-            next_best = nodes[1]
+        if len(satisfiable_nodes) >= 2:
+            next_best = satisfiable_nodes[1]
             if next_best.pr > 0.0:
                 confidence = 1.0 / (1.0 + math.exp(-math.log(best.pr / next_best.pr)))
             else:
@@ -478,9 +486,7 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
             pfact_posterior_prob = 0.0
             tot_pr_n = 0.0
 
-            for n in nodes:
-                if not n.satifiable:
-                    continue
+            for n in satisfiable_nodes:
                 pr_n = n.pr
                 truth_value = pfact_index_truth_value(n.selections, ix)
                 if truth_value:
@@ -499,11 +505,15 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
             )
 
     else:
+        # nothing satisfiable was found: no grounding, no confidence
         confidence = 0.0
         posterior_prob = 0.0
         prior_prob = 0.0
         ground_pfacts = []
-        solved_pfacts = []
+        solved_pfacts = [
+            SolvedPFact(pfact=pfact, truth_value=None, posterior_prob=0.0)
+            for pfact in kb.pfacts
+        ]
 
     # Track end time
     time_finished = time.time()
