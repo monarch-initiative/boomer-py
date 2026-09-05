@@ -112,6 +112,7 @@ config = SearchConfig(
 #### Properties:
 - `max_iterations`: Maximum number of search iterations
 - `max_candidate_solutions`: Maximum number of solutions to consider
+- `depth_bias`: Exponent on the best-case probability of the undecided pfacts in the search-stack ordering (default 2.0). Values above 1 favour deeper nodes, which are closer to a full solution; 1.0 orders by the estimated probability alone
 - `timeout_seconds`: Maximum time in seconds to run the search
 - `reasoner_class`: The reasoner implementation to use
 

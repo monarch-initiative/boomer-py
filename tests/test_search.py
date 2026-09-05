@@ -1,7 +1,7 @@
 from copy import deepcopy
 import pytest
-from boomer.model import KB, DisjointWith, EquivalentTo, MemberOfDisjointGroup, NotInSubsumptionWith, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution
-from boomer.search import evaluate_hypotheses, search, solve
+from boomer.model import KB, DisjointWith, EquivalentTo, MemberOfDisjointGroup, NotInSubsumptionWith, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution, TreeNode
+from boomer.search import calc_prob_unselected, evaluate_hypotheses, extend_node, node_priority, search, solve
 import boomer.datasets.animals as animals
 import boomer.datasets.quad as quad
 import boomer.datasets.ladder as ladder
@@ -986,3 +986,28 @@ def test_partitioned_solve_carries_decisions_forward():
     assert len(accepted) == 1
     assert partitioned.prior_prob == pytest.approx(unpartitioned.prior_prob)
     assert partitioned.number_of_components == 2
+
+
+def test_calc_prob_unselected_counts_each_pfact_once():
+    """It used to iterate over both groundings of every pfact and squared each factor."""
+    kb = KB(
+        pfacts=[
+            PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=0.9),
+            PFact(fact=EquivalentTo(sub="C", equivalent="D"), prob=0.2),
+        ]
+    )
+    root = TreeNode(pr_selected=1.0, selections=[], asserted_selections=[])
+    assert calc_prob_unselected(kb, root) == pytest.approx(0.9 * 0.8)
+    from boomer.reasoners.nx_reasoner import NxReasoner
+    child = extend_node(root, kb, (0, True), NxReasoner())
+    assert child.pr_selected == pytest.approx(0.9)
+    assert child.pr_remaining == pytest.approx(0.8)
+    assert child.pr == pytest.approx(0.72)
+    # the default depth bias reproduces the previous ordering key, pr times the remaining estimate
+    assert node_priority(child, 2.0) == pytest.approx(0.72 * 0.8)
+    assert node_priority(child, 1.0) == pytest.approx(0.72)
+
+
+def test_depth_bias_is_a_search_option():
+    solution = solve(false_bridge.kb, SearchConfig(depth_bias=1.0, max_iterations=200))
+    assert solution.number_of_satisfiable_combinations >= 1
