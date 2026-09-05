@@ -30,8 +30,10 @@ The ontology converter reads an ontology file and produces a KB with two kinds o
 - `xref` / `oboInOwl:hasDbXref` &rarr; `EquivalentTo` (default prob 0.7)
 - `skos:exactMatch` &rarr; `EquivalentTo` (default prob 0.9)
 - `skos:closeMatch` &rarr; `EquivalentTo` (default prob 0.7)
-- `skos:broadMatch` &rarr; `ProperSubClassOf` reversed (default prob 0.7)
-- `skos:narrowMatch` &rarr; `ProperSubClassOf` (default prob 0.7)
+- `skos:broadMatch` &rarr; `ProperSubClassOf`, subject ⊂ object (default prob 0.7)
+- `skos:narrowMatch` &rarr; `ProperSubClassOf`, object ⊂ subject (default prob 0.7)
+
+Directions follow the [SKOS Reference](https://www.w3.org/TR/skos-reference/#mapping): in `A skos:broadMatch B` the object `B` is the broader concept, and `skos:narrowMatch` is its inverse.
 
 **Disjoint groups** are auto-generated per ID prefix, so entities from different namespaces (e.g. `MONDO:` vs `ORDO:`) are placed in disjoint groups.
 
@@ -71,7 +73,7 @@ pyboomer solve disease.yaml -O markdown
 The converter produces:
 
 - **Hard facts**: `MONDO:0001234 ProperSubClassOf MONDO:0000001`, etc.
-- **Pfacts**: `MONDO:0001234 EquivalentTo ORDO:123` at 0.7, `MONDO:0001234 EquivalentTo OMIM:456789` at 0.9, `MONDO:0005678 ProperSubClassOf ICD10:K72` at 0.7 (broadMatch is reversed)
+- **Pfacts**: `MONDO:0001234 EquivalentTo ORDO:123` at 0.7, `MONDO:0001234 EquivalentTo OMIM:456789` at 0.9, `MONDO:0005678 ProperSubClassOf ICD10:K72` at 0.7 (the `broadMatch` object is the broader class)
 - **Disjoint groups**: one group per prefix (`MONDO`, `ORDO`, `OMIM`, `ICD10`)
 
 ## Configuration

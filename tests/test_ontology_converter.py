@@ -161,25 +161,25 @@ class TestOboToKb:
         )
         assert exact.prob == 0.9
 
-    def test_skos_broad_match_reversed(self, kb):
+    def test_skos_broad_match(self, kb):
         # broadMatch: "TEST:0002 broadMatch EXT:BROAD1"
-        # means EXT:BROAD1 subClassOf TEST:0002 (broad is the subject)
+        # means EXT:BROAD1 is broader, so TEST:0002 subClassOf EXT:BROAD1
         broad = next(
             p for p in kb.pfacts
             if p.fact.fact_type == "ProperSubClassOf"
-            and p.fact.sup == "TEST:0002"
-            and p.fact.sub == "EXT:BROAD1"
+            and p.fact.sub == "TEST:0002"
+            and p.fact.sup == "EXT:BROAD1"
         )
         assert broad.prob == 0.7
 
     def test_skos_narrow_match(self, kb):
         # narrowMatch: "TEST:0004 narrowMatch EXT:NARROW1"
-        # means TEST:0004 subClassOf EXT:NARROW1
+        # means EXT:NARROW1 is narrower, so EXT:NARROW1 subClassOf TEST:0004
         narrow = next(
             p for p in kb.pfacts
             if p.fact.fact_type == "ProperSubClassOf"
-            and p.fact.sub == "TEST:0004"
-            and p.fact.sup == "EXT:NARROW1"
+            and p.fact.sub == "EXT:NARROW1"
+            and p.fact.sup == "TEST:0004"
         )
         assert narrow.prob == 0.7
 
@@ -341,21 +341,23 @@ class TestOwlToKb:
         )
         assert exact.prob == 0.9
 
-    def test_skos_broad_match_reversed(self, kb):
+    def test_skos_broad_match(self, kb):
+        # TEST:0002 broadMatch EXT:BROAD1 => TEST:0002 subClassOf EXT:BROAD1
         broad = next(
             p for p in kb.pfacts
             if p.fact.fact_type == "ProperSubClassOf"
-            and p.fact.sup == "TEST:0002"
-            and p.fact.sub == "EXT:BROAD1"
+            and p.fact.sub == "TEST:0002"
+            and p.fact.sup == "EXT:BROAD1"
         )
         assert broad.prob == 0.7
 
     def test_skos_narrow_match(self, kb):
+        # TEST:0004 narrowMatch EXT:NARROW1 => EXT:NARROW1 subClassOf TEST:0004
         narrow = next(
             p for p in kb.pfacts
             if p.fact.fact_type == "ProperSubClassOf"
-            and p.fact.sub == "TEST:0004"
-            and p.fact.sup == "EXT:NARROW1"
+            and p.fact.sub == "EXT:NARROW1"
+            and p.fact.sup == "TEST:0004"
         )
         assert narrow.prob == 0.7
 

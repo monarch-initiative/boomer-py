@@ -3,7 +3,7 @@ SSSOM TSV solution renderer for boomer.
 
 Renders a boomer Solution as a SSSOM (Simple Standard for Sharing
 Ontological Mappings) TSV file. Only mapping-representable fact types
-(EquivalentTo → skos:exactMatch, ProperSubClassOf → skos:narrowMatch)
+(EquivalentTo → skos:exactMatch, ProperSubClassOf → skos:broadMatch)
 are emitted; other fact types are silently skipped.
 
 See https://mapping-commons.github.io/sssom/ for the specification.
@@ -30,7 +30,8 @@ from boomer.renderers.renderer import Renderer
 
 FACT_PREDICATE_MAP: dict[str, str] = {
     "EquivalentTo": "skos:exactMatch",
-    "ProperSubClassOf": "skos:narrowMatch",
+    # ProperSubClassOf(sub, sup): the object (sup) is the broader concept
+    "ProperSubClassOf": "skos:broadMatch",
 }
 
 # ---------------------------------------------------------------------------
@@ -79,7 +80,9 @@ def fact_to_sssom_row(
     """Convert a SolvedPFact to an SSSOM row dict, or None if not mappable.
 
     Only ``EquivalentTo`` and ``ProperSubClassOf`` facts can be
-    represented in SSSOM.
+    represented in SSSOM. ``ProperSubClassOf(sub, sup)`` becomes
+    ``sub skos:broadMatch sup``, since per SKOS the object of
+    ``broadMatch`` is the broader concept.
 
     >>> from boomer.model import PFact, EquivalentTo, SolvedPFact
     >>> sp = SolvedPFact(
