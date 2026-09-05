@@ -385,13 +385,13 @@ class Solution(BaseModel):
     number_of_combinations: int = Field(..., description="The number of explicitly explored combinations.")
 
     number_of_satisfiable_combinations: int = Field(..., description="The number of satisfiable combinations.")
-    number_of_combinations_explored_including_implicit: int = Field(..., description="The number of combinations explored, including implicit ones.")
+    number_of_combinations_explored_including_implicit: int = Field(..., description="Estimated number of assignments covered by the explored terminal nodes; each node stands for 2^(pfacts not decided on its path), and coverage of different nodes can overlap.")
     number_of_components: int | None = Field(None, description="The number of components in the solution.")
 
     confidence: float = Field(..., description="The confidence of the solution (prob of solution vs next most likely solution).")
     prior_prob: float = Field(..., description="The prior probability of the solution.")
     posterior_prob: float = Field(..., description="The posterior probability of the solution.")
-    proportion_of_combinations_explored: float = Field(..., description="The proportion of combinations explored (may be an estimate).")
+    proportion_of_combinations_explored: float = Field(..., description="Estimated proportion of all assignments covered by the explored terminal nodes, clamped to 1.0.")
 
     # nodes: List[TreeNode]
     ground_pfacts: List[Tuple[PFact, bool | None]] = Field(..., description="The ground probabilistic facts and their truth values.")
