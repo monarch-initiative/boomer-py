@@ -309,8 +309,8 @@ BOOMER can directly import OBO and OWL ontology files, extracting structural axi
 | `xref` / `oboInOwl:hasDbXref` | `EquivalentTo` | configurable (default 0.7) |
 | `skos:exactMatch` | `EquivalentTo` | configurable (default 0.9) |
 | `skos:closeMatch` | `EquivalentTo` | configurable (default 0.7) |
-| `skos:broadMatch` | `ProperSubClassOf` (reversed) | configurable (default 0.7) |
-| `skos:narrowMatch` | `ProperSubClassOf` | configurable (default 0.7) |
+| `skos:broadMatch` | `ProperSubClassOf` (subject ⊂ object) | configurable (default 0.7) |
+| `skos:narrowMatch` | `ProperSubClassOf` (object ⊂ subject) | configurable (default 0.7) |
 
 Additionally, `MemberOfDisjointGroup` facts are auto-generated per ID prefix, so entities from different namespaces are treated as members of disjoint groups.
 

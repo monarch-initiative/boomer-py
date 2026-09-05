@@ -65,7 +65,7 @@ class TestFactToSsomRow:
         sp = _make_spfact(ProperSubClassOf(sub="X:1", sup="Y:2"), posterior=0.8)
         row = fact_to_sssom_row(sp)
         assert row is not None
-        assert row["predicate_id"] == "skos:narrowMatch"
+        assert row["predicate_id"] == "skos:broadMatch"
         assert row["subject_id"] == "X:1"
         assert row["object_id"] == "Y:2"
         assert row["confidence"] == "0.8"
@@ -171,7 +171,7 @@ class TestSSSOMRenderer:
         assert rows[0]["subject_id"] == "HP:001"
         assert rows[0]["object_id"] == "MP:002"
         assert rows[0]["predicate_id"] == "skos:exactMatch"
-        assert rows[1]["predicate_id"] == "skos:narrowMatch"
+        assert rows[1]["predicate_id"] == "skos:broadMatch"
 
 
 # ---------------------------------------------------------------------------
