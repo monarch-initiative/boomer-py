@@ -12,6 +12,7 @@ OWL support uses ``py-horned-owl``.
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Literal
 
 import pyhornedowl
 import yaml
@@ -26,6 +27,7 @@ from boomer.model import (
     MemberOfDisjointGroup,
     PFact,
     ProperSubClassOf,
+    SubClassOf,
 )
 from boomer.sssom_converter import _make_fact
 
@@ -202,8 +204,18 @@ def _parse_property_value(term: OBOTerm, raw_value: str) -> None:
 
 
 class OntologyConverterConfig(BaseModel):
-    """Configuration for ontology-to-KB conversion."""
+    """Configuration for ontology-to-KB conversion.
 
+    ``subclass_fact_type`` controls how ``is_a`` / ``SubClassOf`` axioms are
+    encoded. OWL ``SubClassOf`` asserts ⊆, so the default is ``SubClassOf``.
+    ``ProperSubClassOf`` treats every axiom as a strict ⊂, which makes mutual
+    subclass axioms and redundant equivalence + subclass pairs unsatisfiable.
+
+    >>> OntologyConverterConfig().subclass_fact_type
+    'SubClassOf'
+    """
+
+    subclass_fact_type: Literal["SubClassOf", "ProperSubClassOf"] = "SubClassOf"
     skos_exact_match_prob: float = 0.9
     skos_close_match_prob: float = 0.7
     skos_broad_match_prob: float = 0.7
@@ -215,6 +227,21 @@ class OntologyConverterConfig(BaseModel):
     include_skos: bool = True
     auto_disjoint_groups: bool = True
     min_probability: float = 0.01
+
+
+def _subclass_fact(
+    config: OntologyConverterConfig, sub: str, sup: str
+) -> SubClassOf | ProperSubClassOf:
+    """Build the hard fact for ``sub is_a sup`` according to *config*.
+
+    >>> _subclass_fact(OntologyConverterConfig(), "A:1", "B:1")
+    SubClassOf(fact_type='SubClassOf', sub='A:1', sup='B:1')
+    >>> _subclass_fact(OntologyConverterConfig(subclass_fact_type="ProperSubClassOf"), "A:1", "B:1")
+    ProperSubClassOf(fact_type='ProperSubClassOf', sub='A:1', sup='B:1')
+    """
+    if config.subclass_fact_type == "ProperSubClassOf":
+        return ProperSubClassOf(sub=sub, sup=sup)
+    return SubClassOf(sub=sub, sup=sup)
 
 
 def load_ontology_config(path: str | Path) -> OntologyConverterConfig:
@@ -253,7 +280,7 @@ def obo_to_kb(
     >>> kb = obo_to_kb("tests/input/test_ontology.obo")
     >>> kb.name
     'test-ontology'
-    >>> len([f for f in kb.facts if f.fact_type == "ProperSubClassOf"])
+    >>> len([f for f in kb.facts if f.fact_type == "SubClassOf"])
     2
     >>> len(kb.pfacts) > 0
     True
@@ -278,9 +305,9 @@ def obo_to_kb(
 
         seen_ids.add(term.id)
 
-        # is_a → ProperSubClassOf hard fact
+        # is_a → SubClassOf hard fact (ProperSubClassOf if configured)
         for parent in term.is_a:
-            hard_facts.append(ProperSubClassOf(sub=term.id, sup=parent))
+            hard_facts.append(_subclass_fact(config, term.id, parent))
             seen_ids.add(parent)
 
         # equivalent_to → EquivalentTo hard fact
@@ -429,12 +456,12 @@ def owl_to_kb(
     for annotated in onto.get_axioms():
         ax = annotated.component
 
-        # SubClassOf(Class, Class) → ProperSubClassOf
+        # SubClassOf(Class, Class) → SubClassOf hard fact (ProperSubClassOf if configured)
         if isinstance(ax, owlmodel.SubClassOf):
             if is_named_class(ax.sub) and is_named_class(ax.sup):
                 sub_id = curie(ax.sub.first)
                 sup_id = curie(ax.sup.first)
-                hard_facts.append(ProperSubClassOf(sub=sub_id, sup=sup_id))
+                hard_facts.append(_subclass_fact(config, sub_id, sup_id))
                 seen_ids.update([sub_id, sup_id])
 
         # EquivalentClasses → pairwise EquivalentTo

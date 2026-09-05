@@ -3,6 +3,8 @@
 from pathlib import Path
 
 import pytest
+
+from boomer.reasoners.nx_reasoner import NxReasoner
 from click.testing import CliRunner
 
 from boomer.cli import cli
@@ -109,7 +111,7 @@ class TestOboToKb:
 
     def test_is_a_hard_facts(self, kb):
         subclass_facts = [
-            f for f in kb.facts if hasattr(f, "sup") and f.fact_type == "ProperSubClassOf"
+            f for f in kb.facts if hasattr(f, "sup") and f.fact_type == "SubClassOf"
         ]
         # TEST:0002 is_a TEST:0001 and TEST:0003 is_a TEST:0001
         # (TEST:0005 is obsolete, skipped by default)
@@ -192,7 +194,7 @@ class TestOboToKb:
 
     def test_obsolete_skipped(self, kb):
         all_subs = [
-            f.sub for f in kb.facts if hasattr(f, "sup") and f.fact_type == "ProperSubClassOf"
+            f.sub for f in kb.facts if hasattr(f, "sup") and f.fact_type == "SubClassOf"
         ]
         assert "TEST:0005" not in all_subs
 
@@ -200,7 +202,7 @@ class TestOboToKb:
         config = OntologyConverterConfig(skip_obsolete=False)
         kb = obo_to_kb(OBO_FIXTURE, config)
         subclass_facts = [
-            f for f in kb.facts if hasattr(f, "sup") and f.fact_type == "ProperSubClassOf"
+            f for f in kb.facts if hasattr(f, "sup") and f.fact_type == "SubClassOf"
         ]
         # Now includes TEST:0005 is_a TEST:0001
         assert len(subclass_facts) == 3
@@ -301,7 +303,7 @@ class TestOwlToKb:
 
     def test_subclass_hard_facts(self, kb):
         subclass_facts = [
-            f for f in kb.facts if f.fact_type == "ProperSubClassOf"
+            f for f in kb.facts if f.fact_type == "SubClassOf"
         ]
         subs = {(f.sub, f.sup) for f in subclass_facts}
         assert ("TEST:0002", "TEST:0001") in subs
@@ -400,8 +402,8 @@ class TestOboOwlParity:
         return owl_to_kb(OFN_FIXTURE)
 
     def test_same_subclass_count(self, obo_kb, owl_kb):
-        obo_sc = [f for f in obo_kb.facts if f.fact_type == "ProperSubClassOf"]
-        owl_sc = [f for f in owl_kb.facts if f.fact_type == "ProperSubClassOf"]
+        obo_sc = [f for f in obo_kb.facts if f.fact_type == "SubClassOf"]
+        owl_sc = [f for f in owl_kb.facts if f.fact_type == "SubClassOf"]
         assert len(obo_sc) == len(owl_sc)
 
     def test_same_equivalence_count(self, obo_kb, owl_kb):
@@ -541,8 +543,38 @@ class TestCLIConvert:
         # Should have structural facts
         structural = [
             f for f in kb.facts
-            if f.fact_type in ("ProperSubClassOf", "EquivalentTo", "DisjointWith")
+            if f.fact_type in ("SubClassOf", "ProperSubClassOf", "EquivalentTo", "DisjointWith")
         ]
         assert len(structural) > 0
         # Should have pfacts from xrefs/SKOS
         assert len(kb.pfacts) > 0
+
+
+# ---------------------------------------------------------------------------
+# subclass_fact_type
+# ---------------------------------------------------------------------------
+
+
+class TestSubclassFactType:
+    def test_default_is_subclassof(self):
+        kb = obo_to_kb(OBO_FIXTURE)
+        assert not [f for f in kb.facts if f.fact_type == "ProperSubClassOf"]
+        assert len([f for f in kb.facts if f.fact_type == "SubClassOf"]) == 2
+
+    def test_proper_subclass_option(self):
+        config = OntologyConverterConfig(subclass_fact_type="ProperSubClassOf")
+        for kb in (obo_to_kb(OBO_FIXTURE, config), owl_to_kb(OFN_FIXTURE, config)):
+            assert not [f for f in kb.facts if f.fact_type == "SubClassOf"]
+            assert len([f for f in kb.facts if f.fact_type == "ProperSubClassOf"]) == 2
+
+    def test_mutual_is_a_stays_satisfiable(self, tmp_path):
+        """Mutual is_a is a legal way to state equivalence and must not make the KB unsat."""
+        obo = tmp_path / "mutual.obo"
+        obo.write_text(
+            "format-version: 1.4\nontology: mutual\n\n"
+            "[Term]\nid: A:1\nname: a\nis_a: B:1\n\n"
+            "[Term]\nid: B:1\nname: b\nis_a: A:1\n"
+        )
+        assert NxReasoner().reason(obo_to_kb(obo)).satisfiable
+        strict = obo_to_kb(obo, OntologyConverterConfig(subclass_fact_type="ProperSubClassOf"))
+        assert not NxReasoner().reason(strict).satisfiable

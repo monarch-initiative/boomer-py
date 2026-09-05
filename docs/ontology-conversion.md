@@ -21,7 +21,7 @@ The ontology converter reads an ontology file and produces a KB with two kinds o
 
 **Hard facts** (probability 1.0) from structural axioms:
 
-- `is_a` / `SubClassOf` &rarr; `ProperSubClassOf`
+- `is_a` / `SubClassOf` &rarr; `SubClassOf` (set `subclass_fact_type: ProperSubClassOf` to read every axiom as a strict ⊂; that makes mutual subclass axioms and redundant equivalence + subclass pairs unsatisfiable)
 - `equivalent_to` / `EquivalentClasses` &rarr; `EquivalentTo`
 - `disjoint_from` / `DisjointClasses` &rarr; `DisjointWith`
 
@@ -72,7 +72,7 @@ pyboomer solve disease.yaml -O markdown
 
 The converter produces:
 
-- **Hard facts**: `MONDO:0001234 ProperSubClassOf MONDO:0000001`, etc.
+- **Hard facts**: `MONDO:0001234 SubClassOf MONDO:0000001`, etc.
 - **Pfacts**: `MONDO:0001234 EquivalentTo ORDO:123` at 0.7, `MONDO:0001234 EquivalentTo OMIM:456789` at 0.9, `MONDO:0005678 ProperSubClassOf ICD10:K72` at 0.7 (the `broadMatch` object is the broader class)
 - **Disjoint groups**: one group per prefix (`MONDO`, `ORDO`, `OMIM`, `ICD10`)
 
@@ -99,6 +99,7 @@ config = OntologyConverterConfig(
     include_xrefs=True,       # include xrefs as pfacts (default)
     include_skos=True,        # include SKOS mappings as pfacts (default)
     auto_disjoint_groups=True, # generate MemberOfDisjointGroup per prefix (default)
+    subclass_fact_type="SubClassOf",  # or "ProperSubClassOf" for strict ⊂ (default: SubClassOf)
     min_probability=0.01,     # filter out very low probability pfacts
 )
 kb = obo_to_kb("my_ontology.obo", config=config)
@@ -116,6 +117,7 @@ xref_prefix_probabilities:
 skos_exact_match_prob: 0.95
 skip_obsolete: true
 auto_disjoint_groups: true
+subclass_fact_type: SubClassOf
 ```
 
 ```python

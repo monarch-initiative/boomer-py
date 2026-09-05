@@ -303,7 +303,7 @@ BOOMER can directly import OBO and OWL ontology files, extracting structural axi
 
 | Ontology Axiom | KB Fact Type | Probability |
 |---|---|---|
-| `is_a` / `SubClassOf` | `ProperSubClassOf` | 1.0 (hard fact) |
+| `is_a` / `SubClassOf` | `SubClassOf` (`ProperSubClassOf` with `subclass_fact_type`) | 1.0 (hard fact) |
 | `equivalent_to` / `EquivalentClasses` | `EquivalentTo` | 1.0 (hard fact) |
 | `disjoint_from` / `DisjointClasses` | `DisjointWith` | 1.0 (hard fact) |
 | `xref` / `oboInOwl:hasDbXref` | `EquivalentTo` | configurable (default 0.7) |
