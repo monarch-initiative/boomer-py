@@ -154,7 +154,7 @@ class NxReasoner(Reasoner):
                 ):
                     add_entailment(False)
                     # checked_selections.append((False, ix, fact))
-                else:
+                elif atomic_fact.sub in g and atomic_fact.sibling in g:
                     # check for common descendants (confusingly, nx reverses the terminology)
                     common_descendants = set(nx.ancestors(g, atomic_fact.sub)) & set(
                         nx.ancestors(g, atomic_fact.sibling)

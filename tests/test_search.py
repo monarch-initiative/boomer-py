@@ -1,6 +1,6 @@
 from copy import deepcopy
 import pytest
-from boomer.model import KB, EquivalentTo, MemberOfDisjointGroup, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution
+from boomer.model import KB, DisjointWith, EquivalentTo, MemberOfDisjointGroup, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution
 from boomer.search import evaluate_hypotheses, search, solve
 import boomer.datasets.animals as animals
 import boomer.datasets.quad as quad
@@ -799,3 +799,35 @@ def test_exhaustive_search_depth_false_bridge(exhaustive_depth):
         # With exhaustive search, we explore more combinations
         print(f"Explored {solution.number_of_combinations} combinations")
         assert solution.number_of_combinations >= 2, "Should explore multiple starting points"
+
+def test_solve_disjointwith_entity_outside_graph():
+    """
+    A DisjointWith hard fact must not crash the reasoner when one of its entities has
+    no subclass or equivalence edge in the current graph.
+
+    This happens directly when an entity only appears in unselected pfacts, and after
+    partitioning, which keeps the DisjointWith fact in a sub-KB but not the subclass
+    facts that anchored its entities in the graph.
+    """
+    bare = KB(
+        facts=[DisjointWith(sub="A", sibling="B")],
+        pfacts=[PFact(fact=EquivalentTo(sub="A", equivalent="C"), prob=0.9)],
+    )
+    solution = solve(bare)
+    assert [sp.truth_value for sp in solution.solved_pfacts] == [True]
+
+    kb = KB(
+        pfacts=[
+            PFact(fact=SubClassOf(sub="A", sup="B"), prob=0.9),
+            PFact(fact=SubClassOf(sub="B", sup="C"), prob=0.9),
+        ],
+        facts=[
+            DisjointWith(sub="A", sibling="C"),
+            SubClassOf(sub="A", sup="T"),
+            SubClassOf(sub="B", sup="T"),
+            SubClassOf(sub="C", sup="T"),
+        ],
+    )
+    assert solve(kb).number_of_satisfiable_combinations > 0
+    partitioned = solve(kb, SearchConfig(partition_initial_threshold=1))
+    assert partitioned.number_of_satisfiable_combinations > 0

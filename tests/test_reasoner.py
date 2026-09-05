@@ -72,6 +72,8 @@ def test_nx_reasoner_animal_combos(facts, satisfiable, entailed, not_entailed):
     ([EquivalentTo(sub="a", equivalent="b"), EquivalentTo(sub="c", equivalent="b")], True, [EquivalentTo(sub="a", equivalent="c"), EquivalentTo(sub="c", equivalent="a")], []), # transitive
     ([SubClassOf(sub="c", sup="p1"), SubClassOf(sub="c", sup="p2"), DisjointWith(sub="p1", sibling="p2")], False, [], []), # disjointness
     ([SubClassOf(sub="c1", sup="p"), SubClassOf(sub="c2", sup="p"), DisjointWith(sub="c1", sibling="c2")], True, [], []), # disjointness
+    ([DisjointWith(sub="a", sibling="b")], True, [], []), # disjoint entities absent from the graph: no crash
+    ([DisjointWith(sub="a", sibling="b"), SubClassOf(sub="a", sup="p")], True, [], []), # only one disjoint entity in the graph
     # ([SubClassOf("a", "b"), OneOf("b", "c")], True, [SubClassOf("a", "!c")], []), # oneof
     ([SubClassOf(sub="a", sup="b"), NotInSubsumptionWith(sub="a", sibling="b")], False, [], []), 
     ([SubClassOf(sub="b", sup="a"), NotInSubsumptionWith(sub="a", sibling="b")], False, [], []), 
