@@ -191,6 +191,8 @@ class NxReasoner(Reasoner):
                                 ) & set(nx.ancestors(g, entity2))
                                 if common_descendants:
                                     add_entailment(False)
+        # Deduplicate without losing assertion/KB order. Hash-dependent ordering
+        # changes floating-point products and therefore search branch priorities.
         checked_selections = list(dict.fromkeys(checked_selections))
         return ReasonerResult(
             unsatisfiable_facts=filter_unsats(

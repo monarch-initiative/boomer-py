@@ -84,4 +84,5 @@ def combine_solutions(solutions: List[Solution]) -> Solution:
     base_solution = aggegate_objects(solutions, AGGS)
     base_solution.number_of_components = sum(s.number_of_components if s.number_of_components else 1 for s in solutions)
     base_solution.sub_solutions = solutions
+    base_solution.timed_out = any(s.timed_out for s in solutions)
     return base_solution
