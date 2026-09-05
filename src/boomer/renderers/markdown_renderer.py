@@ -53,7 +53,8 @@ class MarkdownRenderer(Renderer):
                 fact_type in ["SubClassOf", "ProperSubClassOf"]
                 and len(labeled_parts) >= 2
             ):
-                return f"{labeled_parts[0]} ⊆ {labeled_parts[1]}"
+                symbol = "⊂" if fact_type == "ProperSubClassOf" else "⊆"
+                return f"{labeled_parts[0]} {symbol} {labeled_parts[1]}"
             elif fact_type == "EquivalentTo" and len(labeled_parts) >= 2:
                 return f"{labeled_parts[0]} ≡ {labeled_parts[1]}"
             elif fact_type == "DisjointWith" and len(labeled_parts) >= 2:
