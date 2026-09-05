@@ -641,7 +641,7 @@ def test_markdown_renderer_with_labels():
     assert "canine (Canine)" in output
     
     # Verify proper symbols are used
-    assert "⊆" in output  # SubClassOf symbol
+    assert "cat (Domestic Cat) ⊂ animal (Animal)" in output  # ProperSubClassOf
     assert "≡" in output  # EquivalentTo symbol
 
 
