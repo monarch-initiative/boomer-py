@@ -28,6 +28,14 @@ class SearchConfig(BaseModel):
     partition_initial_threshold: int = 200
     max_pfacts_per_clique: Optional[int] = 1000
     pr_filters: list[float] | None = None
+    depth_bias: float = Field(
+        2.0,
+        description=(
+            "Exponent on the best-case probability of the undecided pfacts when ordering the search stack. "
+            "Above 1 favours deeper nodes (closer to a full solution) over shallow ones with a higher "
+            "estimated probability; 1.0 orders by the estimated probability alone."
+        ),
+    )
 
 
 class BaseFact(BaseModel, ABC):
@@ -356,7 +364,8 @@ class TreeNode(BaseModel):
     asserted_selections: List[Grounding] = Field(default_factory=list, description="The selections that have been asserted at this node")
     selections: List[Grounding] = Field(default_factory=list, description="The selections that have been considered at this node, including asserted and entailed")
     pr_selected: float = Field(0.0, description="The probability of the selections being true")
-    pr: Optional[float] = Field(None, description="Estimated probability of the overall solution, including estimated of best path to terminal node")
+    pr_remaining: float = Field(1.0, description="Best-case probability of the pfacts not decided at this node (product of max(p, 1-p))")
+    pr: Optional[float] = Field(None, description="Estimated probability of the overall solution: pr_selected times pr_remaining")
     surprise_factor: Optional[float] = Field(None, description="Ratio between pr of parent and pr of child")
     terminal: bool = Field(False, description="Whether the node is a terminal node")
     entailed_hypotheses: List[Tuple[Fact, bool]] = Field(default_factory=list, description="Entailment-only pfacts (KB.pfacts_entailed) whose truth value follows from this node's selections")

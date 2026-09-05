@@ -61,9 +61,20 @@ def pr_selection_best(kb: KB, selection: Grounding) -> Tuple[float, bool]:
 
 def calc_prob_unselected(kb: KB, node: TreeNode) -> float:
     """
-    Calculate the joint probability of the best path to a terminal node.
+    Best-case probability of the pfacts a node has not decided on.
 
-    Does not take into account entailment, so the actual probability may be lower.
+    Each undecided pfact contributes max(p, 1-p) once. Entailment is not taken
+    into account, so the probability actually reachable may be lower.
+
+    >>> from boomer.model import PFact, EquivalentTo
+    >>> kb = KB(pfacts=[PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.9),
+    ...                 PFact(fact=EquivalentTo(sub="b", equivalent="c"), prob=0.2)])
+    >>> root = TreeNode(pr_selected=1.0, selections=[], asserted_selections=[])
+    >>> round(calc_prob_unselected(kb, root), 3)
+    0.72
+    >>> child = TreeNode(depth=1, pr_selected=0.9, selections=[(0, True)], asserted_selections=[(0, True)])
+    >>> round(calc_prob_unselected(kb, child), 3)
+    0.8
 
     Args:
         kb: Knowledge base of facts and probabilistic facts.
@@ -73,9 +84,29 @@ def calc_prob_unselected(kb: KB, node: TreeNode) -> float:
         probability of the best path to a terminal node
     """
     pr_fact = 1.0
-    for selection in node_remaining_selections_iter(node, kb):
-        pr_fact *= pr_selection_best(kb, selection)[0]
+    decided = {ix for ix, _ in node.selections}
+    for ix in range(len(kb.pfacts)):
+        if ix in decided:
+            continue
+        pr_fact *= pr_selection_best(kb, (ix, True))[0]
     return pr_fact
+
+
+def node_priority(node: TreeNode, depth_bias: float) -> float:
+    """
+    Stack ordering key: the probability of the selections so far times the
+    best-case probability of the undecided pfacts raised to depth_bias.
+
+    With depth_bias 1 this is the node's estimated probability; larger values
+    penalise nodes with many undecided pfacts, i.e. favour depth.
+
+    >>> node = TreeNode(pr_selected=0.5, pr_remaining=0.8)
+    >>> round(node_priority(node, 1.0), 3)
+    0.4
+    >>> round(node_priority(node, 2.0), 3)
+    0.32
+    """
+    return node.pr_selected * node.pr_remaining ** depth_bias
 
 
 def joint_probability(
@@ -155,7 +186,8 @@ def extend_node(
         inherited_decisions=node.inherited_decisions,
     )
     # TODO: improve efficiency avoiding recalculating this
-    tn.pr = calc_prob_unselected(kb, tn) * pr_selected
+    tn.pr_remaining = calc_prob_unselected(kb, tn)
+    tn.pr = tn.pr_remaining * pr_selected
     if node.pr and tn.pr:
         tn.surprise_factor = node.pr / tn.pr
         #if tn.surprise_factor > 10:
@@ -283,7 +315,8 @@ def search(kb: KB, config: SearchConfig) -> Iterator[TreeNode]:
         inherited_decisions=len(root_selections),
         terminal=len(root_selections) == len(kb.pfacts),
     )
-    root.pr = calc_prob_unselected(kb, root) * root.pr_selected
+    root.pr_remaining = calc_prob_unselected(kb, root)
+    root.pr = root.pr_remaining * root.pr_selected
     if root.terminal:
         yield root
         return
@@ -364,13 +397,13 @@ def search(kb: KB, config: SearchConfig) -> Iterator[TreeNode]:
             # going to the top of the stack; after that all other potential extensions
             assert not any(not e.satifiable for e in non_terminal_extensions)
             # Ensure depth-first; select the best non-terminal extension
-            non_terminal_extensions.sort(key=lambda x: x.pr, reverse=False)
+            non_terminal_extensions.sort(key=lambda x: node_priority(x, config.depth_bias))
             next_node = non_terminal_extensions.pop()
             stack.extend(non_terminal_extensions)
-            # sort the stack by probability of the node, but ensure that all
-            # each potential grounding has a chance to be explored;
+            # sort the stack by priority, but give every depth-1 node a turn
+            # before going deeper elsewhere so each grounding gets explored;
             # TODO: this makes the exhaustive_search_depth feature less relevant
-            sort_f = lambda x: x.pr + (1 if x.depth == 1 else 0)
+            sort_f = lambda x: node_priority(x, config.depth_bias) + (1 if x.depth == 1 else 0)
             stack.sort(key=sort_f, reverse=False)
             stack.append(next_node)
             # print(f"NN: {next_node.pr_selected} {next_node.pr} {next_node.depth}")
