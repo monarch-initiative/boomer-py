@@ -295,18 +295,18 @@ class TestMakeFact:
         assert isinstance(f, EquivalentTo)
 
     def test_broad_match(self):
-        """broadMatch: A broadMatch B  =>  B subClassOf A"""
+        """broadMatch: A broadMatch B  =>  B is broader  =>  A subClassOf B"""
         f = _make_fact("skos:broadMatch", "A:1", "B:2")
-        assert isinstance(f, ProperSubClassOf)
-        assert f.sub == "B:2"
-        assert f.sup == "A:1"
-
-    def test_narrow_match(self):
-        """narrowMatch: A narrowMatch B  =>  A subClassOf B"""
-        f = _make_fact("skos:narrowMatch", "A:1", "B:2")
         assert isinstance(f, ProperSubClassOf)
         assert f.sub == "A:1"
         assert f.sup == "B:2"
+
+    def test_narrow_match(self):
+        """narrowMatch: A narrowMatch B  =>  B is narrower  =>  B subClassOf A"""
+        f = _make_fact("skos:narrowMatch", "A:1", "B:2")
+        assert isinstance(f, ProperSubClassOf)
+        assert f.sub == "B:2"
+        assert f.sup == "A:1"
 
     def test_owl_equivalent_class(self):
         f = _make_fact("owl:equivalentClass", "A:1", "B:2")
@@ -465,7 +465,8 @@ class TestSssomMappingsToPfacts:
         pfacts = sssom_mappings_to_pfacts(rows)
         assert len(pfacts) == 0
 
-    def test_broad_match_reversal(self):
+    def test_broad_match_direction(self):
+        # A broadMatch B: B is broader, so A subClassOf B
         rows = [
             {
                 "subject_id": "A:1", "object_id": "B:2",
@@ -476,10 +477,11 @@ class TestSssomMappingsToPfacts:
         assert len(pfacts) == 1
         f = pfacts[0].fact
         assert isinstance(f, ProperSubClassOf)
-        assert f.sub == "B:2"
-        assert f.sup == "A:1"
+        assert f.sub == "A:1"
+        assert f.sup == "B:2"
 
     def test_narrow_match_direction(self):
+        # A narrowMatch B: B is narrower, so B subClassOf A
         rows = [
             {
                 "subject_id": "A:1", "object_id": "B:2",
@@ -490,8 +492,8 @@ class TestSssomMappingsToPfacts:
         assert len(pfacts) == 1
         f = pfacts[0].fact
         assert isinstance(f, ProperSubClassOf)
-        assert f.sub == "A:1"
-        assert f.sup == "B:2"
+        assert f.sub == "B:2"
+        assert f.sup == "A:1"
 
 
 class TestSssomToKb:
@@ -624,29 +626,29 @@ class TestSssomToKb:
         os.unlink(path)
 
     def test_broad_match_direction_in_kb(self):
-        """broadMatch should produce reversed ProperSubClassOf."""
+        """broadMatch: the subject is the narrower class."""
         kb = sssom_to_kb(SSSOM_FILE)
         broad_pfacts = [
             pf for pf in kb.pfacts
             if isinstance(pf.fact, ProperSubClassOf)
-            and pf.fact.sup == "ORDO:456"
+            and pf.fact.sub == "ORDO:456"
         ]
         # Row 2: ORDO:456 broadMatch MONDO:0001234
-        # => ProperSubClassOf(sub=MONDO:0001234, sup=ORDO:456)
+        # => ProperSubClassOf(sub=ORDO:456, sup=MONDO:0001234)
         assert len(broad_pfacts) == 1
-        assert broad_pfacts[0].fact.sub == "MONDO:0001234"
+        assert broad_pfacts[0].fact.sup == "MONDO:0001234"
 
     def test_narrow_match_direction_in_kb(self):
-        """narrowMatch should produce non-reversed ProperSubClassOf."""
+        """narrowMatch: the object is the narrower class."""
         kb = sssom_to_kb(SSSOM_FILE)
         narrow_pfacts = [
             pf for pf in kb.pfacts
             if isinstance(pf.fact, ProperSubClassOf)
-            and pf.fact.sub == "ORDO:123"
-            and pf.fact.sup == "MONDO:0005678"
+            and pf.fact.sub == "MONDO:0005678"
+            and pf.fact.sup == "ORDO:123"
         ]
         # Row 5: ORDO:123 narrowMatch MONDO:0005678
-        # => ProperSubClassOf(sub=ORDO:123, sup=MONDO:0005678)
+        # => ProperSubClassOf(sub=MONDO:0005678, sup=ORDO:123)
         assert len(narrow_pfacts) == 1
         assert narrow_pfacts[0].prob == 0.4
 

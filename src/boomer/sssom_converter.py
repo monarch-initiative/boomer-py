@@ -306,17 +306,19 @@ def _make_fact(
 ) -> EquivalentTo | ProperSubClassOf | None:
     """Create a boomer ``Fact`` from an SSSOM predicate and entity pair.
 
-    ``skos:broadMatch`` reverses subject/object for ``ProperSubClassOf``
-    because "A broadMatch B" means A is broader, i.e. B subClassOf A.
+    Hierarchical predicates follow the SKOS Reference: ``A skos:broadMatch B``
+    asserts that the object B is the *broader* concept, so A is a proper
+    subclass of B. ``A skos:narrowMatch B`` asserts that B is the *narrower*
+    concept, so B is a proper subclass of A.
 
     Returns ``None`` for unrecognised predicates.
 
     >>> _make_fact("skos:exactMatch", "A:1", "B:2")
     EquivalentTo(fact_type='EquivalentTo', sub='A:1', equivalent='B:2')
     >>> _make_fact("skos:broadMatch", "A:1", "B:2")
-    ProperSubClassOf(fact_type='ProperSubClassOf', sub='B:2', sup='A:1')
-    >>> _make_fact("skos:narrowMatch", "A:1", "B:2")
     ProperSubClassOf(fact_type='ProperSubClassOf', sub='A:1', sup='B:2')
+    >>> _make_fact("skos:narrowMatch", "A:1", "B:2")
+    ProperSubClassOf(fact_type='ProperSubClassOf', sub='B:2', sup='A:1')
     >>> _make_fact("skos:relatedMatch", "A:1", "B:2") is None
     True
     """
@@ -328,16 +330,11 @@ def _make_fact(
         return EquivalentTo(sub=subject_id, equivalent=object_id)
 
     # ProperSubClassOf
-    if predicate_id == "skos:broadMatch":
-        # "A broadMatch B" means B is more specific: B subClassOf A
-        return ProperSubClassOf(sub=object_id, sup=subject_id)
     if predicate_id == "skos:narrowMatch":
-        # "A narrowMatch B" means A is more specific: A subClassOf B
-        return ProperSubClassOf(sub=subject_id, sup=object_id)
-    if predicate_id == "rdfs:subClassOf":
-        return ProperSubClassOf(sub=subject_id, sup=object_id)
-
-    # Shouldn't reach here, but be safe
+        # "A narrowMatch B": B is the narrower concept, so B subClassOf A
+        return ProperSubClassOf(sub=object_id, sup=subject_id)
+    # "A broadMatch B": B is the broader concept, so A subClassOf B.
+    # rdfs:subClassOf is subject subClassOf object by definition.
     return ProperSubClassOf(sub=subject_id, sup=object_id)
 
 
