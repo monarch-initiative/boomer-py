@@ -1,7 +1,7 @@
 from abc import ABC
 from copy import deepcopy
 from pydantic import BaseModel, Field, field_validator
-from typing import Any, List, Tuple, Optional, Dict, Union, Literal, Annotated
+from typing import Any, Iterable, List, Tuple, Optional, Dict, Union, Literal, Annotated
 
 NodeIdentifier = str
 EntityIdentifier = str
@@ -175,6 +175,57 @@ class PFact(BaseModel):
     prob: float
 
 
+def canonical_fact(fact: Fact) -> Fact:
+    """
+    Return a canonical form of a fact so that symmetric facts compare equal.
+
+    EquivalentTo, DisjointWith and NotInSubsumptionWith are symmetric, so their
+    arguments are ordered; other facts are returned unchanged.
+
+    >>> canonical_fact(EquivalentTo(sub="b", equivalent="a"))
+    EquivalentTo(fact_type='EquivalentTo', sub='a', equivalent='b')
+    >>> canonical_fact(DisjointWith(sub="b", sibling="a"))
+    DisjointWith(fact_type='DisjointWith', sub='a', sibling='b')
+    >>> canonical_fact(SubClassOf(sub="b", sup="a"))
+    SubClassOf(fact_type='SubClassOf', sub='b', sup='a')
+    """
+    if isinstance(fact, EquivalentTo) and fact.equivalent < fact.sub:
+        return EquivalentTo(sub=fact.equivalent, equivalent=fact.sub)
+    if isinstance(fact, (DisjointWith, NotInSubsumptionWith)) and fact.sibling < fact.sub:
+        return type(fact)(sub=fact.sibling, sibling=fact.sub)
+    if isinstance(fact, NegatedFact):
+        return NegatedFact(negated=canonical_fact(fact.negated))
+    return fact
+
+
+def dedupe_pfacts(pfacts: Iterable[PFact]) -> List[PFact]:
+    """
+    Collapse pfacts that make the same claim, keeping the highest probability.
+
+    By default the search treats repeated pfacts for one claim as independent
+    evidence (multi-labeled edges), which raises that claim's posterior. Use
+    this when the repeats are not independent, e.g. the same mapping copied
+    into several inputs. Facts are compared in canonical form, so
+    EquivalentTo(a, b) and EquivalentTo(b, a) are the same claim. The first
+    occurrence keeps its position and argument order.
+
+    >>> dedupe_pfacts([
+    ...     PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.7),
+    ...     PFact(fact=EquivalentTo(sub="b", equivalent="a"), prob=0.9),
+    ... ])
+    [PFact(fact=EquivalentTo(fact_type='EquivalentTo', sub='a', equivalent='b'), prob=0.9)]
+    """
+    best: Dict[Fact, PFact] = {}
+    for pfact in pfacts:
+        key = canonical_fact(pfact.fact)
+        current = best.get(key)
+        if current is None:
+            best[key] = pfact
+        elif pfact.prob > current.prob:
+            best[key] = PFact(fact=current.fact, prob=pfact.prob)
+    return list(best.values())
+
+
 class KB(BaseModel):
     """
     A knowledge base is a collection of facts and probabilistic facts.
@@ -212,9 +263,32 @@ class KB(BaseModel):
             if pfact.fact == fact:
                 return i
 
+    def dedupe_pfacts(self) -> int:
+        """
+        Collapse duplicate pfacts in place, keeping the highest probability per claim.
+
+        Returns the number of pfacts removed.
+
+        >>> kb = KB(pfacts=[
+        ...     PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.7),
+        ...     PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.8),
+        ... ])
+        >>> kb.dedupe_pfacts()
+        1
+        >>> kb.pfacts[0].prob
+        0.8
+        """
+        before = len(self.pfacts)
+        self.pfacts = dedupe_pfacts(self.pfacts)
+        return before - len(self.pfacts)
+
     def extend(self, **kwargs) -> "KB":
         """
         Extend the knowledge base with new facts.
+
+        Pfacts making the same claim are all kept: the search treats them as
+        independent evidence (multi-labeled edges). Call dedupe_pfacts() on the
+        result to keep only the highest probability per claim instead.
         """
         new_kb = deepcopy(self)
         for k, v in kwargs.items():

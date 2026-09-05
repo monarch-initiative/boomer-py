@@ -18,6 +18,8 @@ from boomer.model import (
     Grounding,
     Solution,
     SearchConfig,
+    canonical_fact,
+    dedupe_pfacts,
 )
 from typing import Iterator, List, Set, Tuple
 
@@ -360,6 +362,13 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     if config is None:
         config = SearchConfig()
 
+    n_multi_labeled = len(kb.pfacts) - len(dedupe_pfacts(kb.pfacts))
+    if n_multi_labeled:
+        logger.info(
+            f"{n_multi_labeled} pfacts repeat a claim made by another pfact; each copy is treated "
+            "as independent evidence (multi-labeled edges). Use KB.dedupe_pfacts() to collapse them."
+        )
+
     # partition the KB into sub-clusters of pfacts
     print(f"Solving KB: {kb.name} with {len(kb.pfacts)} pfacts; threshold={config.partition_initial_threshold}")
     exceeds_clique_limit = (
@@ -522,8 +531,13 @@ def evaluate_hypotheses(
     solutions = []
     sum_pr = 0.0
     epsilon = 1e-10
+    hypothesis_keys = {canonical_fact(h) for h in hypothesis_list}
     for i, hypothesis in enumerate(hypothesis_list):
         kb_copy = deepcopy(kb)
+        # the pinned hypotheses replace any existing pfacts making the same claim
+        kb_copy.pfacts = [
+            pf for pf in kb_copy.pfacts if canonical_fact(pf.fact) not in hypothesis_keys
+        ]
         kb_copy.pfacts.append(PFact(fact=hypothesis, prob=1.0))
         for k in range(len(hypothesis_list)):
             if k != i:

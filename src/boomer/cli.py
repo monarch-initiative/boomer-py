@@ -343,7 +343,13 @@ def solve(
     "-D",
     help="Description for the merged knowledge base",
 )
-def merge(input_files, output_file, input_format, output_format, name, description):
+@click.option(
+    "--dedupe",
+    is_flag=True,
+    help="Collapse pfacts that make the same claim, keeping the highest probability "
+    "(default: keep all copies; the solver treats them as independent evidence)",
+)
+def merge(input_files, output_file, input_format, output_format, name, description, dedupe):
     """
     Merge multiple KB files into a single KB.
 
@@ -357,6 +363,10 @@ def merge(input_files, output_file, input_format, output_format, name, descripti
     - py (Python module paths like boomer.datasets.animals)
 
     Input and output formats are auto-detected from file extensions if not specified.
+
+    Probabilistic facts that make the same claim in more than one input are all
+    kept and treated by the solver as independent evidence; pass --dedupe to keep
+    only the highest probability per claim instead.
     """
     if len(input_files) < 2:
         raise click.ClickException("At least two input files are required for merging.")
@@ -408,6 +418,9 @@ def merge(input_files, output_file, input_format, output_format, name, descripti
     
     # Normalize the merged KB
     merged_kb.normalize()
+    if dedupe:
+        removed = merged_kb.dedupe_pfacts()
+        click.echo(f"Collapsed {removed} duplicate probabilistic facts")
     
     # Save merged KB based on output format
     if output_format == "ptable":
@@ -447,7 +460,13 @@ def merge(input_files, output_file, input_format, output_format, name, descripti
     "-D",
     help="Description for the knowledge base (only used for ptable input)",
 )
-def convert(input_file, output_file, input_format, output_format, name, description):
+@click.option(
+    "--dedupe",
+    is_flag=True,
+    help="Collapse pfacts that make the same claim, keeping the highest probability "
+    "(default: keep all copies; the solver treats them as independent evidence)",
+)
+def convert(input_file, output_file, input_format, output_format, name, description, dedupe):
     """
     Convert between different KB formats.
 
@@ -490,6 +509,11 @@ def convert(input_file, output_file, input_format, output_format, name, descript
         kb = load_kb_smart(input_file, input_format, name, description)
     except (ValueError, ImportError, AttributeError, FileNotFoundError) as e:
         raise click.ClickException(f"Failed to load '{input_file}': {e}")
+
+    if dedupe:
+        kb = kb.model_copy()  # a `py` input is the module's own KB object
+        removed = kb.dedupe_pfacts()
+        click.echo(f"Collapsed {removed} duplicate probabilistic facts")
 
     # Save KB based on output format
     if output_format == "ptable":
