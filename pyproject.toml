@@ -1,7 +1,11 @@
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
 [project]
 name = "boomer"
-version = "0.1.0"
-description = "Add your description here"
+dynamic = ["version"]
+description = "Bayesian OWL ontology merging and probabilistic reasoning"
 readme = "README.md"
 authors = [
     { name = "Chris Mungall", email = "cjm@berkeleybop.org" }
@@ -19,6 +23,25 @@ dependencies = [
 
 [tool.uv]
 package = true
+
+[project.urls]
+Homepage = "https://github.com/monarch-initiative/boomer-py"
+Documentation = "https://monarch-initiative.github.io/boomer-py/"
+Issues = "https://github.com/monarch-initiative/boomer-py/issues"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+fallback-version = "0.0.0"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/boomer"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src/boomer", "/README.md", "/pyproject.toml"]
 
 [project.scripts]
 boomer-cli = "boomer.cli:main"

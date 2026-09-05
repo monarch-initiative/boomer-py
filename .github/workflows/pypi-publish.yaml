@@ -1,19 +1,27 @@
 name: Publish Python Package
 
 on:
-  workflow_dispatch:
   release:
-    types: [created]
+    types: [published]
+
+permissions:
+  contents: read
 
 jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI
     runs-on: ubuntu-latest
-    environment: release
+    environment:
+      name: release
+      url: https://pypi.org/project/boomer/
     permissions:
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
@@ -23,11 +31,28 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
-        run: uv sync --all-extras
-
       - name: Build source and wheel archives
-        run: uv build
+        run: uv build --no-sources
+
+      - name: Check distribution version matches the release tag
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          python - <<'PY'
+          import email
+          import os
+          from pathlib import Path
+          import zipfile
+
+          expected = os.environ["RELEASE_TAG"].removeprefix("v")
+          wheel, = Path("dist").glob("*.whl")
+          with zipfile.ZipFile(wheel) as archive:
+              metadata_path, = (name for name in archive.namelist() if name.endswith(".dist-info/METADATA"))
+              metadata = email.message_from_bytes(archive.read(metadata_path))
+          assert metadata["Name"] == "boomer", metadata["Name"]
+          assert metadata["Version"] == expected, (metadata["Version"], expected)
+          print(f"Validated boomer {expected}")
+          PY
 
       - name: Publish
         uses: pypa/gh-action-pypi-publish@release/v1

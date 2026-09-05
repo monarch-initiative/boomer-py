@@ -51,5 +51,8 @@ jobs:
       - name: Install project
         run: uv sync --dev
 
+      - name: Build distributions
+        run: uv build --no-sources
+
       - name: Run test suite
         run: just test
