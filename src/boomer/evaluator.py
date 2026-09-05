@@ -4,15 +4,11 @@ Evaluation of predicted Facts against target Facts.
 This module provides functionality to compute precision, recall, and F1-score
 for predicted ontology facts.
 """
-from dataclasses import dataclass
+import json
 from typing import Iterable, Set
 
-from pydantic import BaseModel
-
-from boomer.model import KB, EquivalentTo, Fact, EvalStats
+from boomer.model import KB, Fact, EvalStats, canonical_fact
 from boomer.reasoners.nx_reasoner import NxReasoner
-
-
 
 
 def evaluate_facts(
@@ -20,6 +16,10 @@ def evaluate_facts(
 ) -> EvalStats:
     """
     Compare target (gold) facts with predicted facts and compute evaluation metrics.
+
+    A prediction that is entailed by the target facts counts as a true positive
+    even when it is not stated explicitly, and symmetric facts match regardless
+    of argument order. The caller's lists are not modified.
 
     Args:
         target_facts: Iterable of ground-truth Fact objects.
@@ -45,26 +45,23 @@ def evaluate_facts(
         >>> stats.precision
         0.5
 
+        >>> # A ⊆ C follows from the gold facts, so predicting it is not a false positive
+        >>> stats = evaluate_facts(gold, [SubClassOf(sub="A", sup="C")])
+        >>> (stats.tp, stats.fp)
+        (1, 0)
+        >>> len(gold)
+        2
+
         >>> evaluate_facts([], [])
         EvalStats(tp=0, fp=0, fn=0, tp_list=[], fp_list=[], fn_list=[], precision=0.0, recall=0.0, f1=0.0)
     """
-    pred_kb = KB(facts=predicted_facts)
+    target_facts = list(target_facts)
+    predicted_facts = list(predicted_facts)
     target_kb = KB(facts=target_facts)
     reasoner = NxReasoner()
-    
-    def _normalize_fact(fact: Fact) -> Fact:
-        if isinstance(fact, EquivalentTo):
-            e1 = fact.sub
-            e2 = fact.equivalent
-            if e1 < e2:
-                return EquivalentTo(sub=e1, equivalent=e2)
-            else:
-                return EquivalentTo(sub=e2, equivalent=e1)
-        return fact
-    
-    import json
+
     def _to_key(fact: Fact) -> str:
-        return json.dumps(_normalize_fact(fact).model_dump(), sort_keys=True)
+        return json.dumps(canonical_fact(fact).model_dump(), sort_keys=True)
     
     def _filter_facts(facts: list[Fact], types: list[str] | None = None) -> Iterable[Fact]:
         if not types:
@@ -74,11 +71,12 @@ def evaluate_facts(
     def _to_key_set(facts: Iterable[Fact]) -> Set[str]:
         return {_to_key(fact) for fact in facts}
     
-    # extend predictions (assume target is already saturated)
-    for h, tv in reasoner.reason(target_kb, additional_hypotheses=predicted_facts).entailed_hypotheses:
+    # predictions entailed by the gold facts are counted as gold (the target is
+    # assumed to be saturated with respect to the predictions)
+    for fact, tv in reasoner.reason(target_kb, additional_hypotheses=predicted_facts).entailed_hypotheses:
         if tv:
-            target_facts.append(h.fact)
-    
+            target_facts.append(fact)
+
     k2fact = {_to_key(fact): fact for fact in target_facts + predicted_facts}
 
     target_set = _to_key_set(_filter_facts(target_facts, types))

@@ -199,6 +199,7 @@ class NxReasoner(Reasoner):
         # Deduplicate without losing assertion/KB order. Hash-dependent ordering
         # changes floating-point products and therefore search branch priorities.
         checked_selections = list(dict.fromkeys(checked_selections))
+        hypotheses = set(additional_hypotheses or [])
         return ReasonerResult(
             unsatisfiable_facts=filter_unsats(
                 checked_selections + [(True, None, f) for f in kb.facts]
@@ -206,7 +207,8 @@ class NxReasoner(Reasoner):
             entailed_selections=[
                 (ix, tv) for tv, ix, _ in checked_selections if ix is not None
             ],
+            # kb.facts also carry ix None; only report the caller's hypotheses
             entailed_hypotheses=[
-                (pfact, tv) for tv, ix, pfact in checked_selections if ix is None and isinstance(pfact, PFact)
+                (fact, tv) for tv, ix, fact in checked_selections if ix is None and fact in hypotheses
             ],
         )

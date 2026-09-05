@@ -8,7 +8,7 @@ from boomer.model import *
 class ReasonerResult:
     unsatisfiable_facts: List[Fact]
     entailed_selections: List[Grounding] # index into pfacts in kb
-    entailed_hypotheses: List[Tuple[PFact, bool]] | None = None
+    entailed_hypotheses: List[Tuple[Fact, bool]] | None = None  # from additional_hypotheses
 
     @property
     def satisfiable(self) -> bool:
