@@ -831,3 +831,31 @@ def test_solve_disjointwith_entity_outside_graph():
     assert solve(kb).number_of_satisfiable_combinations > 0
     partitioned = solve(kb, SearchConfig(partition_initial_threshold=1))
     assert partitioned.number_of_satisfiable_combinations > 0
+@pytest.mark.parametrize("partition_initial_threshold", [200, 1])
+def test_solve_without_clique_limit(partition_initial_threshold):
+    """max_pfacts_per_clique=None is documented as 'no limit' and must not raise."""
+    config = SearchConfig(
+        max_pfacts_per_clique=None,
+        partition_initial_threshold=partition_initial_threshold,
+    )
+    solution = solve(animals.kb, config)
+    assert solution.number_of_satisfiable_combinations > 0
+    assert len(solution.solved_pfacts) == len(animals.kb.pfacts)
+
+
+def test_evaluate_hypotheses_ranks_consistent_hypothesis_first():
+    kb = KB(
+        facts=[
+            MemberOfDisjointGroup(sub="A", group="G"),
+            MemberOfDisjointGroup(sub="B", group="G"),
+        ],
+        pfacts=[PFact(fact=SubClassOf(sub="A", sup="B"), prob=0.9)],
+    )
+    hypotheses = [
+        EquivalentTo(sub="A", equivalent="B"),  # refuted by the shared disjoint group
+        ProperSubClassOf(sub="A", sup="B"),
+    ]
+    ranked = evaluate_hypotheses(kb, hypotheses, SearchConfig())
+    assert [h for _, h, _ in ranked][0] == ProperSubClassOf(sub="A", sup="B")
+    assert ranked[0][0] == pytest.approx(1.0)
+    assert ranked[-1][0] == pytest.approx(0.0)

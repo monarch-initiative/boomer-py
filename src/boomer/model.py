@@ -388,9 +388,10 @@ class HypothesisTest(BaseModel):
 
     @property
     def probability(self) -> float:
-        return self.solution_pos.prior_prob / (
-            self.solution_pos.prior_prob + self.solution_neg.prior_prob
-        )
+        total = self.solution_pos.prior_prob + self.solution_neg.prior_prob
+        if total == 0.0:
+            return 0.0
+        return self.solution_pos.prior_prob / total
 
 class EvalStats(BaseModel):
     """Evaluation statistics for fact prediction."""
