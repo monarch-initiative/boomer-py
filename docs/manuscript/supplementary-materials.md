@@ -104,13 +104,13 @@ def generate_ladder_kb(n_levels: int, prob_correct: float = 0.9) -> KB:
 
 ### S3.2 Brain Ontology Alignment: Full Grid Search Results
 
-We evaluated Boomer-Py on a brain ontology alignment benchmark comprising six Allen Brain Atlas ontologies (EMAPA, HBA, DHBA, MBA, DMBA, PBA) with 2,688 ground truth EquivalentTo facts derived from 1,288 UBERON cross-reference cliques. A grid search over 72 parameter configurations was performed.
+We evaluated Boomer-Py on a brain ontology alignment benchmark comprising six brain anatomy ontologies (EMAPA and the Allen Brain Atlas ontologies HBA, DHBA, MBA, DMBA, PBA) with 2,688 ground truth EquivalentTo facts derived from 1,288 UBERON cross-reference cliques (2,686 after the evaluator collapses two symmetric duplicates, which is the TP + FN total in the tables below). A grid search over 12 solver configurations, each scored at six posterior cutoffs (72 evaluations), was performed.
 
-#### Metric Ranges Across All 72 Configurations
+#### Metric Ranges Across All 72 Evaluations
 
 | Metric | Min | Max | Mean |
 |--------|-----|-----|------|
-| Precision | 0.41 | 0.80 | 0.64 |
+| Precision | 0.49 | 0.80 | 0.64 |
 | Recall | 0.23 | 0.48 | 0.39 |
 | F1 | 0.36 | 0.54 | 0.48 |
 
@@ -224,12 +224,12 @@ max_clique=10 provides the best balance. At 5, partitioning is too aggressive â€
 
 The brain ontology alignment benchmark follows a complete end-to-end pipeline:
 
-1. **Ontology retrieval**: Six Allen Brain Atlas ontologies (EMAPA, HBA, DHBA, MBA, DMBA, PBA) retrieved via OAK from semsql SQLite databases
+1. **Ontology retrieval**: Six brain anatomy ontologies (EMAPA and the Allen Brain Atlas ontologies HBA, DHBA, MBA, DMBA, PBA) retrieved via OAK from semsql SQLite databases
 2. **OBO export**: Each ontology exported to simplified OBO format with is_a relationships and synonyms
 3. **Knowledge base construction**: OBO files parsed into a BOOMER KB with 9,835 is_a relationships across all six ontologies
 4. **Lexical matching**: Eight matching rules applied via OAK lexmatch, generating candidate EquivalentTo mappings with calibrated prior probabilities
 5. **Ptable conversion**: Lexmatch SSSOM output converted to ptable format for BOOMER input
-6. **Solving**: Grid search across 72 parameter configurations
+6. **Solving**: Grid search across 12 solver configurations, each scored at six posterior cutoffs
 7. **Evaluation**: Solutions compared against 2,688 ground truth equivalences from 1,288 UBERON cross-reference cliques
 
 Ground truth derivation: UBERON contains cross-references (xrefs) to species-specific brain atlases. For each UBERON term with brain-related descendants, we extracted all xrefs to the six target ontologies and generated pairwise EquivalentTo facts within each clique.

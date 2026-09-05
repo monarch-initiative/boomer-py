@@ -8,7 +8,7 @@ cjm@berkeleybop.org
 
 ## Abstract
 
-We present Boomer-Py, a Python implementation of Bayesian OWL Ontology MErgER (BOOMER), which performs probabilistic reasoning over ontological knowledge bases with uncertainty. Building upon the original k-BOOM methodology, Boomer-Py introduces novel algorithmic optimizations including strongly connected component partitioning via NetworkX graph analysis and adaptive clique size management for computational tractability. The system combines deterministic description logic reasoning with Bayesian probabilistic inference to find maximally probable and logically consistent interpretations of knowledge bases containing potentially conflicting assertions. We evaluate Boomer-Py on a brain ontology alignment benchmark comprising six Allen Brain Atlas ontologies with 2,688 ground truth equivalences derived from UBERON cross-references. A grid search over 72 parameter configurations achieves a best F1 of 0.538 (precision 0.661, recall 0.454), with precision reaching 0.795 under stricter filtering. We further demonstrate the system on a Cell Ontology–BRENDA Tissue Ontology alignment, where Bayesian reasoning boosts the posterior probability of correct equivalences from 0.70 to 0.94. The implementation integrates with the OBO ecosystem through SSSOM and OBOGraphs export, and provides a command-line interface and programmatic API for ontology merging, knowledge base validation, and probabilistic reasoning applications.
+We present Boomer-Py, a Python implementation of Bayesian OWL Ontology MErgER (BOOMER), which performs probabilistic reasoning over ontological knowledge bases with uncertainty. Building upon the original k-BOOM methodology, Boomer-Py introduces novel algorithmic optimizations including strongly connected component partitioning via NetworkX graph analysis and adaptive clique size management for computational tractability. The system combines deterministic description logic reasoning with Bayesian probabilistic inference to find maximally probable and logically consistent interpretations of knowledge bases containing potentially conflicting assertions. We evaluate Boomer-Py on a brain ontology alignment benchmark comprising six brain anatomy ontologies (EMAPA and five Allen Brain Atlas ontologies) with 2,688 ground truth equivalences derived from UBERON cross-references. A grid search over 12 solver configurations, each scored at six posterior-probability cutoffs, achieves a best F1 of 0.538 (precision 0.661, recall 0.454), with precision reaching 0.795 under stricter filtering. We further demonstrate the system on a Cell Ontology–BRENDA Tissue Ontology alignment, where mappings supported by more than one independent evidence row have their posterior probability raised from 0.70 to 0.94. The implementation integrates with the OBO ecosystem through SSSOM and OBOGraphs export, and provides a command-line interface and programmatic API for ontology merging, knowledge base validation, and probabilistic reasoning applications.
 
 ## 1. Introduction
 
@@ -217,7 +217,7 @@ boomer-cli convert brain.obo -o brain.yaml
 boomer-cli merge cl.yaml bto.yaml mappings.yaml -o merged.yaml
 
 # Extract a local module around a focal entity
-boomer-cli extract merged.yaml --entity CL:0000066 --max-hops 1 -o cluster.yaml
+boomer-cli extract merged.yaml --id CL:0000066 --max-hops 1 -o cluster.yaml
 ```
 
 The `extract` command performs neighborhood extraction around specified entities, producing tractable sub-problems from large merged knowledge bases. Combined with the `obo_to_kb` parser, this enables end-to-end pipelines from OBO ontology files through probabilistic reasoning to SSSOM-formatted results.
@@ -241,13 +241,13 @@ config = SearchConfig(
 
 ### 6.1 Brain Ontology Alignment Benchmark
 
-We evaluate Boomer-Py on a real-world ontology alignment task involving six brain anatomy ontologies from the Allen Brain Atlas: EMAPA (Mouse Embryo Anatomy), HBA (Human Brain Atlas), DHBA (Developing Human Brain Atlas), MBA (Mouse Brain Atlas), DMBA (Developing Mouse Brain Atlas), and PBA (Primate Brain Atlas). These ontologies were retrieved via OAK from semsql (Table 1).
+We evaluate Boomer-Py on a real-world ontology alignment task involving six brain anatomy ontologies: EMAPA (the EMAP/MGI Mouse Developmental Anatomy Ontology) and five Allen Brain Atlas ontologies, HBA (Human Brain Atlas), DHBA (Developing Human Brain Atlas), MBA (Mouse Brain Atlas), DMBA (Developing Mouse Brain Atlas), and PBA (Primate Brain Atlas). These ontologies were retrieved via OAK from semsql (Table 1).
 
 **Table 1: Brain Benchmark Ontology Statistics**
 
 | Ontology | Full Name | Relationships | Source |
 |----------|-----------|---------------|--------|
-| EMAPA | Mouse Embryo Anatomy | 407 | OAK/semsql |
+| EMAPA | Mouse Developmental Anatomy (EMAP/MGI) | 407 | OAK/semsql |
 | HBA | Human Brain Atlas | 1,837 | OAK/semsql |
 | DHBA | Developing Human Brain Atlas | 3,316 | OAK/semsql |
 | MBA | Mouse Brain Atlas | 1,326 | OAK/semsql |
@@ -260,11 +260,11 @@ The evaluation pipeline proceeds as: OAK retrieval → OBO export → merge → 
 
 ### 6.2 Grid Search over Parameters
 
-We performed a systematic grid search over 72 parameter configurations spanning three key parameters:
+We performed a systematic grid search over 12 solver configurations, each scored at six posterior-probability cutoffs (72 evaluations in total):
 
 - **max_pfacts_per_clique**: {5, 10, 25} — controls partition granularity
 - **max_candidate_solutions**: {10, 50, 100, 200} — limits search breadth per partition
-- **pr_filter**: {0.0, 0.2, 0.4, 0.6, 0.8, 0.95} — prior probability threshold for filtering low-confidence candidates
+- **pr_filter**: {0.0, 0.2, 0.4, 0.6, 0.8, 0.95} — posterior probability cutoff applied to the solved pfacts when scoring a solution; it does not change the search itself, so the 12 solves are each scored six times
 
 **Table 2: Top 5 Configurations by F1 Score**
 
@@ -284,13 +284,13 @@ Key findings from the grid search (see Figures 2–3):
 
 2. **max_pfacts_per_clique=10 is the sweet spot**: All top-5 configurations use clique size 10. A value of 5 partitions too aggressively, losing cross-entity context needed for correct inference. A value of 25 introduces more noise from larger search spaces.
 
-3. **max_candidate_solutions has modest impact**: F1 varies by only ~0.01 across solution limits, suggesting that the best solutions are typically found early in the search.
+3. **max_candidate_solutions matters mainly for larger partitions**: at max_pfacts_per_clique=10, F1 varies by about 0.01 across solution limits, suggesting that the best solutions are found early; at max_pfacts_per_clique=25 the spread reaches 0.08 (Table S3), so larger partitions do benefit from exploring more candidates.
 
 ### 6.3 Cell Ontology–BRENDA Tissue Ontology Case Study
 
 As a second evaluation, we applied Boomer-Py to align the Cell Ontology (CL; 19,026 terms) with the BRENDA Tissue Ontology (BTO; 6,566 terms). Label matching produced 856 candidate EquivalentTo mappings with prior probability 0.70. From the merged knowledge base (90,474 hard facts, 32,861 pfacts), we extracted a local module around CL:0000066 (epithelial cell) using `--max-hops 1`, yielding a tractable cluster of 345 facts and 50 pfacts across 44 entities.
 
-Solving with max_pfacts_per_clique=20 and timeout=120s, the system accepted 49 EquivalentTo mappings. Notably, Bayesian reasoning boosted the posterior probability of the core mapping CL:0000066 (epithelial cell) ≡ BTO:0000414 (epithelial cell) from 0.70 to 0.94, reflecting mutual reinforcement from consistent sub-type mappings (e.g., hepatocyte, ciliated epithelial cell). Mappings lacking such structural support retained their prior of 0.70 (see Figure 4).
+Solving with max_pfacts_per_clique=20 and timeout=120s, the system accepted the candidate EquivalentTo mappings in the cluster. <!-- TODO(review): the committed notebook reports 7 accepted mappings (5 unique), not 49; re-run and reconcile. --> Two of them, CL:0000066 (epithelial cell) ≡ BTO:0000414 (epithelial cell) and CL:0000182 (hepatocyte) ≡ BTO:0000575, appear twice in the merged knowledge base because two independent sources (an xref and a label match) proposed them. Boomer-Py treats repeated pfacts for one claim as independent evidence (multi-labeled edges), so the posterior probability of each of these mappings rose from 0.70 to 0.94, while mappings supported by a single evidence row retained their prior of 0.70 (see Figure 4). <!-- TODO(review): the earlier text attributed the increase to reinforcement from consistent sub-type mappings; a KB with genuine sub-type support but no repeated rows shows no increase, so the explanation above follows the data. -->
 
 ### 6.4 Scalability
 
@@ -348,7 +348,7 @@ The partitioning strategy trades cross-clique dependency reasoning for tractabil
 Additional limitations include:
 - Exponential worst-case complexity for highly connected KBs without natural modularity
 - Limited to probabilistic facts (no probabilistic rules)
-- Prior probability calibration affects results; the grid search shows that pr_filter is the dominant parameter
+- The posterior cutoff (pr_filter) is the dominant lever in the grid search; the calibration of the priors themselves was not varied
 
 ### 8.2 Comparison with Related Systems
 
@@ -375,9 +375,9 @@ Several extensions are under development:
 
 ## 9. Conclusion
 
-Boomer-Py provides a practical and scalable implementation of Bayesian ontology reasoning, combining the theoretical foundations of k-BOOM with algorithmic innovations for real-world applications. Evaluation on a brain ontology alignment benchmark with 2,688 ground truth equivalences across six Allen Brain Atlas ontologies demonstrates that the system achieves precision of 0.661 and F1 of 0.538 at the best operating point, with precision reaching 0.795 under strict filtering. A systematic grid search over 72 configurations reveals that prior probability filtering is the dominant parameter, offering users a clear precision-recall trade-off.
+Boomer-Py provides a practical and scalable implementation of Bayesian ontology reasoning, combining the theoretical foundations of k-BOOM with algorithmic innovations for real-world applications. Evaluation on a brain ontology alignment benchmark with 2,688 ground truth equivalences across six brain anatomy ontologies demonstrates that the system achieves precision of 0.661 and F1 of 0.538 at the best operating point, with precision reaching 0.795 under strict filtering. A systematic grid search over 12 solver configurations at six posterior cutoffs reveals that posterior filtering is the dominant lever, offering users a clear precision-recall trade-off.
 
-The CL+BTO case study demonstrates the system's ability to boost posterior probabilities of correct mappings (0.70 → 0.94) through structural reinforcement from consistent sub-type relationships. Integration with the OBO ecosystem through SSSOM and OBOGraphs formats enables seamless use of Boomer-Py results in downstream tools.
+The CL+BTO case study demonstrates how the system combines independent evidence for the same mapping, raising its posterior probability (0.70 → 0.94) when more than one source proposes it. Integration with the OBO ecosystem through SSSOM and OBOGraphs formats enables seamless use of Boomer-Py results in downstream tools.
 
 The graph partitioning approach enables processing of knowledge bases with tens of thousands of probabilistic facts by decomposing them into tractable sub-problems. Combined with module extraction for targeted analysis of large ontology merges, this makes probabilistic ontology reasoning practical for real-world knowledge integration challenges.
 
