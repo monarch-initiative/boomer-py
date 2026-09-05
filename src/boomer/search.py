@@ -24,11 +24,11 @@ from boomer.model import (
 from typing import Iterator, List, Set, Tuple
 
 from boomer.reasoners import get_reasoner
-from boomer.reasoners.reasoner import Reasoner
+from boomer.reasoners.reasoner import Reasoner, ReasonerResult
 
 import logging
 
-from boomer.splitter import partition_kb
+from boomer.splitter import add_carried_facts, partition_kb
 from boomer.utils import combine_solutions
 
 logger = logging.getLogger(__name__)
@@ -78,6 +78,33 @@ def calc_prob_unselected(kb: KB, node: TreeNode) -> float:
     return pr_fact
 
 
+def joint_probability(
+    kb: KB, selections: List[Grounding], entailed_hypotheses: List[Tuple[Fact, bool]]
+) -> float:
+    """
+    Joint probability of a set of selections (asserted and entailed).
+
+    Entailment-only pfacts (kb.pfacts_entailed) contribute their probability
+    when entailed, its complement when refuted, and nothing when undetermined.
+
+    >>> from boomer.model import PFact, EquivalentTo
+    >>> kb = KB(pfacts=[PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.9)],
+    ...         pfacts_entailed=[PFact(fact=EquivalentTo(sub="b", equivalent="c"), prob=0.25)])
+    >>> round(joint_probability(kb, [(0, False)], []), 3)
+    0.1
+    >>> round(joint_probability(kb, [(0, True)], [(EquivalentTo(sub="b", equivalent="c"), True)]), 3)
+    0.225
+    """
+    pr_selected = 1.0
+    for ix, truth_value in selections:
+        pr_selected *= kb.pfacts[ix].prob if truth_value else 1 - kb.pfacts[ix].prob
+    entailment_probs = {pf.fact: pf.prob for pf in kb.pfacts_entailed}
+    for fact, truth_value in entailed_hypotheses:
+        prob = entailment_probs[fact]
+        pr_selected *= prob if truth_value else 1 - prob
+    return pr_selected
+
+
 def extend_node(
     node: TreeNode, kb: KB, selection: Grounding, reasoner: Reasoner
 ) -> TreeNode:
@@ -92,9 +119,8 @@ def extend_node(
     if selection in node.selections:
         raise ValueError(f"Duplicate selection: {selection}")
     asserted_selections = node.selections + [selection]
-    entailment_probs = {pf.fact: pf.prob for pf in kb.pfacts_entailed}
     reasoner_result = reasoner.reason(
-        kb, asserted_selections, additional_hypotheses=list(entailment_probs)
+        kb, asserted_selections, additional_hypotheses=[pf.fact for pf in kb.pfacts_entailed]
     )
 
     entailed_hypotheses: List[Tuple[Fact, bool]] = []
@@ -106,20 +132,8 @@ def extend_node(
             raise ValueError(
                 f"No entailed selections; input={node.selections} // {selection}"
             )
-        # calculate joint probability of all selections so far (asserted and entailed)
-        pr_selected = 1.0
-        for ix, truth_value in selections:
-            if truth_value:
-                pr_fact = kb.pfacts[ix].prob
-            else:
-                pr_fact = 1 - kb.pfacts[ix].prob
-            pr_selected *= pr_fact
-        # entailment-only pfacts: one entailed by these selections contributes its
-        # probability, one refuted by them its complement, an undetermined one nothing
         entailed_hypotheses = list(reasoner_result.entailed_hypotheses or [])
-        for fact, truth_value in entailed_hypotheses:
-            prob = entailment_probs[fact]
-            pr_selected *= prob if truth_value else 1 - prob
+        pr_selected = joint_probability(kb, selections, entailed_hypotheses)
     else:
         selections = asserted_selections + []
         pr_selected = 0.0
@@ -138,6 +152,7 @@ def extend_node(
         pr_selected=pr_selected,
         terminal=len(selections) == len(kb.pfacts),
         entailed_hypotheses=entailed_hypotheses,
+        inherited_decisions=node.inherited_decisions,
     )
     # TODO: improve efficiency avoiding recalculating this
     tn.pr = calc_prob_unselected(kb, tn) * pr_selected
@@ -186,6 +201,56 @@ def all_node_extensions(
         yield extend_node(node, kb, selection, reasoner)
 
 
+def root_state(kb: KB, reasoner: Reasoner) -> ReasonerResult | None:
+    """
+    Everything the hard facts decide before any choice is made, or None if the
+    hard facts are unsatisfiable on their own.
+
+    Starts from the reasoner's own entailments and then applies unit
+    propagation until a fixed point: a pfact that cannot be accepted (or cannot
+    be rejected) given the hard facts and the decisions so far is decided the
+    other way.
+
+    >>> from boomer.model import PFact, EquivalentTo, MemberOfDisjointGroup
+    >>> from boomer.reasoners.nx_reasoner import NxReasoner
+    >>> kb = KB(
+    ...     facts=[EquivalentTo(sub="a1", equivalent="b1"),
+    ...            MemberOfDisjointGroup(sub="b1", group="B"),
+    ...            MemberOfDisjointGroup(sub="b2", group="B")],
+    ...     pfacts=[PFact(fact=EquivalentTo(sub="a1", equivalent="b2"), prob=0.8),
+    ...             PFact(fact=EquivalentTo(sub="a2", equivalent="b2"), prob=0.8)],
+    ... )
+    >>> root_state(kb, NxReasoner()).entailed_selections  # a1 ≡ b2 would merge b1 and b2
+    [(0, False)]
+    """
+    hypotheses = [pf.fact for pf in kb.pfacts_entailed]
+    result = reasoner.reason(kb, [], additional_hypotheses=hypotheses)
+    if not result.satisfiable:
+        return None
+    changed = True
+    while changed:
+        changed = False
+        decided = {ix for ix, _ in result.entailed_selections}
+        for ix in range(len(kb.pfacts)):
+            if ix in decided:
+                continue
+            for truth_value in (True, False):
+                trial = reasoner.reason(
+                    kb, result.entailed_selections + [(ix, truth_value)], additional_hypotheses=hypotheses
+                )
+                if trial.satisfiable:
+                    continue
+                forced = reasoner.reason(
+                    kb, result.entailed_selections + [(ix, not truth_value)], additional_hypotheses=hypotheses
+                )
+                if not forced.satisfiable:
+                    return None
+                result = forced
+                changed = True
+                break
+    return result
+
+
 def search(kb: KB, config: SearchConfig) -> Iterator[TreeNode]:
     """
     Search for solutions for the knowledge base.
@@ -197,10 +262,31 @@ def search(kb: KB, config: SearchConfig) -> Iterator[TreeNode]:
     Returns :
         Iterator[TreeNode]: A generator of search tree nodes
     """
-    root = TreeNode(pr_selected=1.0, selections=[], asserted_selections=[])
-    root.pr = calc_prob_unselected(kb, root)
-
     reasoner = get_reasoner(config.reasoner_class)
+
+    # Seed the root with everything the hard facts alone decide, including by
+    # unit propagation: a pfact whose acceptance (or rejection) is unsatisfiable
+    # together with the hard facts and the decisions so far is decided now.
+    # Otherwise every such pfact is "selected" explicitly during the search and
+    # the same state is reached once per permutation of those selections.
+    root_result = root_state(kb, reasoner)
+    if root_result is None:
+        logger.warning("The hard facts are unsatisfiable on their own; no solutions")
+        return
+    root_selections = root_result.entailed_selections
+    root_hypotheses = list(root_result.entailed_hypotheses or [])
+    root = TreeNode(
+        pr_selected=joint_probability(kb, root_selections, root_hypotheses),
+        selections=root_selections,
+        asserted_selections=[],
+        entailed_hypotheses=root_hypotheses,
+        inherited_decisions=len(root_selections),
+        terminal=len(root_selections) == len(kb.pfacts),
+    )
+    root.pr = calc_prob_unselected(kb, root) * root.pr_selected
+    if root.terminal:
+        yield root
+        return
 
     # Setup timeout if specified
     start_time = time.time()
@@ -312,7 +398,10 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     **Automatic Partitioning:**
     - If the KB has more pfacts than `config.partition_initial_threshold`, it's
       automatically partitioned into strongly connected components (cliques)
-    - Each component is solved independently and solutions are combined
+    - Each pfact belongs to exactly one component; components are solved in
+      turn and the facts accepted so far are carried into later components
+      that share entities with them, so decisions stay consistent across the
+      partition (see boomer.splitter.add_carried_facts)
     - This reduces complexity from O(2^n) to O(2^n1 + 2^n2 + ... + 2^nk)
 
     **Recursive Subclustering:**
@@ -395,9 +484,12 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
             partition_kb(kb, max_pfacts_per_clique=config.max_pfacts_per_clique)
         )
         print(f"Partitioning KB into {len(sub_kbs)} sub-KBs")
+        accepted: list[Fact] = []
         for subkb in sub_kbs:
             if not subkb.pfacts:
                 continue
+            # decisions already made elsewhere constrain this component
+            subkb = add_carried_facts(subkb, kb, accepted)
             print(
                 f"Solving sub-KB: {len(subkb.facts)} facts, {len(subkb.pfacts)} pfacts"
             )
@@ -408,6 +500,11 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
             print(
                 f"Sub-solution: pr:{sub_solution.prior_prob} // post:{sub_solution.posterior_prob} // {sub_solution.number_of_combinations} combinations"
             )
+            accepted += [
+                sp.pfact.fact
+                for sp in sub_solution.solved_pfacts
+                if sp.truth_value and not (sp.metadata or {}).get("entailment_only")
+            ]
             solutions.append(sub_solution)
         return combine_solutions(solutions)
     
@@ -460,7 +557,7 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     # (satisfiable node) or ruled out wholesale (unsat node). Coverage of
     # different nodes can overlap, so this is an estimate.
     number_of_combinations_explored_including_implicit = sum(
-        2 ** (len(kb.pfacts) - n.depth) for n in nodes
+        2 ** (len(kb.pfacts) - n.depth - n.inherited_decisions) for n in nodes
     )
     est_prop_explored = (
         number_of_combinations_explored_including_implicit

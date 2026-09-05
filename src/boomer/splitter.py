@@ -21,7 +21,7 @@ def fact_entities(fact: Fact) -> Set[EntityIdentifier]:
 
     Introspects the fact's fields rather than assuming property names, so it
     works for every fact type. Tuple-valued fields (DisjointSet) and nested
-    facts (NegatedFact) are flattened.
+    facts (NegatedFact) are flattened; a disjoint group name is not an entity.
 
     >>> sorted(fact_entities(SubClassOf(sub="a", sup="b")))
     ['a', 'b']
@@ -30,10 +30,13 @@ def fact_entities(fact: Fact) -> Set[EntityIdentifier]:
     ['a', 'b', 'c']
     >>> sorted(fact_entities(NegatedFact(negated=SubClassOf(sub="a", sup="b"))))
     ['a', 'b']
+    >>> from boomer.model import MemberOfDisjointGroup
+    >>> sorted(fact_entities(MemberOfDisjointGroup(sub="a", group="ONT")))
+    ['a']
     """
     entities: Set[EntityIdentifier] = set()
     for name, value in fact.__dict__.items():
-        if name == "fact_type":
+        if name in ("fact_type", "group"):
             continue
         if isinstance(value, str):
             entities.add(value)
@@ -43,12 +46,43 @@ def fact_entities(fact: Fact) -> Set[EntityIdentifier]:
             entities.update(fact_entities(value))
     return entities
 
+def pfact_owner_entity(fact: Fact) -> EntityIdentifier:
+    """
+    The entity whose component owns a pfact when a KB is partitioned.
+
+    Subclass-type facts belong with their subclass; symmetric facts have both
+    ends in one strongly connected component anyway; anything else goes with
+    its alphabetically first entity.
+
+    >>> pfact_owner_entity(SubClassOf(sub="b", sup="a"))
+    'b'
+    >>> from boomer.model import DisjointWith
+    >>> pfact_owner_entity(DisjointWith(sub="b", sibling="a"))
+    'a'
+    """
+    if isinstance(fact, (SubClassOf, ProperSubClassOf, EquivalentTo)):
+        return fact.sub
+    return min(fact_entities(fact))
+
+
+def kb_entities(kb: KB) -> Set[EntityIdentifier]:
+    """All entities mentioned by a KB's facts and pfacts."""
+    entities: Set[EntityIdentifier] = set()
+    for fact in kb.facts:
+        entities |= fact_entities(fact)
+    for pfact in kb.pfacts:
+        entities |= fact_entities(pfact.fact)
+    return entities
+
+
 def kb_to_graph(kb: KB) -> nx.DiGraph:
     """
     Create a graph of entities from both facts and pfacts.
 
     This function creates a directed graph where each node represents an entity, and each edge represents a relationship between two entities.
     The graph is used to identify strongly connected components of the entities.
+    Every entity mentioned by any fact or pfact is a node, so entities that only
+    appear in e.g. DisjointWith facts still land in a (singleton) component.
 
     Args:
         kb: Knowledge base to convert to graph
@@ -57,6 +91,7 @@ def kb_to_graph(kb: KB) -> nx.DiGraph:
         A directed graph of entities
     """
     graph = nx.DiGraph()
+    graph.add_nodes_from(kb_entities(kb))
 
     def add_edges(fact: Fact, edge_properties: dict = None):
         if not edge_properties:
@@ -79,22 +114,44 @@ def kb_to_graph(kb: KB) -> nx.DiGraph:
 
     return graph
 
-def extract_sub_kb(kb: KB, component: Set[EntityIdentifier], include_labels: bool = True) -> KB:
+def extract_sub_kb(
+    kb: KB,
+    component: Set[EntityIdentifier],
+    include_labels: bool = True,
+    own_pfacts: bool = False,
+) -> KB:
     """
     Extract a sub-KB from a KB based on a set of entities.
 
     Args:
         kb: Knowledge base to extract sub-KB from
         component: Set of entities to extract
+        include_labels: Whether to copy labels for the component's entities
+        own_pfacts: If False, every pfact touching the component is included,
+            so a pfact spanning two components is copied into both. If True,
+            a pfact is included only in the component of its owner entity
+            (see pfact_owner_entity), so each pfact lands in exactly one
+            sub-KB; hard facts touching any entity of those pfacts are
+            included as well, so the far end of a spanning pfact keeps its
+            constraints.
 
     Returns:
         A sub-KB containing only the entities in the component
     """
-    component_facts = [fact for fact in kb.facts if fact_entities(fact) & component]
-    component_pfacts = [pfact for pfact in kb.pfacts if fact_entities(pfact.fact) & component]
+    if own_pfacts:
+        component_pfacts = [
+            pfact for pfact in kb.pfacts if pfact_owner_entity(pfact.fact) in component
+        ]
+        fact_scope = set(component)
+        for pfact in component_pfacts:
+            fact_scope |= fact_entities(pfact.fact)
+    else:
+        component_pfacts = [pfact for pfact in kb.pfacts if fact_entities(pfact.fact) & component]
+        fact_scope = component
+    component_facts = [fact for fact in kb.facts if fact_entities(fact) & fact_scope]
     labels = {}
     if include_labels:
-        labels = {entity: label for entity, label in kb.labels.items() if entity in component}
+        labels = {entity: label for entity, label in kb.labels.items() if entity in fact_scope}
     sub_kb = KB(
             facts=component_facts,
             pfacts=component_pfacts,
@@ -167,6 +224,47 @@ def extract_neighborhood(
     return extract_sub_kb(kb, reachable, include_labels=True)
 
 
+def add_carried_facts(sub_kb: KB, kb: KB, carried: list[Fact]) -> KB:
+    """
+    Return *sub_kb* extended with facts accepted by previously solved sub-KBs.
+
+    Carried facts that touch an entity of *sub_kb*, or an entity of another
+    carried fact already pulled in, are added transitively, together with the
+    hard facts of *kb* that touch any of those entities, so the constraints
+    behind an earlier decision travel with it. The input is not modified.
+
+    >>> from boomer.model import PFact, NotInSubsumptionWith
+    >>> kb = KB(
+    ...     facts=[NotInSubsumptionWith(sub="A", sibling="C")],
+    ...     pfacts=[PFact(fact=SubClassOf(sub="A", sup="B"), prob=0.9),
+    ...             PFact(fact=SubClassOf(sub="B", sup="C"), prob=0.9)],
+    ... )
+    >>> sub = KB(pfacts=[PFact(fact=SubClassOf(sub="B", sup="C"), prob=0.9)])
+    >>> extended = add_carried_facts(sub, kb, [SubClassOf(sub="A", sup="B")])
+    >>> extended.facts
+    [SubClassOf(fact_type='SubClassOf', sub='A', sup='B'), NotInSubsumptionWith(fact_type='NotInSubsumptionWith', sub='A', sibling='C')]
+    >>> sub.facts
+    []
+    """
+    scope = kb_entities(sub_kb)
+    relevant: list[Fact] = []
+    pending = list(carried)
+    grew = True
+    while grew:
+        grew = False
+        for fact in list(pending):
+            if fact_entities(fact) & scope:
+                relevant.append(fact)
+                pending.remove(fact)
+                scope |= fact_entities(fact)
+                grew = True
+    if not relevant:
+        return sub_kb
+    present = set(sub_kb.facts) | set(relevant)
+    context = [fact for fact in kb.facts if fact_entities(fact) & scope and fact not in present]
+    return sub_kb.model_copy(update={"facts": sub_kb.facts + relevant + context})
+
+
 def partition_kb(kb: KB, max_pfacts_per_clique: int | None = None, min_pfacts_per_clique: int = 5) -> Iterator[KB]:
     """
     Partition a KB into sub-KBs based on strongly connected components of the entity graph.
@@ -176,10 +274,16 @@ def partition_kb(kb: KB, max_pfacts_per_clique: int | None = None, min_pfacts_pe
     and ProperSubClassOf create unidirectional edges. Only entities that can reach each other
     through these directed paths are grouped together.
 
+    Each pfact is assigned to exactly one sub-KB, the one owning its
+    pfact_owner_entity; a one-directional pfact whose ends fall in different
+    components goes with its subclass end and its far end's hard facts come
+    along. Hard facts are copied into every sub-KB they touch.
+
     Args:
         kb: Knowledge base to partition
         max_pfacts_per_clique: Optional limit on pfacts per clique. If a clique exceeds this,
-            only the highest probability pfacts are kept to manage computational complexity.
+            it is split further by temporarily dropping low-probability pfacts (see
+            split_connected_components).
 
     For larger cliques with multiple equivalent entities:
     - A clique of 3 equivalent entities (A≡B≡C) forms one strongly connected component
@@ -200,8 +304,10 @@ def partition_kb(kb: KB, max_pfacts_per_clique: int | None = None, min_pfacts_pe
     ... ]
     >>> kb = KB(facts=facts, pfacts=pfacts)
     >>> partitions = list(partition_kb(kb))
-    >>> len(partitions)
-    4
+    >>> len(partitions)  # {cat, feline}, {animal}, {dog}, {red, crimson}, {blue}
+    5
+    >>> sum(len(p.pfacts) for p in partitions)
+    2
 
     >>> # Example with larger clique - three equivalent entities
     >>> kb_clique = KB(pfacts=[
@@ -235,8 +341,8 @@ def partition_kb(kb: KB, max_pfacts_per_clique: int | None = None, min_pfacts_pe
 
     # Partition into connected components
     for component in nx.strongly_connected_components(graph):
-        # Include facts and pfacts that share entities with this component
-        sub_kb = extract_sub_kb(kb, component, include_labels=False)
+        # pfacts owned by this component, plus the hard facts they touch
+        sub_kb = extract_sub_kb(kb, component, include_labels=False, own_pfacts=True)
         component_pfacts = sub_kb.pfacts
 
         # Apply clique size limit if specified
@@ -246,13 +352,6 @@ def partition_kb(kb: KB, max_pfacts_per_clique: int | None = None, min_pfacts_pe
         ):
             logger.info(f"Splitting {len(component_pfacts)} pfacts into {max_pfacts_per_clique} pfacts per clique")
             yield from split_connected_components(sub_kb, max_pfacts_per_clique=max_pfacts_per_clique, min_pfacts_per_clique=min_pfacts_per_clique)
-            if False:
-                # Sort by probability (descending) and keep only the highest probability pfacts
-                component_pfacts.sort(key=lambda pf: pf.prob, reverse=True)
-                # TODO: weave these back in; see diagonal test
-                number_to_drop = int((len(component_pfacts) - max_pfacts_per_clique) / 10) + 1
-                sub_kb.pfacts = component_pfacts[:-number_to_drop]
-                yield from partition_kb(sub_kb, max_pfacts_per_clique=max_pfacts_per_clique)
         else:
             yield sub_kb
         
@@ -260,12 +359,20 @@ def split_connected_components(kb: KB, max_pfacts_per_clique: int, min_pfacts_pe
     """
     Split a KB into sub-KBs based on strongly connected components of the entity graph.
 
+    Low-probability pfacts are dropped in batches until the remaining graph
+    falls apart into a component of acceptable size, which is yielded; the
+    dropped pfacts then return to the pool. If even the smallest pool cannot
+    be split (every component still exceeds the limit once the minimum size
+    has been relaxed to zero), the remaining components are yielded as they
+    are, oversized, with a warning. Each pfact is yielded exactly once.
+
     TODO: rewrite this to be more efficient
 
     Args:
         kb: Knowledge base to split
-        max_pfacts_per_clique: Optional limit on pfacts per clique. If a clique exceeds this,
-            only the highest probability pfacts are kept to manage computational complexity.
+        max_pfacts_per_clique: Limit on pfacts per clique that a split must respect.
+        min_pfacts_per_clique: Smallest component worth yielding; relaxed by one
+            each time a full pass finds no split.
     """
     if min_pfacts_per_clique > max_pfacts_per_clique:
         min_pfacts_per_clique = max_pfacts_per_clique
@@ -276,7 +383,9 @@ def split_connected_components(kb: KB, max_pfacts_per_clique: int, min_pfacts_pe
     while kb.pfacts:
         dropped_pfacts = []
         is_split = False
-        step_size = (len(kb.pfacts) // 20) + 1
+        # never drop more than a clique's worth at once, or the pool can skip
+        # straight past every size that would fit
+        step_size = max(1, min((len(kb.pfacts) // 20) + 1, max_pfacts_per_clique))
         # print(f"step_size: {step_size}")
         # print(f"n: {n} // {len(kb.pfacts)} // step={step_size} // min_pfacts_per_clique={min_pfacts_per_clique}")
 
@@ -290,16 +399,15 @@ def split_connected_components(kb: KB, max_pfacts_per_clique: int, min_pfacts_pe
                 if len(component) == 1 and min_pfacts_per_clique > 0:
                     # avoid singletons
                     continue
-                component_kb = extract_sub_kb(kb, component, include_labels=False)
-                #if len(components) > 1:
-                #    component_kb = extract_sub_kb(kb, component)
-                #else:
-                #    component_kb = kb
-                if len(component_kb.pfacts) <= max_pfacts_per_clique and len(component_kb.pfacts) >= min_pfacts_per_clique:
+                component_kb = extract_sub_kb(kb, component, include_labels=False, own_pfacts=True)
+                # a split must carry at least one pfact, or the pool never shrinks
+                if max(min_pfacts_per_clique, 1) <= len(component_kb.pfacts) <= max_pfacts_per_clique:
                     logger.info(f"Found split: {len(component_kb.pfacts)} / {len(kb.pfacts)} pfacts; component={component}/ all={components}")
                     yield component_kb
                     kb.pfacts += dropped_pfacts
                     kb.pfacts = [pf for pf in kb.pfacts if pf not in component_kb.pfacts]
+                    # keep the pool sorted so later drops are lowest-probability first
+                    kb.pfacts.sort(key=lambda pf: pf.prob, reverse=True)
                     logger.info(f"Remaining: {len(kb.pfacts)} pfacts [re-adding {len(dropped_pfacts)} dropped]")
                     dropped_pfacts = []
                     is_split = True
@@ -314,15 +422,22 @@ def split_connected_components(kb: KB, max_pfacts_per_clique: int, min_pfacts_pe
                 dropped_pfacts.extend(last_pfacts)
         if dropped_pfacts:
             kb.pfacts += dropped_pfacts
-            min_pfacts_per_clique -= 1
+            kb.pfacts.sort(key=lambda pf: pf.prob, reverse=True)
             logger.info(f"Re-adding {len(dropped_pfacts)} dropped pfacts")
+            if min_pfacts_per_clique <= 0:
+                # every relaxation has been tried; give up on splitting the rest
+                break
+            min_pfacts_per_clique -= 1
     if kb.pfacts:
-        logger.info(f"No split found; remaining: {len(kb.pfacts)} pfacts")
+        logger.warning(
+            f"No split found for {len(kb.pfacts)} pfacts; yielding their components as they are, "
+            f"which may exceed max_pfacts_per_clique={max_pfacts_per_clique}"
+        )
         graph = kb_to_graph(kb)
-        components = list(nx.strongly_connected_components(graph))
-        for component in components:
-            component_kb = extract_sub_kb(kb, component, include_labels=True)
-            yield component_kb
+        for component in nx.strongly_connected_components(graph):
+            component_kb = extract_sub_kb(kb, component, include_labels=False, own_pfacts=True)
+            if component_kb.pfacts:
+                yield component_kb
                 
         
         

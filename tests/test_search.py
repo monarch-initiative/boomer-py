@@ -1,6 +1,6 @@
 from copy import deepcopy
 import pytest
-from boomer.model import KB, DisjointWith, EquivalentTo, MemberOfDisjointGroup, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution
+from boomer.model import KB, DisjointWith, EquivalentTo, MemberOfDisjointGroup, NotInSubsumptionWith, ProbabilityMissingProperSubClassOf, ProperSubClassOf, SubClassOf, PFact, SearchConfig, Solution
 from boomer.search import evaluate_hypotheses, search, solve
 import boomer.datasets.animals as animals
 import boomer.datasets.quad as quad
@@ -135,9 +135,15 @@ def test_chain(chain_length, max_candidate_solutions):
     solution = solve(kb, cfg)
     print(solution)
     render(solution)
-    assert solution.confidence > 0.495
-    assert solution.confidence < 0.9
-    assert solution.posterior_prob < 0.6
+    if chain_length == 1:
+        # the "cycle" is the self-loop X:1 ⊂ X:1, refuted outright, so the only
+        # open question is the single link at 0.9
+        assert solution.posterior_prob == pytest.approx(0.9)
+        assert solution.confidence == pytest.approx(0.9)
+    else:
+        assert solution.confidence > 0.495
+        assert solution.confidence < 0.9
+        assert solution.posterior_prob < 0.6
     if chain_length > 6:
         assert solution.posterior_prob == pytest.approx(0.2, abs=0.1)
     # chain should have a single link broken
@@ -175,14 +181,18 @@ def test_solve_quad():
 
 def test_solve_ladder():
     """
+    Every pfact is entailed by the hard facts alone (the L chain, the L≡R
+    equivalences and the R disjoint group force each R subclass axiom, and
+    Ri ≡ Ri is a tautology), so the root already decides all of them and there
+    is exactly one world. Before the root was seeded, that one world was
+    reached once per first-selected pfact and reported as 8 satisfiable
+    combinations with posterior 0.125.
+
     Expected results:
-    * 16 combinations
-    * 8 satisfiable combinations
-    * 1.0 proportion of combinations explored
-    * 0.5 confidence
+    * 1 satisfiable combination
+    * 1.0 confidence
     * 1.0000000000000005e-08 prior probability
-    * 0.12499999999999999 posterior probability
-    * 0.0048 seconds elapsed
+    * 1.0 posterior probability
     Grounding:
     * True fact_type='ProperSubClassOf' sub='R4' sup='R3' :: prior: 0.1 posterior: 1.0
     * True fact_type='ProperSubClassOf' sub='R3' sup='R2' :: prior: 0.1 posterior: 1.0
@@ -197,10 +207,10 @@ def test_solve_ladder():
     solution = solve(kb)
     print(solution)
     render(solution)
-    assert solution.number_of_satisfiable_combinations == 8
-    assert solution.confidence == pytest.approx(0.5, 0.05)  
+    assert solution.number_of_satisfiable_combinations == 1
+    assert solution.confidence == pytest.approx(1.0)
     assert solution.prior_prob == pytest.approx(1.0e-08, 0.05)
-    assert solution.posterior_prob == pytest.approx(0.12, 0.05)
+    assert solution.posterior_prob == pytest.approx(1.0)
     expected = [
         (True, ProperSubClassOf(sub='R4', sup='R3'), 0.1, 1.0),
         (True, ProperSubClassOf(sub='R3', sup='R2'), 0.1, 1.0),
@@ -955,3 +965,24 @@ def test_hyperparameter_penalises_entailed_missing_subclass_axiom():
     assert missing.posterior_prob == pytest.approx(0.03 / 0.43)
     # the reverse direction is never entailed
     assert by_fact[ProperSubClassOf(sub="y2", sup="y1")].posterior_prob == 0.0
+
+
+def test_partitioned_solve_carries_decisions_forward():
+    """
+    Two one-directional pfacts in different components and a hard fact that
+    forbids their conjunction. Solved independently both would be accepted;
+    with carry-forward the second component sees the first decision.
+    """
+    kb = KB(
+        facts=[NotInSubsumptionWith(sub="A", sibling="C")],
+        pfacts=[
+            PFact(fact=SubClassOf(sub="A", sup="B"), prob=0.9),
+            PFact(fact=SubClassOf(sub="B", sup="C"), prob=0.9),
+        ],
+    )
+    partitioned = solve(kb, SearchConfig(partition_initial_threshold=1))
+    unpartitioned = solve(kb)
+    accepted = sorted(str(sp.pfact.fact) for sp in partitioned.solved_pfacts if sp.truth_value)
+    assert len(accepted) == 1
+    assert partitioned.prior_prob == pytest.approx(unpartitioned.prior_prob)
+    assert partitioned.number_of_components == 2
