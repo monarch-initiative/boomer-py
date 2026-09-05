@@ -93,7 +93,9 @@ def extend_node(
     reasoner_result = reasoner.reason(kb, asserted_selections)
 
     if reasoner_result.satisfiable:
-        selections = reasoner_result.entailed_selections
+        # Use KB index order for scoring, independent of the reasoner's traversal
+        # order or the path by which these entailments were reached.
+        selections = sorted(reasoner_result.entailed_selections)
         if not selections:
             raise ValueError(
                 f"No entailed selections; input={node.selections} // {selection}"
@@ -384,6 +386,8 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
         return combine_solutions(solutions)
     
     if kb.hyperparams:
+        # Generated hypotheses belong to this solve, not the caller's reusable KB.
+        kb = deepcopy(kb)
         # create hypotheses for hyperparamaters;
         # e.g. probability of omitted subclasses within the same ontology
         hypotheses = generate_hypotheses_for_hyperparamaters(kb, get_reasoner(config.reasoner_class))

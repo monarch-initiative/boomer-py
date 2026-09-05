@@ -87,6 +87,20 @@ The result of the search is a `Solution` object that contains:
 - **time_elapsed**: Time taken to find the solution
 - **timed_out**: Whether the search timed out
 
+For an identical ordered KB and configuration, the default reasoner produces
+reproducible search results across Python hash seeds and repeated `solve()` calls.
+`solve()` does not append generated hypotheses to the caller's KB. Timing fields
+vary, and searches stopped by a wall-clock timeout can explore different amounts
+of the search space.
+
+`number_of_combinations` counts explicitly visited terminal nodes, rather than
+the size of the possible assignment space (`2 ** len(kb.pfacts)`).
+`proportion_of_combinations_explored` is a capped estimate that also counts
+assignments implicitly pruned by unsatisfiable branches; those branches can
+overlap, so a value of `1.0` is not a proof of exhaustive enumeration. For
+partitioned solutions, counts are summed and coverage estimates are multiplied
+across sub-solutions.
+
 ## Automatic Partitioning and Subclustering
 
 When `solve()` encounters a large KB, it automatically applies partitioning:
