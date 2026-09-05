@@ -142,6 +142,7 @@ Fact = Annotated[
         NotInSubsumptionWith,
         DisjointSet,
         DisjointWith,
+        OneOf,
         NegatedFact,
         MemberOfDisjointGroup,
     ],

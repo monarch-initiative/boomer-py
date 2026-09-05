@@ -74,7 +74,8 @@ def test_nx_reasoner_animal_combos(facts, satisfiable, entailed, not_entailed):
     ([SubClassOf(sub="c1", sup="p"), SubClassOf(sub="c2", sup="p"), DisjointWith(sub="c1", sibling="c2")], True, [], []), # disjointness
     ([DisjointWith(sub="a", sibling="b")], True, [], []), # disjoint entities absent from the graph: no crash
     ([DisjointWith(sub="a", sibling="b"), SubClassOf(sub="a", sup="p")], True, [], []), # only one disjoint entity in the graph
-    # ([SubClassOf("a", "b"), OneOf("b", "c")], True, [SubClassOf("a", "!c")], []), # oneof
+    ([MemberOfDisjointGroup(sub="X", group="g"), EquivalentTo(sub="X", equivalent="Y")], True, [], [MemberOfDisjointGroup(sub="Y", group="g")]), # unselected membership pfact must not constrain X
+    ([SubClassOf(sub="a", sup="b"), OneOf(sub="b", sibling="c")], True, [SubClassOf(sub="a", sup="!c")], []), # oneof
     ([SubClassOf(sub="a", sup="b"), NotInSubsumptionWith(sub="a", sibling="b")], False, [], []), 
     ([SubClassOf(sub="b", sup="a"), NotInSubsumptionWith(sub="a", sibling="b")], False, [], []), 
     ([ProperSubClassOf(sub="a", sup="b"), NotInSubsumptionWith(sub="a", sibling="b")], False, [], []), 
@@ -108,3 +109,16 @@ def test_nx_reasoner_main_combos(asserted_facts, satisfiable, expected_entailed,
         # (b) hypotheses that are expected to be disproven
         #assert not_entailed_facts == expected_not_entailed
 
+
+
+def test_negated_fact_selected_false_asserts_the_negated_fact():
+    kb = KB(pfacts=[
+        PFact(fact=NegatedFact(negated=SubClassOf(sub="a", sup="b")), prob=0.5),
+        PFact(fact=NotInSubsumptionWith(sub="a", sibling="b"), prob=0.5),
+    ])
+    reasoner = NxReasoner()
+    # rejecting "not (a ⊆ b)" asserts a ⊆ b, which refutes NotInSubsumptionWith(a, b)
+    result = reasoner.reason(kb, [(0, False)])
+    assert result.satisfiable
+    assert (1, False) in result.entailed_selections
+    assert not reasoner.reason(kb, [(0, False), (1, True)]).satisfiable

@@ -13,12 +13,11 @@ def negate_entity(entity: EntityIdentifier) -> EntityIdentifier:
 
 
 def filter_unsats(fact_states: List[Tuple[bool, PFactIndex, Fact]]) -> List[Fact]:
+    """Return the facts that have been assigned both truth values."""
     tv_ix = defaultdict(set)
     for tv, _ix, fact in fact_states:
         tv_ix[fact].add((tv))
     return [fact for fact, tvs in tv_ix.items() if len(tvs) == 2]
-
-    return [fact for tv, ix in fact_states if not tv and ix is not None]
 
 
 class NxReasoner(Reasoner):
@@ -41,6 +40,12 @@ class NxReasoner(Reasoner):
         asserted_true_facts = [
             kb.pfacts[c[0]].fact for c in selections if c[1]
         ] + kb.facts
+        # a NegatedFact selected False asserts the fact it negates
+        asserted_true_facts += [
+            kb.pfacts[ix].fact.negated
+            for ix, tv in selections
+            if tv is False and isinstance(kb.pfacts[ix].fact, NegatedFact)
+        ]
         asserted_true_facts_by_type = defaultdict(list)
         for fact in asserted_true_facts:
             asserted_true_facts_by_type[type(fact)].append(fact)
@@ -85,15 +90,15 @@ class NxReasoner(Reasoner):
         ]
         if additional_hypotheses:
             facts_to_check += [(None, h) for h in additional_hypotheses]
+        # group membership only counts once asserted (a hard fact or a pfact
+        # selected True); an unselected or rejected membership pfact must not
+        # constrain the other members
         disjoint_groups = defaultdict(list)
         disjoint_groups_by_entity = defaultdict(list)
-        disjoint_sets = []
-        for _, fact in facts_to_check:
+        for fact in asserted_true_facts:
             if isinstance(fact, MemberOfDisjointGroup):
                 disjoint_groups[fact.group].append(fact.sub)
                 disjoint_groups_by_entity[fact.sub].append(fact.group)
-            elif isinstance(fact, DisjointSet):
-                disjoint_sets.append(fact.entities)
         checked_selections = [(tv, ix, kb.pfacts[ix].fact) for ix, tv in selections]
         for ix, fact in facts_to_check:
 
