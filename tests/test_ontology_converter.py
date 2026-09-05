@@ -578,3 +578,18 @@ class TestSubclassFactType:
         assert NxReasoner().reason(obo_to_kb(obo)).satisfiable
         strict = obo_to_kb(obo, OntologyConverterConfig(subclass_fact_type="ProperSubClassOf"))
         assert not NxReasoner().reason(strict).satisfiable
+
+
+class TestDuplicateMappings:
+    def test_xref_and_exact_match_kept_until_deduped(self, tmp_path):
+        obo = tmp_path / "dup.obo"
+        obo.write_text(
+            "format-version: 1.4\nontology: dup\n\n"
+            "[Term]\nid: A:1\nname: a\nxref: B:1\nproperty_value: skos:exactMatch B:1\n"
+        )
+        kb = obo_to_kb(obo)
+        equivs = [pf for pf in kb.pfacts if pf.fact.fact_type == "EquivalentTo"]
+        # an xref and a skos:exactMatch are two pieces of evidence for one mapping
+        assert sorted(pf.prob for pf in equivs) == [0.7, 0.9]
+        assert kb.dedupe_pfacts() == 1
+        assert [pf.prob for pf in kb.pfacts if pf.fact.fact_type == "EquivalentTo"] == [0.9]

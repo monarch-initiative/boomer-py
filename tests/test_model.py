@@ -1,6 +1,17 @@
 import pytest
 
-from boomer.model import HypothesisTest, Solution, SubClassOf
+from boomer.model import (
+    KB,
+    DisjointWith,
+    EquivalentTo,
+    HypothesisTest,
+    NegatedFact,
+    PFact,
+    Solution,
+    SubClassOf,
+    canonical_fact,
+    dedupe_pfacts,
+)
 
 
 def _solution(prior: float) -> Solution:
@@ -32,3 +43,44 @@ def test_hypothesis_test_probability(pos, neg, expected):
         solution_neg=_solution(neg),
     )
     assert ht.probability == pytest.approx(expected)
+
+
+@pytest.mark.parametrize(
+    "fact,expected",
+    [
+        (EquivalentTo(sub="b", equivalent="a"), EquivalentTo(sub="a", equivalent="b")),
+        (EquivalentTo(sub="a", equivalent="b"), EquivalentTo(sub="a", equivalent="b")),
+        (DisjointWith(sub="b", sibling="a"), DisjointWith(sub="a", sibling="b")),
+        (
+            NegatedFact(negated=EquivalentTo(sub="b", equivalent="a")),
+            NegatedFact(negated=EquivalentTo(sub="a", equivalent="b")),
+        ),
+        (SubClassOf(sub="b", sup="a"), SubClassOf(sub="b", sup="a")),
+    ],
+)
+def test_canonical_fact(fact, expected):
+    assert canonical_fact(fact) == expected
+
+
+def test_dedupe_pfacts_keeps_max_and_first_orientation():
+    pfacts = [
+        PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.7),
+        PFact(fact=SubClassOf(sub="a", sup="c"), prob=0.5),
+        PFact(fact=EquivalentTo(sub="b", equivalent="a"), prob=0.9),
+        PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.6),
+    ]
+    assert dedupe_pfacts(pfacts) == [
+        PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.9),
+        PFact(fact=SubClassOf(sub="a", sup="c"), prob=0.5),
+    ]
+
+
+def test_kb_extend_keeps_multi_labeled_edges_until_deduped():
+    kb = KB(pfacts=[PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.7)])
+    merged = kb.extend(pfacts=[PFact(fact=EquivalentTo(sub="b", equivalent="a"), prob=0.8)])
+    # both copies survive the merge: they act as independent evidence in the search
+    assert len(merged.pfacts) == 2
+    assert merged.dedupe_pfacts() == 1
+    assert merged.pfacts == [PFact(fact=EquivalentTo(sub="a", equivalent="b"), prob=0.8)]
+    # the original is untouched
+    assert len(kb.pfacts) == 1 and kb.pfacts[0].prob == 0.7

@@ -35,6 +35,8 @@ The ontology converter reads an ontology file and produces a KB with two kinds o
 
 Directions follow the [SKOS Reference](https://www.w3.org/TR/skos-reference/#mapping): in `A skos:broadMatch B` the object `B` is the broader concept, and `skos:narrowMatch` is its inverse.
 
+If the same mapping appears more than once, such as an `xref` and a `skos:exactMatch` to the same target, both pfacts are kept and the solver treats them as independent evidence for that mapping (multi-labeled edges), which raises its posterior. When the repeats are not independent, collapse them with `KB.dedupe_pfacts()` or `pyboomer convert --dedupe`, which keeps the highest probability per claim.
+
 **Disjoint groups** are auto-generated per ID prefix, so entities from different namespaces (e.g. `MONDO:` vs `ORDO:`) are placed in disjoint groups.
 
 ## Example: OBO Ontology

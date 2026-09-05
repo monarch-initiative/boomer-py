@@ -5,6 +5,7 @@ from unittest.mock import patch, MagicMock
 from click.testing import CliRunner
 
 from boomer.cli import cli, get_renderer, load_kb
+from boomer.io import load_kb as load_kb_file, save_kb
 from boomer.model import KB, SolvedPFact, PFact, EquivalentTo
 from boomer.renderers.markdown_renderer import MarkdownRenderer
 
@@ -361,3 +362,29 @@ def test_cli_extract_command_errors():
         ])
         assert result.exit_code == 1
         assert "IDs file" in result.output and "not found" in result.output
+
+
+def test_merge_and_convert_dedupe_flag(tmp_path):
+    """Repeated claims are kept by default (multi-labeled edges) and collapsed with --dedupe."""
+    a = tmp_path / "a.yaml"
+    b = tmp_path / "b.yaml"
+    save_kb(KB(pfacts=[PFact(fact=EquivalentTo(sub="A:1", equivalent="B:1"), prob=0.7)]), a)
+    save_kb(KB(pfacts=[PFact(fact=EquivalentTo(sub="B:1", equivalent="A:1"), prob=0.9)]), b)
+    merged = tmp_path / "merged.yaml"
+    runner = CliRunner()
+
+    result = runner.invoke(cli, ["merge", str(a), str(b), "-o", str(merged)])
+    assert result.exit_code == 0, result.output
+    assert len(load_kb_file(merged).pfacts) == 2
+
+    result = runner.invoke(cli, ["merge", str(a), str(b), "-o", str(merged), "--dedupe"])
+    assert result.exit_code == 0, result.output
+    assert "Collapsed 1 duplicate" in result.output
+    kb = load_kb_file(merged)
+    assert len(kb.pfacts) == 1
+    assert kb.pfacts[0].prob == 0.9
+
+    converted = tmp_path / "converted.json"
+    result = runner.invoke(cli, ["convert", str(merged), "-o", str(converted), "--dedupe"])
+    assert result.exit_code == 0, result.output
+    assert len(load_kb_file(converted).pfacts) == 1

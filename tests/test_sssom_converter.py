@@ -734,3 +734,19 @@ def _has_entity(fact, entity_id: str) -> bool:
     if isinstance(fact, ProperSubClassOf):
         return fact.sub == entity_id or fact.sup == entity_id
     return False
+
+
+class TestDuplicateRows:
+    def test_duplicate_mappings_kept_until_deduped(self):
+        content = (
+            "subject_id\tobject_id\tpredicate_id\tconfidence\n"
+            "A:1\tB:2\tskos:exactMatch\t0.6\n"
+            "B:2\tA:1\tskos:exactMatch\t0.9\n"
+        )
+        path = _write_sssom(content)
+        kb = sssom_to_kb(path)
+        # both rows are kept as independent evidence for the same mapping
+        assert len(kb.pfacts) == 2
+        assert kb.dedupe_pfacts() == 1
+        assert kb.pfacts[0].prob == 0.9
+        os.unlink(path)
