@@ -1,12 +1,22 @@
 from copy import deepcopy
+import logging
 from typing import List
 from collections import defaultdict
-from boomer.model import KB, EquivalentTo, PFact, ProbabilityMissingEquivalentTo, ProbabilityMissingProperSubClassOf, Fact, MemberOfDisjointGroup, ProperSubClassOf, SubClassOf
+from boomer.model import KB, EquivalentTo, PFact, ProbabilityMissingEquivalentTo, ProbabilityMissingProperSubClassOf, MemberOfDisjointGroup, ProperSubClassOf
 from boomer.reasoners.reasoner import Reasoner
+
+logger = logging.getLogger(__name__)
+
 
 def generate_hypotheses_for_hyperparamaters(kb: KB, reasoner: Reasoner) -> List[PFact]:
     """
-    Generate hypotheses for the hyperparamaters.
+    Generate entailment-only hypotheses for the hyperparamaters.
+
+    For each ProbabilityMissing* hyperparameter, one hypothesis is created per
+    ordered pair of entities drawn from the named disjoint groups. Hypotheses
+    that are already pfacts, or that are already entailed or refuted by the
+    hard facts alone, are dropped. The search never selects these hypotheses;
+    see KB.pfacts_entailed for how they weight a node's prior.
 
     Args:
         kb: The knowledge base
@@ -30,22 +40,9 @@ def generate_hypotheses_for_hyperparamaters(kb: KB, reasoner: Reasoner) -> List[
         fact=ProperSubClassOf(fact_type='ProperSubClassOf', sub='b', sup='a') prob=0.2
     """
     hypotheses = []
-    entity_to_disjoint_groups = defaultdict(list)
     disjoint_groups_to_entities = defaultdict(list)
-    all_entities = set()
     for fact in kb.facts:
         if isinstance(fact, MemberOfDisjointGroup):
-            all_entities.add(fact.sub)
-            all_entities.add(fact.group)
-        elif isinstance(fact, (ProperSubClassOf, SubClassOf)):
-            all_entities.add(fact.sub)
-            all_entities.add(fact.sup)
-        elif isinstance(fact, EquivalentTo):
-            all_entities.add(fact.sub)
-            all_entities.add(fact.equivalent)
-    for fact in kb.facts:
-        if isinstance(fact, MemberOfDisjointGroup):
-            entity_to_disjoint_groups[fact.sub].append(fact.group)
             disjoint_groups_to_entities[fact.group].append(fact.sub)
     for hp in kb.hyperparams:
         if isinstance(hp, ProbabilityMissingProperSubClassOf):
@@ -65,6 +62,7 @@ def generate_hypotheses_for_hyperparamaters(kb: KB, reasoner: Reasoner) -> List[
     kb_copy.pfacts = hypotheses
     reasoner_result = reasoner.reason(kb_copy)
     if not reasoner_result.satisfiable:
+        logger.warning("Hard facts are unsatisfiable on their own; no hyperparameter hypotheses generated")
         return []
     
     remove_facts = []

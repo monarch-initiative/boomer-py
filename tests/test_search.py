@@ -914,3 +914,44 @@ def test_exhaustive_depth_timeout_restarts_the_clock(monkeypatch, capsys):
     # with the clock restarting, no report can be far beyond one timeout budget;
     # without it the reported elapsed time grew on every iteration
     assert max(reported) < 2 * 2.5 + 2
+
+
+def test_hyperparameter_penalises_entailed_missing_subclass_axiom():
+    """
+    X states x1 ⊂ x2, and x2 ≡ y2 is certain. Accepting x1 ≡ y1 entails y1 ⊂ y2,
+    an axiom Y does not state. With ProbabilityMissingProperSubClassOf 0.05 for
+    Y that world is weighted 0.6 * 0.05, so the mapping is rejected; without
+    the hyperparameter it is accepted.
+    """
+    facts = [
+        ProperSubClassOf(sub="x1", sup="x2"),
+        EquivalentTo(sub="x2", equivalent="y2"),
+        MemberOfDisjointGroup(sub="x1", group="X"),
+        MemberOfDisjointGroup(sub="x2", group="X"),
+        MemberOfDisjointGroup(sub="y1", group="Y"),
+        MemberOfDisjointGroup(sub="y2", group="Y"),
+    ]
+    pfacts = [PFact(fact=EquivalentTo(sub="x1", equivalent="y1"), prob=0.6)]
+    plain = solve(KB(facts=facts, pfacts=pfacts))
+    assert [sp.truth_value for sp in plain.solved_pfacts] == [True]
+
+    kb = KB(
+        facts=facts,
+        pfacts=pfacts,
+        hyperparams=[
+            ProbabilityMissingProperSubClassOf(prob=0.05, disjoint_group_sub="Y", disjoint_group_sup="Y")
+        ],
+    )
+    solution = solve(kb)
+    assert kb.pfacts_entailed == []  # the input KB is not mutated
+    assert solution.prior_prob == pytest.approx(0.4)
+    by_fact = {sp.pfact.fact: sp for sp in solution.solved_pfacts}
+    mapping = by_fact[EquivalentTo(sub="x1", equivalent="y1")]
+    assert mapping.truth_value is False
+    assert mapping.posterior_prob == pytest.approx(0.03 / 0.43)
+    missing = by_fact[ProperSubClassOf(sub="y1", sup="y2")]
+    assert missing.metadata == {"entailment_only": True}
+    assert missing.truth_value is None  # not entailed in the winning world
+    assert missing.posterior_prob == pytest.approx(0.03 / 0.43)
+    # the reverse direction is never entailed
+    assert by_fact[ProperSubClassOf(sub="y2", sup="y1")].posterior_prob == 0.0

@@ -105,6 +105,9 @@ def extract_sub_kb(kb: KB, component: Set[EntityIdentifier], include_labels: boo
             description=kb.description,
             comments=kb.comments,
             labels=labels,
+            hyperparams=list(kb.hyperparams),
+            pfacts_entailed=[pf for pf in kb.pfacts_entailed if fact_entities(pf.fact) & component],
+            default_configurations=kb.default_configurations,
         )
     return sub_kb
 

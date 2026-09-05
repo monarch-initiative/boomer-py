@@ -92,8 +92,12 @@ def extend_node(
     if selection in node.selections:
         raise ValueError(f"Duplicate selection: {selection}")
     asserted_selections = node.selections + [selection]
-    reasoner_result = reasoner.reason(kb, asserted_selections)
+    entailment_probs = {pf.fact: pf.prob for pf in kb.pfacts_entailed}
+    reasoner_result = reasoner.reason(
+        kb, asserted_selections, additional_hypotheses=list(entailment_probs)
+    )
 
+    entailed_hypotheses: List[Tuple[Fact, bool]] = []
     if reasoner_result.satisfiable:
         # Use KB index order for scoring, independent of the reasoner's traversal
         # order or the path by which these entailments were reached.
@@ -110,6 +114,12 @@ def extend_node(
             else:
                 pr_fact = 1 - kb.pfacts[ix].prob
             pr_selected *= pr_fact
+        # entailment-only pfacts: one entailed by these selections contributes its
+        # probability, one refuted by them its complement, an undetermined one nothing
+        entailed_hypotheses = list(reasoner_result.entailed_hypotheses or [])
+        for fact, truth_value in entailed_hypotheses:
+            prob = entailment_probs[fact]
+            pr_selected *= prob if truth_value else 1 - prob
     else:
         selections = asserted_selections + []
         pr_selected = 0.0
@@ -127,6 +137,7 @@ def extend_node(
         asserted_selections=asserted_selections,
         pr_selected=pr_selected,
         terminal=len(selections) == len(kb.pfacts),
+        entailed_hypotheses=entailed_hypotheses,
     )
     # TODO: improve efficiency avoiding recalculating this
     tn.pr = calc_prob_unselected(kb, tn) * pr_selected
@@ -401,14 +412,12 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
         return combine_solutions(solutions)
     
     if kb.hyperparams:
-        # Generated hypotheses belong to this solve, not the caller's reusable KB.
-        kb = deepcopy(kb)
-        # create hypotheses for hyperparamaters;
-        # e.g. probability of omitted subclasses within the same ontology
+        # hypotheses for hyperparameters, e.g. the probability of an omitted
+        # subclass axiom within one ontology; they are only checked as entailments.
+        # They belong to this solve, not the caller's reusable KB (copied below).
         hypotheses = generate_hypotheses_for_hyperparamaters(kb, get_reasoner(config.reasoner_class))
-        for h in hypotheses:
-            print(f"Adding hypothesis: {h}")
-            kb.pfacts_entailed.append(h)
+        logger.info(f"Adding {len(hypotheses)} entailment-only hypotheses from hyperparameters")
+        kb = kb.model_copy(update={"pfacts_entailed": kb.pfacts_entailed + hypotheses})
 
     # Track start time
     time_started = time.time()
@@ -503,6 +512,25 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
                     else 0.0,
                 )
             )
+        # entailment-only pfacts are reported too, flagged in metadata
+        for pfact in kb.pfacts_entailed:
+            pr_true = sum(
+                n.pr for n in satisfiable_nodes if (pfact.fact, True) in n.entailed_hypotheses
+            )
+            if (pfact.fact, True) in best.entailed_hypotheses:
+                truth_value = True
+            elif (pfact.fact, False) in best.entailed_hypotheses:
+                truth_value = False
+            else:
+                truth_value = None
+            solved_pfacts.append(
+                SolvedPFact(
+                    pfact=pfact,
+                    truth_value=truth_value,
+                    posterior_prob=(pr_true / total_pr) if total_pr > 0.0 else 0.0,
+                    metadata={"entailment_only": True},
+                )
+            )
 
     else:
         # nothing satisfiable was found: no grounding, no confidence
@@ -513,6 +541,9 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
         solved_pfacts = [
             SolvedPFact(pfact=pfact, truth_value=None, posterior_prob=0.0)
             for pfact in kb.pfacts
+        ] + [
+            SolvedPFact(pfact=pfact, truth_value=None, posterior_prob=0.0, metadata={"entailment_only": True})
+            for pfact in kb.pfacts_entailed
         ]
 
     # Track end time
