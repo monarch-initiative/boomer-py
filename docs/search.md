@@ -83,7 +83,7 @@ The result of the search is a `Solution` object that contains:
 - **prior_prob**: Prior probability of the solution
 - **posterior_prob**: Posterior probability of the solution
 - **number_of_combinations**: Number of combinations explored
-- **number_of_satisfiable_combinations**: Number of satisfiable combinations found
+- **number_of_satisfiable_combinations**: Number of distinct satisfiable assignments found
 - **time_elapsed**: Time taken to find the solution
 - **timed_out**: Whether the search timed out
 

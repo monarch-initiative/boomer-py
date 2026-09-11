@@ -428,10 +428,8 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     #    raise ValueError("No solutions found")
     number_of_possible_combinations = kb.number_of_combinations()
     number_of_combinations_explored = len(nodes)
-    number_of_satisfiable_combinations = sum(1 for n in nodes if n.satifiable)
-    number_of_combinations_explored_including_implicit = (
-        number_of_satisfiable_combinations
-    )
+    raw_satisfiable_count = sum(1 for n in nodes if n.satifiable)
+    number_of_combinations_explored_including_implicit = raw_satisfiable_count
     for n in nodes:
         if not n.satifiable:
             number_of_combinations_explored_including_implicit += 2 ** (
