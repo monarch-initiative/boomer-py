@@ -1438,7 +1438,7 @@
 <li><strong>prior_prob</strong>: Prior probability of the solution</li>
 <li><strong>posterior_prob</strong>: Posterior probability of the solution</li>
 <li><strong>number_of_combinations</strong>: Number of combinations explored</li>
-<li><strong>number_of_satisfiable_combinations</strong>: Number of satisfiable combinations found</li>
+<li><strong>number_of_satisfiable_combinations</strong>: Number of distinct satisfiable assignments found</li>
 <li><strong>time_elapsed</strong>: Time taken to find the solution</li>
 <li><strong>timed_out</strong>: Whether the search timed out</li>
 </ul>
@@ -1449,7 +1449,15 @@ vary, and searches stopped by a wall-clock timeout can explore different amounts
 of the search space.</p>
 <p><code>number_of_combinations</code> counts explicitly visited terminal nodes, rather than
 the size of the possible assignment space (<code>2 ** len(kb.pfacts)</code>).
-<code>proportion_of_combinations_explored</code> is a capped estimate that also counts
+<code>max_candidate_solutions</code> also counts raw terminal nodes, preserving its role
+as a search-effort bound. Repeated paths to a solution still consume that budget.
+<code>number_of_satisfiable_combinations</code> counts distinct satisfiable assignments
+found. Confidence compares the best two distinct assignments; whole-solution
+and marginal posteriors likewise count each assignment once. The key includes
+every hypothesis index and truth value, so separate input priors are retained
+and distinct solutions with equal probabilities remain separate. These scores
+are conditional on the solutions found when a cap or timeout stops the search.</p>
+<p><code>proportion_of_combinations_explored</code> is a capped estimate that also counts
 assignments implicitly pruned by unsatisfiable branches; those branches can
 overlap, so a value of <code>1.0</code> is not a proof of exhaustive enumeration. For
 partitioned solutions, counts are summed and coverage estimates are multiplied
