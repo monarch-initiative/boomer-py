@@ -83,7 +83,7 @@ The result of the search is a `Solution` object that contains:
 - **prior_prob**: Prior probability of the solution
 - **posterior_prob**: Posterior probability of the solution
 - **number_of_combinations**: Number of combinations explored
-- **number_of_satisfiable_combinations**: Number of satisfiable combinations found
+- **number_of_satisfiable_combinations**: Number of distinct satisfiable assignments found
 - **time_elapsed**: Time taken to find the solution
 - **timed_out**: Whether the search timed out
 
@@ -95,6 +95,15 @@ of the search space.
 
 `number_of_combinations` counts explicitly visited terminal nodes, rather than
 the size of the possible assignment space (`2 ** len(kb.pfacts)`).
+`max_candidate_solutions` also counts raw terminal nodes, preserving its role
+as a search-effort bound. Repeated paths to a solution still consume that budget.
+`number_of_satisfiable_combinations` counts distinct satisfiable assignments
+found. Confidence compares the best two distinct assignments; whole-solution
+and marginal posteriors likewise count each assignment once. The key includes
+every hypothesis index and truth value, so separate input priors are retained
+and distinct solutions with equal probabilities remain separate. These scores
+are conditional on the solutions found when a cap or timeout stops the search.
+
 `proportion_of_combinations_explored` is a capped estimate that also counts
 assignments implicitly pruned by unsatisfiable branches; those branches can
 overlap, so a value of `1.0` is not a proof of exhaustive enumeration. For

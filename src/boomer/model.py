@@ -307,7 +307,7 @@ class Solution(BaseModel):
     name: str | None = Field(None, description="The name of the solution")
     number_of_combinations: int = Field(..., description="The number of explicitly explored combinations.")
 
-    number_of_satisfiable_combinations: int = Field(..., description="The number of satisfiable combinations.")
+    number_of_satisfiable_combinations: int = Field(..., description="The number of distinct satisfiable assignments found (summed across partitions).")
     number_of_combinations_explored_including_implicit: int = Field(..., description="The number of combinations explored, including implicit ones.")
     number_of_components: int | None = Field(None, description="The number of components in the solution.")
 

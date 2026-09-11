@@ -428,10 +428,8 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     #    raise ValueError("No solutions found")
     number_of_possible_combinations = kb.number_of_combinations()
     number_of_combinations_explored = len(nodes)
-    number_of_satisfiable_combinations = sum(1 for n in nodes if n.satifiable)
-    number_of_combinations_explored_including_implicit = (
-        number_of_satisfiable_combinations
-    )
+    raw_satisfiable_count = sum(1 for n in nodes if n.satifiable)
+    number_of_combinations_explored_including_implicit = raw_satisfiable_count
     for n in nodes:
         if not n.satifiable:
             number_of_combinations_explored_including_implicit += 2 ** (
@@ -442,6 +440,23 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
         / number_of_possible_combinations
     )
     est_prop_explored = min(est_prop_explored, 1.0)
+
+    # Search paths can entail the same complete assignment more than once.
+    # Keep raw nodes above for the effort cap and traversal statistics, but
+    # count each satisfiable solution once when ranking and normalizing.
+    # Hypothesis indices preserve separate input priors; equal probabilities
+    # do not imply equal solutions.
+    seen_solutions: set[frozenset[Grounding]] = set()
+    scoring_nodes: list[TreeNode] = []
+    for node in nodes:
+        if node.satifiable:
+            key = frozenset(node.selections)
+            if key in seen_solutions:
+                continue
+            seen_solutions.add(key)
+        scoring_nodes.append(node)
+    nodes = scoring_nodes
+    number_of_satisfiable_combinations = len(seen_solutions)
 
     if nodes:
         # sort nodes by pr; 0th element is best/highest pr
