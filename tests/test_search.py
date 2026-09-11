@@ -135,9 +135,16 @@ def test_chain(chain_length, max_candidate_solutions):
     solution = solve(kb, cfg)
     print(solution)
     render(solution)
-    assert solution.confidence > 0.495
-    assert solution.confidence < 0.9
-    assert solution.posterior_prob < 0.6
+    if chain_length == 1:
+        # X:1 cannot be a proper subclass of itself. The other edge remains
+        # an unconstrained 0.9 hypothesis, giving two distinct solutions.
+        assert solution.number_of_satisfiable_combinations == 2
+        assert solution.confidence == pytest.approx(0.9)
+        assert solution.posterior_prob == pytest.approx(0.9)
+    else:
+        assert solution.confidence > 0.495
+        assert solution.confidence < 0.9
+        assert solution.posterior_prob < 0.6
     if chain_length > 6:
         assert solution.posterior_prob == pytest.approx(0.2, abs=0.1)
     # chain should have a single link broken
@@ -174,33 +181,19 @@ def test_solve_quad():
     match_facts(solution.solved_pfacts, expected)
 
 def test_solve_ladder():
-    """
-    Expected results:
-    * 16 combinations
-    * 8 satisfiable combinations
-    * 1.0 proportion of combinations explored
-    * 0.5 confidence
-    * 1.0000000000000005e-08 prior probability
-    * 0.12499999999999999 posterior probability
-    * 0.0048 seconds elapsed
-    Grounding:
-    * True fact_type='ProperSubClassOf' sub='R4' sup='R3' :: prior: 0.1 posterior: 1.0
-    * True fact_type='ProperSubClassOf' sub='R3' sup='R2' :: prior: 0.1 posterior: 1.0
-    * True fact_type='ProperSubClassOf' sub='R2' sup='R1' :: prior: 0.1 posterior: 1.0
-    * True fact_type='ProperSubClassOf' sub='R1' sup='R0' :: prior: 0.1 posterior: 1.0
-    * True fact_type='EquivalentTo' sub='R3' equivalent='R3' :: prior: 0.1 posterior: 1.0
-    * True fact_type='EquivalentTo' sub='R2' equivalent='R2' :: prior: 0.1 posterior: 1.0
-    * True fact_type='EquivalentTo' sub='R1' equivalent='R1' :: prior: 0.1 posterior: 1.0
-    * True fact_type='EquivalentTo' sub='R0' equivalent='R0' :: prior: 0.1 posterior: 1.0
+    """Hard facts entail all eight hypotheses, leaving one satisfiable world.
+
+    Search reaches that same assignment eight ways, but it has confidence
+    and posterior 1.0 regardless of the number of derivations.
     """
     kb = ladder.kb
     solution = solve(kb)
     print(solution)
     render(solution)
-    assert solution.number_of_satisfiable_combinations == 8
-    assert solution.confidence == pytest.approx(0.5, 0.05)  
-    assert solution.prior_prob == pytest.approx(1.0e-08, 0.05)
-    assert solution.posterior_prob == pytest.approx(0.12, 0.05)
+    assert solution.number_of_satisfiable_combinations == 1
+    assert solution.confidence == 1.0
+    assert solution.prior_prob == pytest.approx(0.1 ** 8)
+    assert solution.posterior_prob == 1.0
     expected = [
         (True, ProperSubClassOf(sub='R4', sup='R3'), 0.1, 1.0),
         (True, ProperSubClassOf(sub='R3', sup='R2'), 0.1, 1.0),
@@ -625,87 +618,58 @@ def test_search_animals():
     #assert n <= 512
 
 
-@pytest.mark.parametrize("probs,expected_prob,expected_satisfiable_combinations", [
-    ([0.9], 0.9, 2), # trivial base case
-    ([0.9, 0.8], 0.986, 3), # TODO: see docstring
-    ([0.9, 0.8, 0.7], 0.996, 4), # TODO: see docstring
-    ([0.9, 0.8, 0.001], 0.0975, 4), # TODO: see docstring
-    
+@pytest.mark.parametrize("probs", [
+    [0.9],
+    [0.9, 0.8],
+    [0.9, 0.8, 0.7],
+    [0.9, 0.8, 0.001],
 ])
-def test_asserted_multi_labeled_edges(probs, expected_prob, expected_satisfiable_combinations):
+def test_asserted_multi_labeled_edges(probs):
+    """Keep independent priors, but count the all-true and all-false worlds once.
+
+    With priors 0.9 and 0.8, the true weight is 0.72 and the false weight
+    is 0.02. Conditioning on consistency gives 0.72 / 0.74, regardless
+    of how many search paths reach either assignment.
     """
-    Test that multi-labeled edges are handled correctly.
+    from math import prod
 
-    Given two assertions about the same fact:
-
-        - A = B @ 0.9
-        - A = B @ 0.8
-
-    These should be treated as independent pieces of evidence for the same fact; for the fact
-    to be false, both hypotheses must be false, i.e pr(not(A=B)) = 0.1 * 0.2 = 0.02.
-        
-    TODO: currently the way this works is that these are treated as if they are assertions
-    about different facts, such that for the world where A=B, the probability
-    is 0.9 * 0.8 = 0.72. Furthermore there are two such worlds, one for each assertion.
-
-    """
-    kb = KB(pfacts=[])
-    for prob in probs:
-        kb.pfacts.append(PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=prob))
+    kb = KB(pfacts=[
+        PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=prob)
+        for prob in probs
+    ])
     nodes = list(search(kb, SearchConfig()))
-    if len(probs) == 1:
-        assert len(nodes) == 2
-    elif len(probs) == 2:
-        # TODO: this includes two identical worlds:
-        # SOLUTION 0
-        # True 0.7200000000000001 0.7200000000000001 [(1, True), (0, True)]
-        # SOLUTION 1
-        # True 0.7200000000000001 0.7200000000000001 [(1, True), (0, True)]
+    if len(probs) == 2:
+        # Search still returns repeated paths; solve deduplicates for scoring.
         assert len(nodes) == 5
-        satisfiable_nodes = [n for n in nodes if n.satifiable]
-        assert len(satisfiable_nodes) == expected_satisfiable_combinations
-        for i, n  in enumerate(nodes):
-            print(f"# SOLUTION {i}")
-            #import yaml
-            #print(yaml.dump(n.model_dump()))
-            print(n.satifiable, n.pr_selected, n.pr, n.selections)
+        assert sum(n.satifiable for n in nodes) == 3
+    true_weight = prod(probs)
+    false_weight = prod(1 - p for p in probs)
+    expected_prob = true_weight / (true_weight + false_weight)
     solution = solve(kb)
-    assert solution.number_of_satisfiable_combinations == expected_satisfiable_combinations
-    # TODO: consider collapsing multiple edges
-    assert len(solution.solved_pfacts) == len(probs)
+    assert solution.number_of_satisfiable_combinations == 2
+    assert [f.pfact.prob for f in solution.solved_pfacts] == probs
     for solved_pfact in solution.solved_pfacts:
-        assert solved_pfact.posterior_prob == pytest.approx(expected_prob, 0.001)
+        assert solved_pfact.posterior_prob == pytest.approx(expected_prob)
 
 
-@pytest.mark.parametrize("p1,p2,expected_prob", [
-    (0.8, 0.2, 0.6666),
-    (0.9, 0.1, 0.6666),
-    (0.9, 0.9, 0.9938),
-    (0.1, 0.1, 0.0241),
+@pytest.mark.parametrize("p1,p2", [
+    (0.8, 0.2),
+    (0.9, 0.1),
+    (0.9, 0.9),
+    (0.1, 0.1),
 ])
-def test_entailed_multi_labeled_edges(p1, p2, expected_prob):
-    """
-    Test that entailed multi-labeled edges are handled correctly.
-
-    Given two assertions about the same logical fact:
-
-        - A = B @ 0.9
-        - B = A @ 0.8
-
-    The probability that A=B is the same as the probability that B=A.
-
-    See docstring for test_asserted_multi_labeled_edges.
-    """
-    kb = KB(pfacts=[])
-    kb.pfacts.append(PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=p1))
-    kb.pfacts.append(PFact(fact=EquivalentTo(sub="B", equivalent="A"), prob=p2))
+def test_entailed_multi_labeled_edges(p1, p2):
+    """Symmetric equivalence assertions retain both priors in two unique worlds."""
+    kb = KB(pfacts=[
+        PFact(fact=EquivalentTo(sub="A", equivalent="B"), prob=p1),
+        PFact(fact=EquivalentTo(sub="B", equivalent="A"), prob=p2),
+    ])
+    expected_prob = p1 * p2 / (p1 * p2 + (1 - p1) * (1 - p2))
     solution = solve(kb)
-    assert solution.number_of_satisfiable_combinations == 3
-    assert len(solution.solved_pfacts) == 2
-    for i, solved_pfact in enumerate(solution.solved_pfacts):
-        print(f"# SOLUTION {i}")
-        print(solved_pfact)
-        assert solved_pfact.posterior_prob == pytest.approx(expected_prob, 0.001)
+    assert solution.number_of_satisfiable_combinations == 2
+    assert [f.pfact.prob for f in solution.solved_pfacts] == [p1, p2]
+    for solved_pfact in solution.solved_pfacts:
+        assert solved_pfact.posterior_prob == pytest.approx(expected_prob)
 
 
 @pytest.mark.parametrize("exhaustive_depth", [0, 1])

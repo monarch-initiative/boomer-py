@@ -443,6 +443,23 @@ def solve(kb: KB, config: SearchConfig | None = None) -> Solution:
     )
     est_prop_explored = min(est_prop_explored, 1.0)
 
+    # Search paths can entail the same complete assignment more than once.
+    # Keep raw nodes above for the effort cap and traversal statistics, but
+    # count each satisfiable solution once when ranking and normalizing.
+    # Hypothesis indices preserve separate input priors; equal probabilities
+    # do not imply equal solutions.
+    seen_solutions: set[frozenset[Grounding]] = set()
+    scoring_nodes: list[TreeNode] = []
+    for node in nodes:
+        if node.satifiable:
+            key = frozenset(node.selections)
+            if key in seen_solutions:
+                continue
+            seen_solutions.add(key)
+        scoring_nodes.append(node)
+    nodes = scoring_nodes
+    number_of_satisfiable_combinations = len(seen_solutions)
+
     if nodes:
         # sort nodes by pr; 0th element is best/highest pr
         nodes.sort(key=lambda x: x.pr, reverse=True)
